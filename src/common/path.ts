@@ -22,6 +22,7 @@ interface DirList {
     dirModules: string
     dirSrc: string
     fileBuilding: string
+    fileDistances: string
     fileCannon: string
     fileLoot: string
     fileModules: string
@@ -56,6 +57,7 @@ export function getCommonPaths(appRoot = process.env.PWD ?? ""): DirList {
         dirSrc,
 
         fileBuilding: buildPath(dirGenGeneric, "buildings.json"),
+        fileDistances: buildPath(dirLib, "distances.json"),
         fileCannon: buildPath(dirGenGeneric, "cannons.json"),
         fileLoot: buildPath(dirGenGeneric, "loot.json"),
         fileModules: buildPath(dirGenGeneric, "modules.json"),

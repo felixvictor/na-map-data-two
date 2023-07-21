@@ -46,7 +46,7 @@ let apiPorts: APIPort[]
 let apiShops: APIShop[]
 
 const commonPaths = getCommonPaths()
-const distancesFile = path.resolve(commonPaths.dirGenGeneric, `distances.json`)
+const distancesFile = commonPaths.fileDistances
 const distancesOrig: Distance[] = readJson(distancesFile)
 let distances: Map<number, number>
 let numberPorts: number

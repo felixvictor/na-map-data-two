@@ -47,7 +47,7 @@ class Map {
     #mapFileName = path.resolve(commonPaths.dirSrc, "images", `frontline-map-${distanceMapSize}.png`)
     #pngData!: Buffer
     #distances: Distance[] = []
-    #distancesFile = path.resolve(commonPaths.dirGenGeneric, "distances.json")
+    #distancesFile = commonPaths.fileDistances
     #neighbours!: Set<number>
     #offset!: number
     #map: GridMap = [] as GridMap
