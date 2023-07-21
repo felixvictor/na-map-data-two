@@ -1,6 +1,6 @@
 {
     "name": "na-map-data",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "packageManager": "yarn@3.6.1",
     "module": "node",
     "scripts": {
@@ -59,6 +59,7 @@
         "prettier": "^3.0.0",
         "prettier-package-json": "^2.8.0",
         "recursive-readdir": "^2.2.3",
+        "standard-version": "^9.5.0",
         "timelines-chart": "^2.12.1",
         "ts-node": "^10.9.1",
         "typescript": "^5.1.6",
