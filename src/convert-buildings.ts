@@ -1,4 +1,13 @@
-import { cleanName, getAPIFilename, getCommonPaths, readJson, saveJsonAsync, serverIds, sortBy } from "./common"
+import {
+    cleanName,
+    currentServerStartDate as serverDate,
+    getAPIFilename,
+    getCommonPaths,
+    readJson,
+    saveJsonAsync,
+    serverIds,
+    sortBy,
+} from "./common"
 import type { APIBuilding, APIItemGeneric, APIRecipeResource, LevelsEntity, TemplateEntity } from "./@types/api-item"
 import type {
     Building,
@@ -233,7 +242,6 @@ const convertBuildings = async (): Promise<void> => {
 }
 
 export const convertBuildingData = async (): Promise<void> => {
-    let serverDate
     apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`))
 
     await convertBuildings()

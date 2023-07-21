@@ -1,7 +1,17 @@
-import css from "css"
+import { range } from "d3-array"
 import Excel from "exceljs"
-import * as sass from "sass"
-import type { Declaration, Rule } from "css"
+
+import {
+    currentServerStartDate,
+    executeCommand,
+    getCommonPaths,
+    maxShallowWaterBR,
+    minDeepWaterBR,
+    readJson,
+    sortBy,
+} from "./common"
+import { ShipData } from "./@types/ships"
+import { PortBasic } from "./@types/ports"
 
 type ColourName = string
 type argbColour = string
@@ -51,41 +61,7 @@ const columnsHeader = [
 const numColumnsHeader = columnsHeader.length
 const numColumnsTotal = numColumnsHeader + maxNumPlayers
 
-const fileScssPreCompile = path.resolve(commonPaths.dirSrc, "scss", "pre-compile.scss")
-
 const isAIShip = (name: string): boolean => ["Basic", "Rooki", "Trade", "Tutor"].includes(name.slice(0, 5))
-
-const getArgbColour = (hexColour: string): argbColour => `00${hexColour.replace("#", "")}`
-const defaultColour: argbColour = getArgbColour("#44ff00")
-
-/**
- * Set colours
- * @returns Colours
- */
-const setColours = (): ColourMap => {
-    const compiledCss = sass.compile(fileScssPreCompile, { loadPaths: ["./"] }).css
-    const parsedCss = css.parse(compiledCss)
-    return new Map(
-        (
-            parsedCss.stylesheet?.rules.filter(
-                (rule: Rule) => rule.selectors?.[0].startsWith(".colour-palette "),
-            ) as Rule[]
-        )
-            .filter(
-                (rule: Rule) =>
-                    rule?.declarations?.find((declaration: Declaration) => declaration.property === "background-color"),
-            )
-            .map((rule) => {
-                const d = rule?.declarations?.find(
-                    (declaration: Declaration) => declaration.property === "background-color",
-                ) as Declaration
-                return [
-                    rule.selectors?.[0].replace(".colour-palette .", "") ?? "",
-                    getArgbColour(d.value ?? defaultColour),
-                ]
-            }),
-    )
-}
 
 let workbook: Excel.Workbook
 let portsDeepWater: PortBR[]
@@ -93,22 +69,15 @@ let portsShallowWater: PortBR[]
 let dwShips: ShipData[]
 let swShips: ShipData[]
 
-const colours = setColours()
-
-const colourWhite = colours.get("white") ?? defaultColour
-const colourPrimaryWhite = colours.get("primary-050") ?? defaultColour
-// const colourPrimaryNearWhite = colours.get("primary-100") ?? defaultColour
-// const colourPrimaryLight = colours.get("primary-200") ?? defaultColour
-// const colourPrimaryDark = colours.get("primary-600") ?? defaultColour
-const colourContrastWhite = colours.get("secondary-050") ?? defaultColour
-const colourContrastNearWhite = colours.get("secondary-100") ?? defaultColour
-const colourContrastLight = colours.get("secondary-200") ?? defaultColour
-const colourContrastMiddle = colours.get("secondary-400") ?? defaultColour
-// const colourContrastDark = colours.get("secondary-600") ?? defaultColour
-const colourText = colours.get("secondary-800") ?? defaultColour
-// const colourBackground = colours.get("background-600") ?? defaultColour
-const colourHighlight = colours.get("teal") ?? defaultColour
-const colourRed = colours.get("pink") ?? defaultColour
+const colourWhite = "#00f1efe9"
+const colourPrimaryWhite = "#00edeae8"
+const colourContrastWhite = "#00e8e8e3"
+const colourContrastNearWhite = "#00e0e0d9"
+const colourContrastLight = "#00c2c1b3"
+const colourContrastMiddle = "#00858468"
+const colourText = "#0029281a"
+const colourHighlight = "#003bad8b"
+const colourRed = "#00b5467d"
 
 const defaultFont: Partial<Excel.Font> = {
     bold: false,
@@ -129,12 +98,6 @@ const defaultFont: Partial<Excel.Font> = {
  */
 // @ts-expect-error lala
 import StylesXform from "exceljs/lib/xlsx/xform/style/styles-xform"
-import { currentServerStartDate, executeCommand, getCommonPaths, readJson, sortBy } from "./common"
-import path from "node:path"
-import { ShipData } from "./@types/ships"
-import { PortBasic } from "./@types/ports"
-import { maxShallowWaterBR, minDeepWaterBR } from "./common/constants"
-import { range } from "d3-array"
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const origStylesXformInit = StylesXform.prototype.init
 StylesXform.prototype.init = function () {
