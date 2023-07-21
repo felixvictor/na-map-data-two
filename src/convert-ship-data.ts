@@ -2,27 +2,19 @@ import * as fs from "fs"
 import path from "node:path"
 import convert, { type ElementCompact } from "xml-js"
 
-import {
-    cleanName,
-    currentServerStartDate as serverDate,
-    fileExists,
-    getAPIFilename,
-    getCommonPaths,
-    isEmpty,
-    readJson,
-    readTextFile,
-    round,
-    roundToThousands,
-    saveJsonAsync,
-    serverIds,
-    sortBy,
-    speedConstB,
-    speedConstM,
-} from "./common"
-import type { APIItemGeneric, APIShip, APIShipBlueprint, Limit, Specs } from "./@types/api-item"
-import type { Cannon, CannonEntity } from "./@types/cannons"
-import type { ShipBlueprint, ShipData, ShipGunDeck, ShipGuns } from "./@types/ships"
-import type { TextEntity, XmlGeneric } from "./@types/xml"
+import { getCommonPaths } from "./common/path.js"
+import { cleanName } from "./common/api.js"
+import { round, roundToThousands } from "./common/format.js"
+import { speedConstB, speedConstM } from "./common/constants.js"
+import { fileExists, getAPIFilename, readJson, readTextFile, saveJsonAsync } from "./common/file.js"
+import { isEmpty } from "./common/common.js"
+import { sortBy } from "./common/sort.js"
+import { serverIds } from "./common/servers.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
+import type { APIItemGeneric, APIShip, APIShipBlueprint, Limit, Specs } from "./@types/api-item.js"
+import type { Cannon, CannonEntity } from "./@types/cannons.js"
+import type { ShipBlueprint, ShipData, ShipGunDeck, ShipGuns } from "./@types/ships.js"
+import type { TextEntity, XmlGeneric } from "./@types/xml.js"
 
 const commonPaths = getCommonPaths()
 

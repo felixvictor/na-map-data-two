@@ -1,14 +1,10 @@
-import {
-    cleanName,
-    currentServerStartDate as serverDate,
-    getAPIFilename,
-    getCommonPaths,
-    readJson,
-    saveJsonAsync,
-    serverIds,
-    sortBy,
-} from "./common"
-import type { APIBuilding, APIItemGeneric, APIRecipeResource, LevelsEntity, TemplateEntity } from "./@types/api-item"
+import { cleanName } from "./common/api.js"
+import { getCommonPaths } from "./common/path.js"
+import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { sortBy } from "./common/sort.js"
+import { serverIds } from "./common/servers.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
+import type { APIBuilding, APIItemGeneric, APIRecipeResource, LevelsEntity, TemplateEntity } from "./@types/api-item.js"
 import type {
     Building,
     BuildingBatch,
@@ -16,8 +12,8 @@ import type {
     BuildingMaterialsEntity,
     BuildingResult,
     BuildingWithResult,
-} from "./@types/buildings"
-import type { Price, PriceSeasonedWood, PriceStandardWood } from "./@types/prices"
+} from "./@types/buildings.js"
+import type { Price, PriceSeasonedWood, PriceStandardWood } from "./@types/prices.js"
 
 const idWorkshop = 450
 const idAcademy = 879

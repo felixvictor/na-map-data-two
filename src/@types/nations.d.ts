@@ -4,8 +4,8 @@ import type {
     nationShortName,
     nationShortNameAlternative,
     portBattleNationShortName,
-} from "./constants"
-import type { ArrayIndex } from "./index"
+} from "./constants.js"
+import type { ArrayIndex } from "./index.js"
 
 export interface Nation {
     id: number

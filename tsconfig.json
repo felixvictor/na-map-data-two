@@ -1,9 +1,4 @@
 {
-    "ts-node": {
-        "moduleTypes": {
-            "src/**/*": "esm"
-        }
-    },
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "baseUrl": "./src",

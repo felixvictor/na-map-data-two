@@ -1,21 +1,15 @@
 import { range } from "d3-array"
 import Excel from "exceljs"
 
-import {
-    currentServerStartDate,
-    executeCommand,
-    getCommonPaths,
-    maxShallowWaterBR,
-    minDeepWaterBR,
-    readJson,
-    sortBy,
-} from "./common"
-import { ShipData } from "./@types/ships"
-import { PortBasic } from "./@types/ports"
+import { getCommonPaths } from "./common/path.js"
+import { fileExists, readJson } from "./common/file.js"
+import { maxShallowWaterBR, minDeepWaterBR } from "./common/constants.js"
+import { sortBy } from "./common/sort.js"
+import { currentServerStartDate } from "./common/time.js"
+import { executeCommand } from "./common/command.js"
+import type { ShipData } from "./@types/ships.js"
+import type { PortBasic } from "./@types/ports.js"
 
-type ColourName = string
-type argbColour = string
-type ColourMap = Map<ColourName, argbColour>
 interface PortBR {
     name: string
     br: number
@@ -69,15 +63,15 @@ let portsShallowWater: PortBR[]
 let dwShips: ShipData[]
 let swShips: ShipData[]
 
-const colourWhite = "#00f1efe9"
-const colourPrimaryWhite = "#00edeae8"
-const colourContrastWhite = "#00e8e8e3"
-const colourContrastNearWhite = "#00e0e0d9"
-const colourContrastLight = "#00c2c1b3"
-const colourContrastMiddle = "#00858468"
-const colourText = "#0029281a"
-const colourHighlight = "#003bad8b"
-const colourRed = "#00b5467d"
+const colourWhite = "00f1efe9"
+const colourPrimaryWhite = "00edeae8"
+const colourContrastWhite = "00e8e8e3"
+const colourContrastNearWhite = "00e0e0d9"
+const colourContrastLight = "00c2c1b3"
+const colourContrastMiddle = "00858468"
+const colourText = "0029281a"
+const colourHighlight = "003bad8b"
+const colourRed = "00b5467d"
 
 const defaultFont: Partial<Excel.Font> = {
     bold: false,
@@ -97,7 +91,7 @@ const defaultFont: Partial<Excel.Font> = {
  * {@link https://github.com/exceljs/exceljs/issues/572#issuecomment-631788521}
  */
 // @ts-expect-error lala
-import StylesXform from "exceljs/lib/xlsx/xform/style/styles-xform"
+import StylesXform from "exceljs/lib/xlsx/xform/style/styles-xform.js"
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const origStylesXformInit = StylesXform.prototype.init
 StylesXform.prototype.init = function () {
@@ -476,7 +470,7 @@ const isSourceDataChanged = (): boolean => {
 }
 
 export const createPortBattleSheet = async (): Promise<void> => {
-    const isUpdateNeeded = isSourceDataChanged()
+    const isUpdateNeeded = !fileExists(commonPaths.filePbSheet) || isSourceDataChanged()
 
     if (isUpdateNeeded) {
         setupData()

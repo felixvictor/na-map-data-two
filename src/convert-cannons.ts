@@ -2,9 +2,11 @@ import path from "node:path"
 import * as fs from "node:fs"
 import convert, { type ElementCompact } from "xml-js"
 
-import { getCommonPaths, readTextFile, round, saveJsonAsync } from "./common"
-import { cannonEntityType, cannonType, peneDistance } from "./@types/constants"
-import type { PairEntity, TangentEntity, TextEntity, XmlGeneric } from "./@types/xml"
+import { getCommonPaths } from "./common/path.js"
+import { readTextFile, saveJsonAsync } from "./common/file.js"
+import { round } from "./common/format.js"
+import { cannonEntityType, cannonType, peneDistance } from "./@types/constants.js"
+import type { PairEntity, TangentEntity, TextEntity, XmlGeneric } from "./@types/xml.js"
 import type {
     Cannon,
     CannonEntity,
@@ -12,7 +14,7 @@ import type {
     CannonPenetration,
     CannonType,
     CannonValue,
-} from "./@types/cannons"
+} from "./@types/cannons.js"
 
 const commonPaths = getCommonPaths()
 

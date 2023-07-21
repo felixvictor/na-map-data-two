@@ -3,23 +3,15 @@ import path from "path"
 import Deque from "collections"
 import { default as PNG } from "pngjs"
 
-import {
-    convertCoordX,
-    convertCoordY,
-    currentServerStartDate as serverDate,
-    type Distance,
-    distanceMapSize,
-    getAPIFilename,
-    getCommonPaths,
-    mapSize,
-    type Point,
-    readJson,
-    saveJsonAsync,
-    serverIds,
-    simpleNumberSort,
-    xz,
-} from "./common"
-import type { APIPort } from "./@types/api-port"
+import { getCommonPaths } from "./common/path.js"
+import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { serverIds } from "./common/servers.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
+import { xz } from "./common/compress.js"
+import { convertCoordX, convertCoordY, Distance, Point } from "./common/coordinates.js"
+import { distanceMapSize, mapSize } from "./common/constants.js"
+import { simpleNumberSort } from "./common/sort.js"
+import type { APIPort } from "./@types/api-port.js"
 
 type Index = number
 type PixelDistance = number

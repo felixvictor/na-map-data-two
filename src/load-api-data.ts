@@ -1,22 +1,15 @@
 import * as fsPromises from "node:fs/promises"
 import path from "node:path"
 
-import {
-    apiBaseFiles,
-    baseAPIFilename,
-    currentServerStartDate as serverDate,
-    isNodeError,
-    saveJsonAsync,
-    serverBaseName,
-    serverIds,
-    sortBy,
-    sourceBaseDir,
-    sourceBaseUrl,
-    xzAsync,
-} from "./common"
-import type { APIItemGeneric } from "./@types/api-item"
-import type { APIPort } from "./@types/api-port"
-import type { APIShop } from "./@types/api-shop"
+import { apiBaseFiles, baseAPIFilename, isNodeError, saveJsonAsync } from "./common/file.js"
+import { serverBaseName, sourceBaseDir, sourceBaseUrl } from "./common/constants.js"
+import { sortBy } from "./common/sort.js"
+import { xzAsync } from "./common/compress.js"
+import { serverIds } from "./common/servers.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
+import type { APIItemGeneric } from "./@types/api-item.d.ts"
+import type { APIPort } from "./@types/api-port.d.ts"
+import type { APIShop } from "./@types/api-shop.d.ts"
 
 type APIType = APIItemGeneric | APIPort | APIShop
 // http://api.shipsofwar.net/servers?apikey=1ZptRtpXAyEaBe2SEp63To1aLmISuJj3Gxcl5ivl&callback=setActiveRealms

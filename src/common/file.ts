@@ -1,8 +1,8 @@
 import { default as fs, promises as fsPromises } from "node:fs"
 import path from "node:path"
 
-import { currentServerDateMonth, currentServerDateYear } from "./time"
-import { getCommonPaths } from "./path"
+import { currentServerDateMonth, currentServerDateYear } from "./time.js"
+import { getCommonPaths } from "./path.js"
 
 export const apiBaseFiles = ["ItemTemplates", "Ports", "Shops"]
 

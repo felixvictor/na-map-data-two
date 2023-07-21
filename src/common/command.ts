@@ -1,5 +1,5 @@
-import { execSync } from "child_process"
-import { isNodeError, putFetchError } from "./file"
+import { execSync } from "node:child_process"
+import { isNodeError, putFetchError } from "./file.js"
 
 export const executeCommand = (command: string): Buffer => {
     let result = {} as Buffer

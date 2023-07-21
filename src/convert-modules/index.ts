@@ -1,9 +1,12 @@
-import { cleanName, currentServerStartDate as serverDate, getAPIFilename, readJson, serverIds } from "../common"
-import { levels, notUsedExceptionalWoodIds, notUsedModules, usedModules } from "./common"
-import { saveModules, setModule } from "./module"
-import { saveWoods, setWood } from "./wood"
-import type { APIItemGeneric, APIModule } from "../@types/api-item"
-import type { ModuleConvertEntity } from "../@types/modules"
+import { cleanName } from "../common/api.js"
+import { getAPIFilename, readJson } from "../common/file.js"
+import { serverIds } from "../common/servers.js"
+import { currentServerStartDate as serverDate } from "../common/time.js"
+import { levels, notUsedExceptionalWoodIds, notUsedModules, usedModules } from "./common.js"
+import { saveModules, setModule } from "./module.js"
+import { saveWoods, setWood } from "./wood.js"
+import type { APIItemGeneric, APIModule } from "../@types/api-item.d.ts"
+import type { ModuleConvertEntity } from "../@types/modules.js"
 
 let apiItems: APIItemGeneric[]
 const addedModules = new Set<string>()

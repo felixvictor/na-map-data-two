@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter } from "./format"
+import { capitalizeFirstLetter } from "./format.js"
 
 export const cleanName = (name: string): string =>
     name

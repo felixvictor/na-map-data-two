@@ -1,4 +1,4 @@
-import type { ModifiersEntity } from "./api-item"
+import type { ModifiersEntity } from "./api-item.js"
 
 export type APIModifierName = string
 export type ModifierName = string

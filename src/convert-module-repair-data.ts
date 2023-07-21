@@ -1,9 +1,10 @@
 import path from "node:path"
 import convert, { type ElementCompact } from "xml-js"
 
-import { getCommonPaths, readTextFile, saveJsonAsync } from "./common"
-import type { TextEntity, XmlRepair } from "./@types/xml"
-import type { Repair, RepairAmount } from "./@types/repairs"
+import { getCommonPaths } from "./common/path.js"
+import { readTextFile, saveJsonAsync } from "./common/file.js"
+import type { TextEntity, XmlRepair } from "./@types/xml.js"
+import type { Repair, RepairAmount } from "./@types/repairs.js"
 
 const commonPaths = getCommonPaths()
 

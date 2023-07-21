@@ -1,4 +1,4 @@
-import type { ObjectIndexer } from "./index"
+import type { ObjectIndexer } from "./index.js"
 
 export interface Repair extends ObjectIndexer<RepairAmount> {
     armorRepair: RepairAmount

@@ -1,8 +1,10 @@
-import { rareWoodTrimFrameIds, flipAmountForModule, modifiers, notPercentage } from "./common"
-import { getCommonPaths, saveJsonAsync, sortBy } from "../common"
-import { woodType } from "../@types/constants"
-import type { APIModifierName, ModuleConvertEntity } from "../@types/modules"
-import type { WoodJsonData, WoodTrimOrFrame } from "../@types/woods"
+import { getCommonPaths } from "../common/path.js"
+import { sortBy } from "../common/sort.js"
+import { saveJsonAsync } from "../common/file.js"
+import { rareWoodTrimFrameIds, flipAmountForModule, modifiers, notPercentage } from "./common.js"
+import { woodType } from "../@types/constants.js"
+import type { APIModifierName, ModuleConvertEntity } from "../@types/modules.js"
+import type { WoodJsonData, WoodTrimOrFrame } from "../@types/woods.js"
 
 const commonPaths = getCommonPaths()
 

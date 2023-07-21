@@ -1,5 +1,5 @@
-import { cannonEntityType, cannonType, peneDistance } from "./constants"
-import type { ObjectIndexer } from "./index"
+import { cannonEntityType, cannonType, peneDistance } from "./constants.js"
+import type { ObjectIndexer } from "./index.js"
 
 export type CannonType = (typeof cannonType)[number]
 export type CannonTypeList<T> = {

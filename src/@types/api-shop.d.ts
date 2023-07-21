@@ -1,13 +1,3 @@
-/*!
- * This file is part of na-map.
- *
- * @file      Types for api port json.
- * @module    api-shop.d
- * @author    iB aka Felix Victor
- * @copyright Felix Victor 2017 to 2022
- * @license   http://www.gnu.org/licenses/gpl.html
- */
-
 // https://jvilk.com/MakeTypes/
 
 /****************************

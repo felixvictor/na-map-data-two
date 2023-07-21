@@ -1,5 +1,5 @@
-import type { Point } from "../common"
-import type { AttackerNationShortName, PortBattleNationShortName } from "./nations"
+import type { Point } from "../common/coordinates.js"
+import type { AttackerNationShortName, PortBattleNationShortName } from "./nations.js"
 
 export interface PortBattlePerServer {
     id: number

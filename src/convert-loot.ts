@@ -1,22 +1,24 @@
-import {
-    cleanName,
-    currentServerStartDate as serverDate,
-    getAPIFilename,
-    getCommonPaths,
-    getOrdinal,
-    readJson,
-    saveJsonAsync,
-    serverIds,
-    sortBy,
-} from "./common"
+import { cleanName } from "./common/api.js"
+import { getOrdinal } from "./common/format.js"
+import { getCommonPaths } from "./common/path.js"
+import { sortBy } from "./common/sort.js"
+import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { serverIds } from "./common/servers.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
 import type {
     APIItemGeneric,
     APILootTableItem,
     APIShipLootTableItem,
     APITimeBasedConvertibleItem,
     ItemsEntity,
-} from "./@types/api-item"
-import type { Loot, LootChestItemsEntity, LootChestsEntity, LootLootEntity, LootLootItemsEntity } from "./@types/loot"
+} from "./@types/api-item.js"
+import type {
+    Loot,
+    LootChestItemsEntity,
+    LootChestsEntity,
+    LootLootEntity,
+    LootLootItemsEntity,
+} from "./@types/loot.js"
 
 const secondsPerHour = 3600
 

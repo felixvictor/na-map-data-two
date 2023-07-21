@@ -1,23 +1,22 @@
 import polylabel from "polylabel"
-import {
-    cleanName,
-    convertCoordX,
-    convertCoordY,
-    currentServerStartDate as serverDate,
-    degreesHalfCircle,
-    getAPIFilename,
-    getCommonPaths,
-    readJson,
-    rotationAngleInDegrees,
-    saveJsonAsync,
-    serverIds,
-    sortBy,
-} from "./common"
-import { capitalToCounty } from "./@types/constants"
-import type { Coordinate, Point } from "./common"
-import type { APIPort, PortElementsSlotGroupsEntity, PortPosition, PortRaidSpawnPointsEntity } from "./@types/api-port"
-import type { FeaturesEntity, GeoJson } from "./@types/region-labels"
-import type { PbZone, PortBasic } from "./@types/ports"
+import { getCommonPaths } from "./common/path.js"
+import { convertCoordX, convertCoordY, rotationAngleInDegrees } from "./common/coordinates.js"
+import { cleanName } from "./common/api.js"
+import { sortBy } from "./common/sort.js"
+import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { degreesHalfCircle } from "./common/constants.js"
+import { serverIds } from "./common/servers.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
+import { capitalToCounty } from "./@types/constants.js"
+import type { Coordinate, Point } from "./common/coordinates.js"
+import type {
+    APIPort,
+    PortElementsSlotGroupsEntity,
+    PortPosition,
+    PortRaidSpawnPointsEntity,
+} from "./@types/api-port.js"
+import type { FeaturesEntity, GeoJson } from "./@types/region-labels.js"
+import type { PbZone, PortBasic } from "./@types/ports.js"
 
 const commonPaths = getCommonPaths()
 
@@ -215,19 +214,20 @@ const setAndSaveCountyRegionData = async (): Promise<void> => {
     await saveJsonAsync(`${commonPaths.dirGenGeneric}/counties.json`, geoJsonCounties)
 
     for (const region of geoJsonRegions.features) {
+        // @ts-expect-error polylabel
+        const label = polylabel([region.geometry.coordinates], 1) as number[] & { distance: number }
         region.geometry.type = "Point"
-        region.geometry.coordinates = [
-            polylabel([region.geometry.coordinates], 1).map((coordinate) => Math.trunc(coordinate)) as Point,
-        ]
+
+        region.geometry.coordinates = [label.map((coordinate) => Math.trunc(coordinate)) as Point]
     }
 
     await saveJsonAsync(`${commonPaths.dirGenGeneric}/region-labels.json`, geoJsonRegions)
 
     for (const county of geoJsonCounties.features) {
+        // @ts-expect-error polylabel
+        const label = polylabel([county.geometry.coordinates], 1) as number[] & { distance: number }
         county.geometry.type = "Point"
-        county.geometry.coordinates = [
-            polylabel([county.geometry.coordinates], 1).map((coordinate) => Math.trunc(coordinate)) as Point,
-        ]
+        county.geometry.coordinates = [label.map((coordinate) => Math.trunc(coordinate)) as Point]
     }
 
     await saveJsonAsync(`${commonPaths.dirGenGeneric}/county-labels.json`, geoJsonCounties)

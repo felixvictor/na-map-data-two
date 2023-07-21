@@ -1,5 +1,5 @@
-import type { ObjectIndexer } from "./index"
-import { woodFamily, woodType } from "./constants"
+import type { ObjectIndexer } from "./index.js"
+import { woodFamily, woodType } from "./constants.js"
 
 export type WoodFamily = (typeof woodFamily)[number]
 export type WoodType = (typeof woodType)[number]

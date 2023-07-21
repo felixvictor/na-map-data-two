@@ -1,4 +1,4 @@
-import type { ObjectIndexer } from "./index"
+import type { ObjectIndexer } from "./index.js"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface ShipData extends ObjectIndexer<any> {

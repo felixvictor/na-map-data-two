@@ -1,5 +1,5 @@
-import { CannonFamily, CannonType } from "./cannons"
-import { Nation } from "./nations"
+import { CannonFamily, CannonType } from "./cannons.js"
+import { Nation } from "./nations.js"
 
 // Cannons
 export const cannonType = ["medium", "long", "carronade"]!

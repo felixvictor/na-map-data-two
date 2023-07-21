@@ -1,4 +1,4 @@
-import { lootType } from "./constants"
+import { lootType } from "./constants.js"
 
 export type LootType = (typeof lootType)[number]
 export type LootTypeList<T> = {
