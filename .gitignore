@@ -6,3 +6,8 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+.idea/
+.netlify
+.env
+/node_modules/

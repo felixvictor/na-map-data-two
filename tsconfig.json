@@ -1,0 +1,21 @@
+{
+    "ts-node": {
+        "moduleTypes": {
+            "src/**/*": "esm"
+        }
+    },
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./src",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "ESNext",
+        "moduleResolution": "Node16",
+        "noEmit": true,
+        "removeComments": true,
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "strict": true,
+        "target": "ESNext",
+    }
+}

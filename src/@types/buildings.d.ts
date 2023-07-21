@@ -1,0 +1,37 @@
+export interface Building {
+    id: number
+    name: string
+    result?: BuildingResult[]
+    batch?: BuildingBatch
+    levels: BuildingLevelsEntity[]
+    byproduct?: unknown[]
+}
+export interface BuildingResult {
+    id: number
+    name: string
+    price: number
+}
+export interface BuildingBatch {
+    price: number
+    amount: number
+    labour: number
+}
+export interface BuildingLevelsEntity {
+    labourDiscount: number
+    production: number
+    maxStorage: number
+    price: number
+    materials: BuildingMaterialsEntity[]
+}
+export interface BuildingMaterialsEntity {
+    item: string
+    amount: number
+}
+export interface BuildingWithResult {
+    id: number
+    name: string
+    result: BuildingResult[]
+    batch?: BuildingBatch
+    levels: BuildingLevelsEntity[]
+    byproduct?: unknown[]
+}
