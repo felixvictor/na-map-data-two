@@ -113,5 +113,8 @@
                 ]
             ]
         }
+    },
+    "dependencies": {
+        "yarn-run-all": "^3.1.1"
     }
 }
