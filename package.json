@@ -5,7 +5,6 @@
     "type": "module",
     "scripts": {
         "build:data:convert": "yarn ts-node --esm src/convert-api-data.ts",
-        "build:deploy-main": "       TARGET=na-map       run-s prod       build:push-prod deploy:netlify",
         "build:load": "yarn ts-node --esm src/load-api-data.ts",
         "build:push-prod": "git add --ignore-errors . && (git diff-index --quiet HEAD || git commit -m 'build: update public') && git push --quiet gitlab",
         "clean:src:js": "find ./src/js -name \"*.ts\" -type f -regextype posix-egrep -regex \".*/(browser|common|node)/.+\" -exec bash -c 'for file in \"${1%.ts}\".js \"${1%.ts}\".js.map; do [ -e \"$file\" ] && rm -f \"$file\"; done' - '{}' ';'",
@@ -27,7 +26,8 @@
         "helper:size:largest": "du -a ~/ -BM | sort -n -r | head -n 15",
         "lint": "run-s 'lint:*'",
         "lint:js": "eslint -c .eslintrc.json --ext .ts,.tsx src/js",
-        "main:release": "    git pull &&      run-s build:load build:data:convert release deploy:netlify",
+        "main:maintenance": "run-s build:load build:data:convert         deploy:netlify",
+        "main:release": "    run-s build:load build:data:convert release deploy:netlify",
         "release": "standard-version",
         "typecheck": "tsc --noEmit",
         "update": "yarn set version stable && yarn upgrade-interactive"
