@@ -8,7 +8,7 @@ import { degreesHalfCircle } from "./common/constants.js"
 import { serverIds } from "./common/servers.js"
 import { currentServerStartDate as serverDate } from "./common/time.js"
 import { capitalToCounty } from "./@types/constants.js"
-import type { Coordinate, Point } from "./common/coordinates.js"
+import type { Coordinate, Point } from "./@types/coordinates.js"
 import type {
     APIPort,
     PortElementsSlotGroupsEntity,

@@ -57,7 +57,7 @@ const getItemsCrafted = (buildingId: number): BuildingResult[] =>
             name: cleanName(recipe.Name).replace(" Blueprint", ""),
             price: 0,
         }))
-        .sort((a, b) => a.name.localeCompare(b.name))
+        .sort((a, b) => a.id - b.id)
 
 const getItemsCraftedByWorkshop = (): BuildingResult[] => getItemsCrafted(idWorkshop)
 const getItemsCraftedByAcademy = (): BuildingResult[] => getItemsCrafted(idAcademy)

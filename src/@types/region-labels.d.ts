@@ -1,4 +1,4 @@
-import type { Point } from "../common/coordinates.js"
+import type { Point } from "./coordinates.js"
 
 export interface GeoJson {
     type: "FeatureCollection"

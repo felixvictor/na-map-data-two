@@ -12,6 +12,6 @@
 .env
 /node_modules/
 
-/build/API
-/lib/gen-generic
-/lib/gen-server
+build/API
+lib/*
+!lib/distances.json

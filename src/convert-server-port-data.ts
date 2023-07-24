@@ -16,7 +16,7 @@ import type { APIShop } from "./@types/api-shop.js"
 import type { InventoryEntity, PortBattlePerServer, PortPerServer } from "./@types/ports.js"
 import type { Trade, TradeItem } from "./@types/trade.js"
 import type { NationList, NationShortName } from "./@types/nations.js"
-import type { Distance } from "./common/coordinates.js"
+import type { Distance } from "./@types/coordinates.js"
 
 interface Item {
     name: string

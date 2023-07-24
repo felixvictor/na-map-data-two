@@ -1,4 +1,5 @@
 import { degreesFullCircle, degreesHalfCircle, degreesQuarterCircle, speedFactor, timeFactor } from "./constants.js"
+import type { Coordinate, Point } from "../@types/coordinates.js"
 
 const transformMatrix = {
     A: -0.004_998_667_793_638_28,
@@ -38,19 +39,6 @@ export const convertInvCoordY = (x: number, y: number): number =>
  */
 export const radiansToDegrees = (radians: number): number => (radians * degreesHalfCircle) / Math.PI
 
-export interface Distance extends Array<number> {
-    0: number // From port id
-    1: number // To port id
-    2: number // Distance (in pixels)
-}
-
-export interface Point extends Array<number> {
-    0: number // X coordinate
-    1: number // Y coordinate
-}
-
-export type Extent = [Point, Point]
-
 /**
  * Calculate the angle in correctionValueDegrees between two points
  * see {@link https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees}
@@ -71,11 +59,6 @@ export const rotationAngleInDegrees = (centerPt: Point, targetPt: Point): number
  */
 export const rotationAngleInRadians = (centerPt: Point, targetPt: Point): number =>
     Math.atan2(centerPt[1], centerPt[0]) - Math.atan2(targetPt[1], targetPt[0])
-
-export interface Coordinate {
-    x: number // X coordinate
-    y: number // Y coordinate
-}
 
 /**
  * Calculate the distance between two points

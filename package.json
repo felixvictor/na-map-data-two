@@ -25,7 +25,7 @@
         "helper:size:js": "find public/ -iname '*.js' -not -iname 'data-*.js' -exec du -bc {} + | sort -k 2 | sed 's|public/||'",
         "helper:size:largest": "du -a ~/ -BM | sort -n -r | head -n 15",
         "lint": "run-s 'lint:*'",
-        "lint:js": "eslint -c .eslintrc.json --ext .ts,.tsx src/js",
+        "lint:js": "eslint -c .eslintrc.cjs --ext .ts,.tsx src/",
         "main:maintenance": "run-s build:load build:data:convert         deploy:netlify",
         "main:release": "    run-s build:load build:data:convert release deploy:netlify build:push",
         "release": "standard-version",

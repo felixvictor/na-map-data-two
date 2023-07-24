@@ -8,10 +8,11 @@ import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
 import { serverIds } from "./common/servers.js"
 import { currentServerStartDate as serverDate } from "./common/time.js"
 import { xz } from "./common/compress.js"
-import { convertCoordX, convertCoordY, Distance, Point } from "./common/coordinates.js"
+import { convertCoordX, convertCoordY } from "./common/coordinates.js"
 import { distanceMapSize, mapSize } from "./common/constants.js"
 import { simpleNumberSort } from "./common/sort.js"
 import type { APIPort } from "./@types/api-port.js"
+import type { Distance, Point } from "./@types/coordinates.js"
 
 type Index = number
 type PixelDistance = number

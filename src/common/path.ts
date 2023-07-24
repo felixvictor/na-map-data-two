@@ -44,8 +44,8 @@ export function getCommonPaths(appRoot = process.env.PWD ?? ""): DirList {
     const dirBuild = buildPath(appRoot, "build")
     const dirAPI = buildPath(dirBuild, "API")
     const dirLib = buildPath(appRoot, "lib")
-    const dirGenServer = buildPath(dirLib, "gen-server")
-    const dirGenGeneric = buildPath(dirLib, "gen-generic")
+    const dirGenServer = buildPath(dirLib, "")
+    const dirGenGeneric = buildPath(dirLib, "")
     const dirSrc = buildPath(appRoot, "src")
 
     return {
