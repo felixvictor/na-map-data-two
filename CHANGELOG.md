@@ -2,4 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.2 (2023-07-24)
+
+
+### Features
+
+* netlify deploy c39df0b
+
+
+### Bug Fixes
+
+* **commonPaths:** distances.json 9be1515
+* **generate:** esm e92a074
+* **scripts:** git push added 027890e
+* **scripts:** run-s 83b530a
+
 ### 0.0.1 (2023-07-21)
