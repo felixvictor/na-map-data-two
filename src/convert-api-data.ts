@@ -11,8 +11,6 @@ import { convertShipData } from "./convert-ship-data.js"
 import { createPortBattleSheet } from "./create-pb-sheets.js"
 import { compressApiData, uncompressApiData } from "./common/compress.js"
 
-const runType = process.argv[2] || "client"
-
 const convertApiData = async (): Promise<void> => {
     await convertBuildingData()
     await convertCannons()
@@ -22,10 +20,7 @@ const convertApiData = async (): Promise<void> => {
     await convertRecipeData()
     await convertRepairData()
     await convertServerPortData()
-    if (runType.endsWith("server")) {
-        void (await convertOwnershipData())
-    }
-
+    await convertOwnershipData()
     await convertShipData()
 }
 
