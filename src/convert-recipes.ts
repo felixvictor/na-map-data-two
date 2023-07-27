@@ -115,6 +115,7 @@ const convertRecipes = async (): Promise<void> => {
                 : apiRecipe.CraftGroup,
             serverType: apiRecipe.ServerType,
         } as RecipeEntity
+
         // if result exists
         if (recipe.result.name) {
             recipes.push(recipe)
