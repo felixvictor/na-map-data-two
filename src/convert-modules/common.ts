@@ -8,7 +8,7 @@ export const notUsedModules = new Set([
 
 export const modifiers = new Map<APIModifierName, ModifierName>([
     // Woods
-    ["ARMOR_ALL_SIDES ARMOR_THICKNESS", "Armor thickness"],
+    ["ARMOR_ALL_SIDES ARMOR_THICKNESS", "Armour thickness"],
     ["ARMOR_ALL_SIDES MODULE_BASE_HP", "Armour hit points"],
     ["CREW MODULE_BASE_HP", "Crew"],
     ["INTERNAL_STRUCTURE MODULE_BASE_HP", "Hull hit points"],
