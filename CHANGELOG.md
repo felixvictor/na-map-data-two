@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](///compare/v1.2.1...v1.2.2) (2023-07-29)
+
+
+### Bug Fixes
+
+* **woods:** armor -> armour e272def
+
 ### [1.2.1](///compare/v1.2.0...v1.2.1) (2023-07-28)
 
 
