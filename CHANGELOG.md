@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.4](///compare/v1.2.3...v1.2.4) (2023-07-29)
+
+
+### Bug Fixes
+
+* **pb sheet:** cors 93821b9
+
 ### [1.2.3](///compare/v1.2.2...v1.2.3) (2023-07-29)
 
 
