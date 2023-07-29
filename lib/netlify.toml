@@ -2,3 +2,8 @@
     for = "*.json"
     [headers.values]
         Access-Control-Allow-Origin = "*"
+
+[[headers]]
+    for = "*.xlsx"
+    [headers.values]
+        Access-Control-Allow-Origin = "*"
