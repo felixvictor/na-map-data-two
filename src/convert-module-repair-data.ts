@@ -21,7 +21,7 @@ function toCamelCase(str: string): string {
     return str.slice(0, 1).toLowerCase() + str.slice(1)
 }
 
-const baseFileNames = ["armour repair", "sail repair", "crew repair"]
+const baseFileNames = ["armor repair", "sail repair", "crew repair"]
 
 const getFileData = (baseFileName: string, ext: string): XmlRepair => {
     const fileName = path.resolve(commonPaths.dirModules, `${baseFileName} ${ext}.xml`)
