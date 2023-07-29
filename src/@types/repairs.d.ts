@@ -1,7 +1,7 @@
 import type { ObjectIndexer } from "./index.js"
 
 export interface Repair extends ObjectIndexer<RepairAmount> {
-    armorRepair: RepairAmount
+    armourRepair: RepairAmount
     sailRepair: RepairAmount
     crewRepair: RepairAmount
 }

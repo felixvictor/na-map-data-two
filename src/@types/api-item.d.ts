@@ -170,7 +170,7 @@ export interface APIItemGeneric {
     BaseProduction?: number
     Levels?: LevelsEntity[]
     Amount?: number
-    ArmorAmount?: number
+    ArmourAmount?: number
     SailsAmount?: number
     ShipTemplate?: number
     SkinIndex?: number
@@ -277,10 +277,10 @@ interface BotCannonsVariantsEntity {
     References?: number[]
 }
 interface HealthInfo {
-    LeftArmor: number
-    RightArmor: number
-    FrontArmor: number
-    BackArmor: number
+    LeftArmour: number
+    RightArmour: number
+    FrontArmour: number
+    BackArmour: number
     InternalStructure: number
     Crew: number
     Sails: number
