@@ -4,10 +4,10 @@ import Deque from "collections"
 import { default as PNG } from "pngjs"
 
 import { getCommonPaths } from "./common/path.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { getAPIFilename, readJson, removeFileSync, saveJsonAsync } from "./common/file.js"
 import { serverIds } from "./common/servers.js"
 import { currentServerStartDate as serverDate } from "./common/time.js"
-import { xz } from "./common/compress.js"
+import { compressExt, unCompressSync } from "./common/compress.js"
 import { convertCoordX, convertCoordY } from "./common/coordinates.js"
 import { distanceMapSize, mapSize } from "./common/constants.js"
 import { simpleNumberSort } from "./common/sort.js"
@@ -25,18 +25,22 @@ const commonPaths = getCommonPaths()
 
 class Port {
     apiPorts: APIPort[] = []
-    #fileName: string
     numPorts = 0
     portIds: number[] = []
 
     constructor() {
-        this.#fileName = getAPIFilename(`${serverIds[0]}-Ports-${serverDate}.json`)
-
-        xz("unxz", `${this.#fileName}.xz`)
-        this.apiPorts = readJson(this.#fileName)
-        xz("xz", this.#fileName)
+        this.apiPorts = this.getAPIPorts()
         this.portIds = this.apiPorts.map((port: APIPort) => Number(port.Id))
         this.numPorts = this.portIds.length
+    }
+
+    getAPIPorts() {
+        const fileName = getAPIFilename(`${serverIds[0]}-Ports-${serverDate}.json`)
+
+        unCompressSync(`${fileName}.${compressExt}`)
+        const ports = readJson<APIPort[]>(fileName)
+        removeFileSync(fileName)
+        return ports
     }
 
     getCoordinates(y: number, x: number, mapScale: number): Point {

@@ -1,23 +1,22 @@
-import path from "node:path"
-import * as fs from "node:fs"
 import { group as d3Group } from "d3-array"
-import { default as lzma } from "lzma-native"
-import { default as readDirRecursive } from "recursive-readdir"
+import { readdir } from "node:fs/promises"
+import path from "node:path"
 
 import { getCommonPaths } from "./common/path.js"
 import { cleanName } from "./common/api.js"
 import { sortBy } from "./common/sort.js"
-import { saveJsonAsync } from "./common/file.js"
+import { readJson, removeFileASync, saveJsonAsync } from "./common/file.js"
 import { serverIds } from "./common/servers.js"
-import type { ServerId } from "./common/servers.js"
+import { compressExt, unCompressSync } from "./common/compress.js"
 import { capitalToCounty, nations } from "./@types/constants.js"
+import type { ServerId } from "./common/servers.js"
 import type { Group, Line, Ownership, Segment } from "./@types/ownership.js"
 import type { APIPort } from "./@types/api-port.js"
 import type { NationList, NationShortName, OwnershipNation } from "./@types/nations.js"
 import type { PowerMapList } from "./@types/power-map.js"
 
 const commonPaths = getCommonPaths()
-const fileExtension = ".json.xz"
+const fileExtension = `.json.${compressExt}`
 
 type ServerIdList<T> = {
     [K in ServerId]: T
@@ -40,39 +39,6 @@ interface Port {
 }
 type RegionGroup = Map<string, CountyGroup>
 type CountyGroup = Map<string, Port[]>
-
-/**
- * Decompress file content
- * @param compressedContent - Compressed file content
- * @returns Decompressed file content or void
- */
-const decompress = (compressedContent: Buffer): void | Buffer => {
-    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-    return lzma.decompress(compressedContent, {}, (decompressedContent: void | Buffer, error?: string) => {
-        if (error) {
-            throw new Error(error)
-        }
-
-        return decompressedContent
-    })
-}
-
-/**
- * Read file content
- * @param fileName - File name
- * @returns Promise
- */
-const readFileContent = async (fileName: string): Promise<Buffer> => {
-    return new Promise((resolve, reject) => {
-        fs.readFile(fileName, (error, data) => {
-            if (error) {
-                reject(error)
-            } else {
-                resolve(data)
-            }
-        })
-    })
-}
 
 /**
  * Sort file names
@@ -215,23 +181,18 @@ function parseData(serverId: ServerId, portData: APIPort[], date: string): void 
  * @param fileNames - File names
  * @returns Resolved promise
  */
-const processFiles = async (serverId: ServerId, fileNames: string[]): Promise<unknown> => {
-    return fileNames.reduce(
-        async (sequence, fileName) =>
-            sequence
-                .then(async () => readFileContent(fileName))
-                .then((compressedContent) => decompress(compressedContent))
-                .then((decompressedContent) => {
-                    if (decompressedContent) {
-                        const currentDate = (fileBaseNameRegex[serverId].exec(path.basename(fileName)) ?? [])[1]
-                        parseData(serverId, JSON.parse(decompressedContent.toString()) as APIPort[], currentDate)
-                    }
-                })
-                .catch((error: unknown) => {
-                    throw new Error(error as string)
-                }),
-        Promise.resolve(),
-    )
+const processFiles = async (serverId: ServerId, fileNames: string[]) => {
+    for (const file of fileNames) {
+        unCompressSync(file)
+
+        const parsedFile = path.parse(file)
+        const jsonFN = path.format({ dir: parsedFile.dir, name: parsedFile.name })
+        const json = readJson<APIPort[]>(jsonFN)
+        const currentDate = (fileBaseNameRegex[serverId].exec(path.basename(file)) ?? [])[1]
+        parseData(serverId, json, currentDate)
+
+        await removeFileASync(jsonFN)
+    }
 }
 
 /**
@@ -287,22 +248,15 @@ const writeResult = async (serverId: ServerId): Promise<void> => {
  * @param serverId - Server id
  */
 const convertOwnership = async (serverId: ServerId): Promise<void> => {
-    /**
-     * Check if file should be ignored
-     * @param fileName - File name
-     * @param stats - Stat
-     * @returns True if file should be ignored
-     */
-    const ignoreFileName = (fileName: string, stats: fs.Stats): boolean => {
-        return !stats.isDirectory() && fileBaseNameRegex[serverId].exec(path.basename(fileName)) === null
-    }
-
     ports[serverId] = new Map()
     numPortsDates[serverId] = []
     portOwnershipPerDate[serverId] = []
 
     try {
-        fileNames[serverId] = await readDirRecursive(commonPaths.dirAPI, [ignoreFileName])
+        const files = await readdir(commonPaths.dirAPI, { recursive: true, withFileTypes: true })
+        fileNames[serverId] = files
+            .filter((file) => file.isFile() && file.name.match(fileBaseNameRegex[serverId]))
+            .map((file) => `${file.path}/${file.name}`)
         sortFileNames(fileNames[serverId])
         await processFiles(serverId, fileNames[serverId])
         await writeResult(serverId)
@@ -311,12 +265,9 @@ const convertOwnership = async (serverId: ServerId): Promise<void> => {
     }
 }
 
-export const convertOwnershipData = async (): Promise<unknown[]> => {
-    const results = []
+export const convertOwnershipData = async () => {
     for (serverId of serverIds) {
         fileBaseNameRegex[serverId] = new RegExp(`${serverId}-Ports-(20\\d{2}-\\d{2}-\\d{2})${fileExtension}`)
-        results.push(convertOwnership(serverId))
+        await convertOwnership(serverId)
     }
-
-    return Promise.all(results)
 }

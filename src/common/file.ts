@@ -14,26 +14,42 @@ interface ErrnoException extends Error {
     syscall?: string
     stack?: string
 }
-export const fileExists = (fileName: string): boolean => fs.existsSync(fileName)
+
+export const fileExists = (fileName: string): boolean => {
+    const stat = fs.statSync(fileName, { throwIfNoEntry: false })
+    return !!stat?.isFile()
+}
+
+export const fileExistsAsync = async (fileName: string): Promise<boolean> => (await fsPromises.stat(fileName)).isFile()
 
 /**
  * Make directories (recursive)
  */
-export const makeDirAsync = async (dir: string): Promise<void> => {
-    await fsPromises.mkdir(dir, { recursive: true })
+export const makeDirAsync = async (dir: string) => {
+    try {
+        await fsPromises.mkdir(dir, { recursive: true })
+    } catch (error: unknown) {
+        putError(error as string)
+    }
+}
+
+const saveTextFileAsync = async (fileName: string, data: string) => {
+    try {
+        await fsPromises.writeFile(fileName, data, { encoding: "utf8" })
+    } catch (error: unknown) {
+        putError(error as string)
+    }
+}
+
+export const saveTextFileSync = (fileName: string, data: string): void => {
+    fs.writeFileSync(fileName, data, { encoding: "utf8" })
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const saveJsonAsync = async (fileName: string, data: object): Promise<void> => {
     await makeDirAsync(path.dirname(fileName))
-    await fsPromises.writeFile(fileName, JSON.stringify(data), { encoding: "utf8" })
+    await saveTextFileAsync(fileName, JSON.stringify(data))
 }
-
-export const saveTextFile = (fileName: string, data: string): void => {
-    fs.writeFileSync(fileName, data, { encoding: "utf8" })
-}
-
-export const isNodeError = (error: unknown): error is ErrnoException => error instanceof Error
 
 export const readTextFile = (fileName: string): string => {
     let data = ""
@@ -43,20 +59,29 @@ export const readTextFile = (fileName: string): string => {
         if (isNodeError(error as Error) && (error as ErrnoException).code === "ENOENT") {
             console.error("File", fileName, "not found")
         } else {
-            putFetchError(error as string)
+            putError(error as string)
         }
     }
 
     return data
 }
 
-// export const readJson = (fileName: string): Record<string, string | number>[] => JSON.parse(readTextFile(fileName))
 export const readJson = <T>(fileName: string): T => JSON.parse(readTextFile(fileName)) as T
 
-/**
- * Write error to console
- */
-export const putFetchError = (error: string): void => {
+export const removeFileSync = (fileName: string) => {
+    fs.rmSync(fileName, { force: true })
+}
+
+export const removeFileASync = async (fileName: string) => {
+    try {
+        await fsPromises.rm(fileName, { force: true })
+    } catch (error: unknown) {
+        putError(error as string)
+    }
+}
+
+export const isNodeError = (error: unknown): error is ErrnoException => error instanceof Error
+export const putError = (error: string): void => {
     console.error("Request failed -->", error)
 }
 

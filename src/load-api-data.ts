@@ -1,10 +1,9 @@
-import * as fsPromises from "node:fs/promises"
 import path from "node:path"
 
-import { apiBaseFiles, baseAPIFilename, isNodeError, saveJsonAsync } from "./common/file.js"
+import { apiBaseFiles, baseAPIFilename, removeFileASync, saveJsonAsync } from "./common/file.js"
 import { serverBaseName, sourceBaseDir, sourceBaseUrl } from "./common/constants.js"
 import { sortBy } from "./common/sort.js"
-import { xzAsync } from "./common/compress.js"
+import { compressAsync, compressExt } from "./common/compress.js"
 import { serverIds } from "./common/servers.js"
 import { currentServerStartDate as serverDate } from "./common/time.js"
 import type { APIItemGeneric } from "./@types/api-item.d.ts"
@@ -15,26 +14,12 @@ type APIType = APIItemGeneric | APIPort | APIShop
 // http://api.shipsofwar.net/servers?apikey=1ZptRtpXAyEaBe2SEp63To1aLmISuJj3Gxcl5ivl&callback=setActiveRealms
 
 /**
- * Delete file (ignore if file does not exist)
- * @param fileName - File name
- */
-const deleteFile = async (fileName: string): Promise<void> => {
-    try {
-        await fsPromises.unlink(fileName)
-    } catch (error: unknown) {
-        if (isNodeError(error) && error.code !== "ENOENT") {
-            throw new Error(`Error deleteFile ${fileName}`)
-        }
-    }
-}
-
-/**
  * Delete API data (uncompressed and compressed)
  * @param fileName - File name
  */
 const deleteAPIFiles = async (fileName: string): Promise<void> => {
-    await deleteFile(fileName)
-    await deleteFile(`${fileName}.xz`)
+    await removeFileASync(fileName)
+    await removeFileASync(`${fileName}.${compressExt}`)
 }
 
 /**
@@ -68,7 +53,7 @@ const getAPIDataAndSave = async (serverName: string, apiBaseFile: string, outfil
 
     data.sort(sortBy(["Id"]))
     await saveJsonAsync(outfileName, data)
-    await xzAsync("xz", outfileName)
+    await compressAsync(outfileName)
 
     return true
 }

@@ -2247,15 +2247,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lzma-native@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@types/lzma-native@npm:4.0.1"
-  dependencies:
-    "@types/node": "*"
-  checksum: 5f9520742f85e729a33261081cd9d252e69c8539a50df83a3edd4ccfc1750eeda3e1c57a54230d161adf8575ae2b31582993b19bf6d022430b51931163b495a6
-  languageName: node
-  linkType: hard
-
 "@types/minimist@npm:^1.2.0":
   version: 1.2.2
   resolution: "@types/minimist@npm:1.2.2"
@@ -2318,15 +2309,6 @@ __metadata:
   version: 1.1.0
   resolution: "@types/polylabel@npm:1.1.0"
   checksum: db4936f2a12d7895e9ca9d530850d81c3545edd1da2be2b4f4c25240d402b414716454da3944538d7e2d3d955b7b099cba11f306594b67900bd9e7ca33e52526
-  languageName: node
-  linkType: hard
-
-"@types/recursive-readdir@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "@types/recursive-readdir@npm:2.2.1"
-  dependencies:
-    "@types/node": "*"
-  checksum: 9e8d5ecb98c009016bf65f1b7cc1f997847dc64634e1c4209fae10718a1fcecd3c3a72c4bae66cbc9973165da5e4e7f5b4cda8793b3a5cefca8c05963f6dbf82
   languageName: node
   linkType: hard
 
@@ -9012,20 +8994,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lzma-native@npm:^8.0.6":
-  version: 8.0.6
-  resolution: "lzma-native@npm:8.0.6"
-  dependencies:
-    node-addon-api: ^3.1.0
-    node-gyp: latest
-    node-gyp-build: ^4.2.1
-    readable-stream: ^3.6.0
-  bin:
-    lzmajs: bin/lzmajs
-  checksum: cbe782fd53309163a9362d0b5a960051936268a891779d26fdfe42085ce7fa309dc96e91414fe64ddd2bde2e2c25fc18e1d89aa6a2691557dd89b6582840a979
-  languageName: node
-  linkType: hard
-
 "macos-release@npm:^3.1.0":
   version: 3.2.0
   resolution: "macos-release@npm:3.2.0"
@@ -9596,11 +9564,9 @@ __metadata:
     "@types/collections": ^5.1.2
     "@types/d3-array": ^3.0.5
     "@types/eslint": ^8.44.1
-    "@types/lzma-native": ^4.0.1
     "@types/node": ^20.4.5
     "@types/pngjs": ^6.0.1
     "@types/polylabel": ^1.1.0
-    "@types/recursive-readdir": ^2.2.1
     "@typescript-eslint/eslint-plugin": ^6.2.0
     "@typescript-eslint/parser": ^6.2.0
     collections: ^5.1.13
@@ -9611,13 +9577,11 @@ __metadata:
     eslint-plugin-prettier: ^5.0.0
     exceljs: ^4.3.0
     husky: ^8.0.3
-    lzma-native: ^8.0.6
     netlify-cli: ^15.9.1
     pngjs: ^7.0.0
     polylabel: ^1.1.0
     prettier: ^3.0.0
     prettier-package-json: ^2.8.0
-    recursive-readdir: ^2.2.3
     standard-version: ^9.5.0
     timelines-chart: ^2.12.1
     ts-node: ^10.9.1
@@ -9868,15 +9832,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-addon-api@npm:^3.1.0":
-  version: 3.2.1
-  resolution: "node-addon-api@npm:3.2.1"
-  dependencies:
-    node-gyp: latest
-  checksum: 2369986bb0881ccd9ef6bacdf39550e07e089a9c8ede1cbc5fc7712d8e2faa4d50da0e487e333d4125f8c7a616c730131d1091676c9d499af1d74560756b4a18
-  languageName: node
-  linkType: hard
-
 "node-domexception@npm:^1.0.0":
   version: 1.0.0
   resolution: "node-domexception@npm:1.0.0"
@@ -9909,7 +9864,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp-build@npm:^4.2.1, node-gyp-build@npm:^4.2.2":
+"node-gyp-build@npm:^4.2.2":
   version: 4.6.0
   resolution: "node-gyp-build@npm:4.6.0"
   bin:
@@ -11486,15 +11441,6 @@ __metadata:
   version: 0.2.0
   resolution: "real-require@npm:0.2.0"
   checksum: fa060f19f2f447adf678d1376928c76379dce5f72bd334da301685ca6cdcb7b11356813332cc243c88470796bc2e2b1e2917fc10df9143dd93c2ea608694971d
-  languageName: node
-  linkType: hard
-
-"recursive-readdir@npm:^2.2.3":
-  version: 2.2.3
-  resolution: "recursive-readdir@npm:2.2.3"
-  dependencies:
-    minimatch: ^3.0.5
-  checksum: 88ec96e276237290607edc0872b4f9842837b95cfde0cdbb1e00ba9623dfdf3514d44cdd14496ab60a0c2dd180a6ef8a3f1c34599e6cf2273afac9b72a6fb2b5
   languageName: node
   linkType: hard
 

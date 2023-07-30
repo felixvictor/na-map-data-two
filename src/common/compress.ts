@@ -1,50 +1,71 @@
 import { exec, execSync } from "node:child_process"
-import { default as fs } from "node:fs"
-import { promisify } from "node:util"
+import path from "node:path"
 
 import { serverIds } from "./servers.js"
-import { apiBaseFiles, getAPIFilename } from "./file.js"
+import { apiBaseFiles, fileExists, fileExistsAsync, getAPIFilename, removeFileSync } from "./file.js"
 import { currentServerStartDate } from "./time.js"
 
-const execP = promisify(exec)
+const commandCompress = "brotli --rm"
+const commandUnCompress = "brotli --decompress"
+export const compressExt = "br"
 
-/**
- * {@link https://stackoverflow.com/a/57708635}
- */
-const fileExistsAsync = async (fileName: string): Promise<boolean> =>
-    Boolean(await fs.promises.stat(fileName).catch(() => false))
+const getFileNameWithoutFirstExtension = (fileName: string) => {
+    const parsedFileName = path.parse(fileName)
+    return path.format({ dir: parsedFileName.dir, name: parsedFileName.name })
+}
 
-export const xzAsync = async (command: string, fileName: string): Promise<boolean> => {
+const doExec = async (command: string, fileName: string) => {
     const fileExists = await fileExistsAsync(fileName)
 
     if (fileExists) {
-        await execP(`${command} ${fileName}`)
-    }
-
-    return true
-}
-
-export const xz = (command: string, fileName: string): void => {
-    if (fs.existsSync(fileName)) {
-        execSync(`${command} ${fileName}`)
+        exec(`${command} ${fileName}`)
     }
 }
 
-const loopApiFiles = (command: string): void => {
-    const ext = command === "xz" ? "json" : "json.xz"
+export const compressAsync = async (fileName: string) => {
+    await doExec(commandCompress, fileName)
+}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const unCompressAsync = async (fileName: string) => {
+    await doExec(commandUnCompress, fileName)
+}
+
+const compressSync = (fileName: string): void => {
+    if (fileExists(fileName)) {
+        execSync(`${commandCompress} ${fileName}`)
+    }
+}
+
+export const unCompressSync = (fileName: string): void => {
+    if (!fileExists(getFileNameWithoutFirstExtension(fileName))) {
+        execSync(`${commandUnCompress} ${fileName}`)
+    }
+}
+
+const loopApiFiles = (toCompress = true, toRemove = false): void => {
     for (const serverName of serverIds) {
         for (const apiBaseFile of apiBaseFiles) {
-            const fileName = getAPIFilename(`${serverName}-${apiBaseFile}-${currentServerStartDate}.${ext}`)
-            xz(command, fileName)
+            const fileName = getAPIFilename(`${serverName}-${apiBaseFile}-${currentServerStartDate}.json`)
+            if (toRemove) {
+                removeFileSync(fileName)
+            } else if (toCompress) {
+                compressSync(fileName)
+            } else {
+                unCompressSync(`${fileName}.${compressExt}`)
+            }
         }
     }
 }
 
-export const compressApiData = (): void => {
-    loopApiFiles("xz")
+export const compressApiJson = (): void => {
+    loopApiFiles(true, false)
 }
 
-export const uncompressApiData = (): void => {
-    loopApiFiles("unxz")
+export const unCompressApiJson = (): void => {
+    loopApiFiles(false, false)
+}
+
+export const removeApiJson = (): void => {
+    loopApiFiles(false, true)
 }

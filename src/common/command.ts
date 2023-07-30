@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process"
-import { isNodeError, putFetchError } from "./file.js"
+import { isNodeError, putError } from "./file.js"
 
 export const executeCommand = (command: string): Buffer => {
     let result = {} as Buffer
@@ -10,7 +10,7 @@ export const executeCommand = (command: string): Buffer => {
         if (isNodeError(error) && error.code === "ENOENT") {
             console.error("Command failed -->", error)
         } else {
-            putFetchError(error as string)
+            putError(error as string)
         }
     }
 

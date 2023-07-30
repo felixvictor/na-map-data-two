@@ -9,7 +9,7 @@ import { convertOwnershipData } from "./convert-ownership.js"
 import { convertServerPortData } from "./convert-server-port-data.js"
 import { convertShipData } from "./convert-ship-data.js"
 import { createPortBattleSheet } from "./create-pb-sheets.js"
-import { compressApiData, uncompressApiData } from "./common/compress.js"
+import { unCompressApiJson, removeApiJson } from "./common/compress.js"
 
 const convertApiData = async (): Promise<void> => {
     await convertBuildingData()
@@ -25,10 +25,10 @@ const convertApiData = async (): Promise<void> => {
 }
 
 const convert = async (): Promise<void> => {
-    uncompressApiData()
+    unCompressApiJson()
     await convertApiData()
     await createPortBattleSheet()
-    compressApiData()
+    removeApiJson()
 }
 
 void convert()
