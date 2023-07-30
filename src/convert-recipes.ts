@@ -102,7 +102,7 @@ const convertRecipes = async (): Promise<void> => {
             itemRequirements: apiRecipe.FullRequirements.map((requirement) => ({
                 name: itemNames.get(requirement.Template),
                 amount: requirement.Amount,
-            })),
+            })).sort(sortBy(["name"])),
             result: {
                 id: upgradeIds.has(resultReference.Template)
                     ? upgradeIds.get(resultReference.Template)

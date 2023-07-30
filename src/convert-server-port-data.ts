@@ -266,12 +266,12 @@ const setAndSaveFrontlines = async (serverName: string): Promise<void> => {
     }
 
     interface FANToPort {
-        key: string // To port id
+        key: number // To port id
         value: number[] | undefined
     }
 
     interface FANFromPort {
-        key: string // From port id
+        key: number // From port id
         value: FANValue[] | undefined
     }
 
@@ -317,27 +317,31 @@ const setAndSaveFrontlines = async (serverName: string): Promise<void> => {
             )
 
         frontlineAttackingNationGroupedByToPort[nationShortName] = [
-            ...d3Group(frontlinesFrom, (d) => String(d.toPortId)),
+            ...d3Group(frontlinesFrom, (d) => Number(d.toPortId)),
             // ...d3Group(frontlinesFrom, (d) => `${d.toPortId} ${d.toPortName}`),
-        ].map(([key, value]) => ({
-            key,
-            value: value.map((port) => port.fromPortId),
-            // value: value.map((port) => [port.fromPortId, port.fromPortName, port.distance]),
-        }))
+        ]
+            .map(([key, value]) => ({
+                key,
+                value: value.map((port) => port.fromPortId),
+                // value: value.map((port) => [port.fromPortId, port.fromPortName, port.distance]),
+            }))
+            .sort(sortBy(["key"]))
 
         frontlineAttackingNationGroupedByFromPort[nationShortName] = [
-            ...d3Group(frontlinesFrom, (d) => String(d.fromPortId)),
+            ...d3Group(frontlinesFrom, (d) => Number(d.fromPortId)),
             // ...d3Group(frontlinesFrom, (d) => `${d.fromPortId} ${d.fromPortName}`),
-        ].map(([key, value]) => ({
-            key,
-            value: value.map(
-                (port) =>
-                    ({
-                        id: port.toPortId,
-                        nation: port.toPortNation,
-                    }) as FANValue,
-            ),
-        }))
+        ]
+            .map(([key, value]) => ({
+                key,
+                value: value.map(
+                    (port) =>
+                        ({
+                            id: port.toPortId,
+                            nation: port.toPortNation,
+                        }) as FANValue,
+                ),
+            }))
+            .sort(sortBy(["key"]))
     }
 
     const frontlineDefendingNationMap: Map<string, Set<string>> = new Map()
@@ -351,9 +355,9 @@ const setAndSaveFrontlines = async (serverName: string): Promise<void> => {
                         let fromPorts = frontlineDefendingNationMap.get(key)
                         // eslint-disable-next-line max-depth
                         if (fromPorts) {
-                            fromPorts.add(fromPort.key)
+                            fromPorts.add(String(fromPort.key))
                         } else {
-                            fromPorts = new Set([fromPort.key])
+                            fromPorts = new Set([String(fromPort.key)])
                         }
 
                         frontlineDefendingNationMap.set(key, fromPorts)

@@ -589,9 +589,9 @@ const convertShipBlueprints = async (): Promise<void> => {
                 id: apiBlueprint.Id,
                 name: cleanName(apiBlueprint.Name).replace(" Blueprint", ""),
                 wood: [
+                    { name: "Crew Space", amount: Math.round(shipMass * crewSpaceRatio + 0.5) },
                     { name: "Frame", amount: apiBlueprint.WoodTypeDescs[0].Requirements[0].Amount },
                     { name: "Planking", amount: Math.round(shipMass * plankingRatio + 0.5) },
-                    { name: "Crew Space", amount: Math.round(shipMass * crewSpaceRatio + 0.5) },
                 ],
                 resources: apiBlueprint.FullRequirements.filter(
                     (requirement) =>
@@ -600,10 +600,12 @@ const convertShipBlueprints = async (): Promise<void> => {
                                 itemNames.get(requirement.Template) === "Doubloons") ||
                             itemNames.get(requirement.Template) === "Provisions"
                         ),
-                ).map((requirement) => ({
-                    name: itemNames.get(requirement.Template)?.replace(" Log", ""),
-                    amount: requirement.Amount,
-                })),
+                )
+                    .map((requirement) => ({
+                        name: itemNames.get(requirement.Template)?.replace(" Log", ""),
+                        amount: requirement.Amount,
+                    }))
+                    .sort(sortBy(["name"])),
                 provisions:
                     (
                         apiBlueprint.FullRequirements.find(
