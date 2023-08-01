@@ -5,6 +5,7 @@ dayjs.extend(customParseFormat)
 dayjs.extend(utc)
 
 export const serverMaintenanceHour = 10
+const baseTimeInTicks = 621_355_968_000_000_000
 
 const getServerStartDateTime = (day: number): dayjs.Dayjs => {
     let serverStart = dayjs().utc().hour(serverMaintenanceHour).minute(0).second(0)
@@ -33,3 +34,7 @@ export const currentServerStartDate = getCurrentServerStart().format("YYYY-MM-DD
 export const previousServerStartDate = getCurrentServerStart().add(-1, "day").format("YYYY-MM-DD")
 export const currentServerDateYear = String(dayjs(currentServerStartDate).year())
 export const currentServerDateMonth = String(dayjs(currentServerStartDate).month() + 1).padStart(2, "0")
+
+export const getTimeFromTicks = (timeInTicks: number): string => {
+    return dayjs.utc((timeInTicks - baseTimeInTicks) / 10_000).format("YYYY-MM-DD HH:mm")
+}

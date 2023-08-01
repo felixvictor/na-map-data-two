@@ -1,5 +1,4 @@
 import path from "node:path"
-import dayjs from "dayjs"
 import { group as d3Group } from "d3-array"
 
 import { getCommonPaths } from "./common/path.js"
@@ -8,7 +7,7 @@ import { simpleNumberSort, sortBy } from "./common/sort.js"
 import { cleanItemName, cleanName } from "./common/api.js"
 import { findNationById } from "./common/nation.js"
 import { serverIds } from "./common/servers.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
+import { currentServerStartDate as serverDate, getTimeFromTicks } from "./common/time.js"
 import { nations, nationShortName } from "./@types/constants.js"
 import type { APIItemGeneric } from "./@types/api-item.js"
 import type { APIPort } from "./@types/api-port.js"
@@ -220,11 +219,6 @@ const setAndSaveDroppedItems = async (serverName: string): Promise<void> => {
         })
 
     await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-items.json`), items)
-}
-
-const baseTimeInTicks = 621_355_968_000_000_000
-const getTimeFromTicks = (timeInTicks: number): string => {
-    return dayjs.utc((timeInTicks - baseTimeInTicks) / 10_000).format("YYYY-MM-DD HH:mm")
 }
 
 const setAndSavePortBattleData = async (serverName: string): Promise<void> => {
