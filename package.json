@@ -29,7 +29,7 @@
         "lint:js": "eslint -c .eslintrc.cjs --ext .ts,.tsx src/",
         "main:maintenance": "run-s build:load build:data:convert         deploy:netlify",
         "main:release": "    run-s build:load build:data:convert release deploy:netlify build:push",
-        "release": "release-it --dry-run",
+        "release": "release-it --ci",
         "typecheck": "tsc --noEmit",
         "update": "yarn set version stable && yarn upgrade-interactive"
     },
