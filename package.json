@@ -129,7 +129,9 @@
             "publish": false
         },
         "plugins": {
-            "@release-it/conventional-changelog": {}
+            "@release-it/conventional-changelog": {
+                "preset": "conventionalcommits"
+            }
         }
     }
 }
