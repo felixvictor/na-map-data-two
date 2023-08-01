@@ -29,7 +29,7 @@
         "lint:js": "eslint -c .eslintrc.cjs --ext .ts,.tsx src/",
         "main:maintenance": "run-s build:load build:data:convert         deploy:netlify",
         "main:release": "    run-s build:load build:data:convert release deploy:netlify build:push",
-        "release": "release-it",
+        "release": "release-it --ci",
         "typecheck": "tsc --noEmit",
         "update": "yarn set version stable && yarn upgrade-interactive"
     },
@@ -39,6 +39,7 @@
     "devDependencies": {
         "@commitlint/cli": "^17.6.7",
         "@commitlint/config-conventional": "^17.6.7",
+        "@release-it/conventional-changelog": "^7.0.0",
         "@types/collections": "^5.1.2",
         "@types/d3-array": "^3.0.5",
         "@types/eslint": "^8.44.1",
@@ -116,7 +117,7 @@
     },
     "release-it": {
         "git": {
-          "push": false
+            "push": false
         },
         "github": {
             "release": false
