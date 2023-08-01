@@ -115,14 +115,18 @@
         }
     },
     "release-it": {
-        "npm": {
-            "publish": false
+        "git": {
+            "changelog": "git log --pretty=format:\"* %s (%h)\" ${from}...${to}",
+            "commitMessage": "Release ${version}"
         },
         "github": {
             "release": false
         },
         "gitlab": {
             "release": false
+        },
+        "npm": {
+            "publish": false
         }
     }
 }
