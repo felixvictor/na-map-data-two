@@ -277,10 +277,10 @@ interface BotCannonsVariantsEntity {
     References?: number[]
 }
 interface HealthInfo {
-    LeftArmour: number
-    RightArmour: number
-    FrontArmour: number
-    BackArmour: number
+    LeftArmor: number
+    RightArmor: number
+    FrontArmor: number
+    BackArmor: number
     InternalStructure: number
     Crew: number
     Sails: number
