@@ -1,5 +1,13 @@
 
 
+## [1.3.2](///compare/v1.3.1...v1.3.2) (2023-08-02)
+
+
+### Bug Fixes
+
+* **ship speeds:** new data for interpolation b8af7d0
+* **ship speeds:** old data for interpolation c9997a3
+
 ## [1.3.1](///compare/v1.3.0...v1.3.1) (2023-08-02)
 
 
