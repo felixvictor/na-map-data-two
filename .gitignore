@@ -16,3 +16,4 @@ build/API
 lib/*
 !lib/distances.json
 !lib/netlify.toml
+/build/Modules.zip
