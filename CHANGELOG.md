@@ -1,5 +1,13 @@
 
 
+## [1.4.0](///compare/v1.3.2...v1.4.0) (2023-08-06)
+
+
+### Features
+
+* 4 August 2023 patch 405902e
+* ship "dukeofkent", not yet used 6626322
+
 ## [1.3.2](///compare/v1.3.1...v1.3.2) (2023-08-02)
 
 
