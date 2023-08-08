@@ -1,5 +1,12 @@
 
 
+## [1.4.1](///compare/v1.4.0...v1.4.1) (2023-08-08)
+
+
+### Bug Fixes
+
+* **port data:** capturable status per server f595713
+
 ## [1.4.0](///compare/v1.3.2...v1.4.0) (2023-08-06)
 
 
