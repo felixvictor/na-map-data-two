@@ -1,6 +1,6 @@
 {
     "name": "na-map-data",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "packageManager": "yarn@3.6.1",
     "type": "module",
     "scripts": {
