@@ -25,7 +25,7 @@
         "lint": "run-s 'lint:*'",
         "lint:js": "eslint -c .eslintrc.cjs --ext .ts,.tsx src/",
         "main:prod": "run-s build:load build:data:convert deploy:netlify",
-        "main:release": "run-s release push main:prod",
+        "main:release": "run-s release push dev:deploy",
         "push": "git push",
         "release": "release-it --ci",
         "typecheck": "tsc --noEmit",
