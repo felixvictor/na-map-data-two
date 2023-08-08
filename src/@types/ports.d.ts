@@ -23,6 +23,7 @@ export interface PortPerServer {
     id: number
     portBattleStartTime: number
     availableForAll: boolean
+    capturable: boolean
     conquestMarksPension: ConquestMarksPension
     portTax: number
     taxIncome: number
@@ -55,7 +56,6 @@ export interface PortBasic {
     countyCapital: boolean
     shallow: boolean
     brLimit: number
-    capturable: boolean
     portPoints: number
     portBattleType: PortBattleType
 }
