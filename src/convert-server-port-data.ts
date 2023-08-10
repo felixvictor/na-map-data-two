@@ -5,7 +5,7 @@ import { getCommonPaths } from "./common/path.js"
 import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
 import { simpleNumberSort, sortBy } from "./common/sort.js"
 import { cleanItemName, cleanName } from "./common/api.js"
-import { findNationById, nations, nationShortName } from "./common/nation.js"
+import { findNationById, findNationShortNameById, nations, nationShortName } from "./common/nation.js"
 import { serverIds } from "./common/servers.js"
 import { currentServerStartDate as serverDate, getTimeFromTicks } from "./common/time.js"
 import type { APIItemGeneric } from "./@types/api-item.js"
@@ -227,7 +227,7 @@ const setAndSavePortBattleData = async (serverName: string): Promise<void> => {
             const portData = {
                 id: Number(port.Id),
                 name: cleanName(port.Name),
-                nation: nations[port.Nation].short,
+                nation: findNationShortNameById(port.Nation),
             } as PortBattlePerServer
 
             if (port.Capturer !== "") {

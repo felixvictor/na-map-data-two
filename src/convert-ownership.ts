@@ -231,7 +231,7 @@ const convertOwnership = async (serverId: ServerId): Promise<void> => {
     numPortsDates = []
     portOwnershipPerDate = []
     nationsCurrentServer = nationShortNamesPerServer.get(serverId) ?? []
-console.log(serverId,nationsCurrentServer)
+
     try {
         const files = await readdir(commonPaths.dirAPI, { recursive: true, withFileTypes: true })
         fileNames[serverId] = files
