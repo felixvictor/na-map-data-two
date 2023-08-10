@@ -1,5 +1,6 @@
 import { simpleStringSort, sortBy } from "./sort.js"
 import type { Nation } from "../@types/nations.js"
+import { NationShortName } from "../@types/nations.js"
 
 export const nations: Nation[] = [
     { id: 0, short: "NT", name: "Neutral", sortName: "Neutral", colours: ["#cec1c1"] },
@@ -35,6 +36,28 @@ export const nations: Nation[] = [
     { id: 12, short: "PL", name: "Commonwealth of Poland", sortName: "Poland", colours: ["#c22839", "#cec1c1"] },
     { id: 13, short: "CN", name: "China", sortName: "China", colours: ["#cdad3b", "#ce2828"] },
 ]
+
+export const nationShortNamesPerServer = new Map([
+    [
+        "eu1",
+        nations
+            .filter((nation) => nation.id !== 9)
+            .map((nation) => nation.short)
+
+    ],
+    [
+        "eu2",
+        nations
+            .filter((nation) => nation.id !== 9)
+            .map((nation) => nation.short)
+    ],
+    [
+        "eu3",
+        nations
+            .filter((nation) => nation.id < 5)
+            .map((nation) => nation.short)
+    ], // NT, PR, ES, FR, GB
+])
 export const nationShortName: string[] = nations.map((nation) => nation.short).sort(simpleStringSort)
 export const portBattleNationShortName: string[] = [...nationShortName, ""]
 export const attackerNationShortName: string[] = [...portBattleNationShortName, "n/a"]
@@ -42,7 +65,5 @@ export const nationShortNameAlternative: string[] = nations.map((nation) => `${n
 export const nationFullName: string[] = nations.sort(sortBy(["sortName"])).map((nation) => nation.name)
 export const nationMap = new Map<number, Nation>(nations.map((nation) => [nation.id, nation]))
 
-/**
- * Find Nation object based on nation id
- */
 export const findNationById = (nationId: number): Nation | undefined => nationMap.get(nationId)
+export const findNationShortNameById = (nationId: number): NationShortName => nationMap.get(nationId)?.short ?? ""

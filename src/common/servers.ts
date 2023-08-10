@@ -1,13 +1,6 @@
-export const serverIds = ["eu1", "eu2", "eu3"]!
-export type ServerId = (typeof serverIds)[number]
-export type ServerType = "PVE" | "PVP"
+import type { Server, ServerId, ServerType } from "../@types/server.js"
 
-export interface Server {
-    id: ServerId
-    name: string
-    type: ServerType
-    icon: string
-}
+export const serverIds = ["eu1", "eu2", "eu3"]!
 
 // If changed check also webpack.config
 export const servers: Server[] = [
