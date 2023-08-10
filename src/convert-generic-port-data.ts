@@ -4,10 +4,9 @@ import { convertCoordX, convertCoordY, rotationAngleInDegrees } from "./common/c
 import { cleanName } from "./common/api.js"
 import { sortBy } from "./common/sort.js"
 import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
-import { degreesHalfCircle } from "./common/constants.js"
+import { capitalToCounty, degreesHalfCircle } from "./common/constants.js"
 import { serverIds } from "./common/servers.js"
 import { currentServerStartDate as serverDate } from "./common/time.js"
-import { capitalToCounty } from "./@types/constants.js"
 import type { Coordinate, Point } from "./@types/coordinates.js"
 import type {
     APIPort,

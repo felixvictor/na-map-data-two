@@ -8,12 +8,13 @@ import { sortBy } from "./common/sort.js"
 import { readJson, removeFileASync, saveJsonAsync } from "./common/file.js"
 import { serverIds } from "./common/servers.js"
 import { compressExt, unCompressSync } from "./common/compress.js"
-import { capitalToCounty, nations } from "./@types/constants.js"
 import type { ServerId } from "./common/servers.js"
 import type { Group, Line, Ownership, Segment } from "./@types/ownership.js"
 import type { APIPort } from "./@types/api-port.js"
 import type { NationList, NationShortName, OwnershipNation } from "./@types/nations.js"
 import type { PowerMapList } from "./@types/power-map.js"
+import { nations } from "./common/nation.js"
+import { capitalToCounty } from "./common/constants.js"
 
 const commonPaths = getCommonPaths()
 const fileExtension = `.json.${compressExt}`
