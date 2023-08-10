@@ -1,5 +1,12 @@
 
 
+## [1.4.5](///compare/v1.4.4...v1.4.5) (2023-08-10)
+
+
+### Bug Fixes
+
+* **ownership:** nations per server (F2P has 5 nations) b905665
+
 ## [1.4.4](///compare/v1.4.3...v1.4.4) (2023-08-08)
 
 ## [1.4.3](///compare/v1.4.2...v1.4.3) (2023-08-08)
