@@ -14,20 +14,10 @@ import type { Group, Line, Ownership, Segment } from "./@types/ownership.js"
 import type { APIPort } from "./@types/api-port.js"
 import type { NationList, NationShortName, OwnershipNation } from "./@types/nations.js"
 import type { PowerMapList } from "./@types/power-map.js"
-import type { ServerId, ServerIdList } from "./@types/server.js"
+import type { ServerId } from "./@types/server.js"
 
 const commonPaths = getCommonPaths()
 const fileExtension = `.json.${compressExt}`
-
-let ports = {} as Map<string, Port>
-let portOwnershipPerDate = {} as PowerMapList
-const fileBaseNameRegex = {} as ServerIdList<RegExp>
-const fileNames = {} as ServerIdList<string[]>
-let numPortsDates = {} as Array<OwnershipNation<number>>
-let serverId: ServerId
-let currentPort: APIPort
-let currentDate: string
-let nationsCurrentServer: NationShortName[]
 
 interface Port {
     name: string
@@ -39,215 +29,226 @@ interface Port {
 type RegionGroup = Map<string, CountyGroup>
 type CountyGroup = Map<string, Port[]>
 
-/**
- * Sort file names
- * @param fileNames - File names
- * @returns Sorted file names
- */
-const sortFileNames = (fileNames: string[]): string[] => {
-    return fileNames.sort((a, b) => {
-        const ba = path.basename(a)
-        const bb = path.basename(b)
-        if (ba < bb) {
-            return -1
+class PortOwnership {
+    #currentDate = ""
+    #currentPort = {} as APIPort
+    #fileBaseNameRegex = {} as RegExp
+    #fileNames = [] as string[]
+    #nationsCurrentServer = [] as NationShortName[]
+    #numPortsDates = [] as Array<OwnershipNation<number>>
+    #portOwnershipPerDate = [] as PowerMapList
+    #ports = new Map<string, Port>()
+    #serverId = "" as ServerId
+
+    constructor(serverId: ServerId) {
+        ;(async () => {
+            this.#serverId = serverId
+            this.#fileBaseNameRegex = new RegExp(`${serverId}-Ports-(20(\\d{2})-(\\d{2})-(\\d{2}))${fileExtension}`)
+            this.#nationsCurrentServer = nationShortNamesPerServer.get(serverId) ?? []
+            await this.#convertOwnership()
+        })()
+    }
+
+    /**
+     * Retrieve port data for nation/clan ownership
+     */
+    async #convertOwnership() {
+        try {
+            const files = await readdir(commonPaths.dirAPI, { recursive: true, withFileTypes: true })
+            this.#fileNames = files
+                .filter((file) => file.isFile() && file.name.match(this.#fileBaseNameRegex))
+                .map((file) => `${file.path}/${file.name}`)
+            this.#sortFileNames()
+            await this.#processFiles()
+            await this.#writeResult()
+        } catch (error: unknown) {
+            throw new Error(error as string)
         }
-
-        if (ba > bb) {
-            return 1
-        }
-
-        return 0
-    })
-}
-
-const getUnixTimestamp = (date: string): number => new Date(date).getTime()
-
-const getObject = (date: string): Segment => {
-    const dateF = getUnixTimestamp(date)
-    return {
-        timeRange: [dateF, dateF],
-        val: findNationShortNameById(currentPort.Nation),
-    }
-}
-
-const initData = (): void => {
-    ports.set(currentPort.Id, {
-        name: cleanName(currentPort.Name),
-        region: currentPort.Location,
-        county: capitalToCounty.get(currentPort.CountyCapitalName) ?? "",
-        data: [getObject(currentDate)],
-    })
-}
-
-const getPreviousNation = (): NationShortName | "" => {
-    const portData = ports.get(currentPort.Id)
-    if (portData) {
-        const index = portData.data.length - 1 ?? 0
-        return portData.data[index].val as NationShortName
     }
 
-    return ""
-}
-
-const setNewNation = (): void => {
-    // console.log("setNewNation -> ", ports.get(currentPort.Id));
-    const portData = ports.get(currentPort.Id)
-    if (portData) {
-        portData.data.push(getObject(currentDate))
-        ports.set(currentPort.Id, portData)
-    }
-}
-
-const setNewEndDate = (): void => {
-    const portData = ports.get(currentPort.Id)
-    if (portData) {
-        // console.log("setNewEndDate -> ", ports.get(currentPort.Id), values);
-        portData.data[portData.data.length - 1].timeRange[1] = getUnixTimestamp(currentDate)
-        ports.set(currentPort.Id, portData)
-    }
-}
-
-/**
- * Parse data and construct ports Map
- * @param serverId - Server id
- * @param portData - Port data
- */
-const parseData = (serverId: ServerId, portData: APIPort[]): void => {
-    // console.log("**** new currentDate", currentDate);
-
-    const numPorts = {} as NationList<number>
-    for (const nationShortname of nationsCurrentServer) {
-        numPorts[nationShortname] = 0
-    }
-
-    const nationsForPowerMap = []
-
-    for (currentPort of portData) {
-        // Exclude free towns
-        if (currentPort.Nation !== 9) {
-            const currentNation = findNationShortNameById(currentPort.Nation)
-            numPorts[currentNation] = Number(numPorts[currentNation]) + 1
-            if (ports.get(currentPort.Id)) {
-                // console.log("ports.get(currentPort.Id)");
-                const oldNation = getPreviousNation()
-                if (currentNation === oldNation) {
-                    setNewEndDate()
-                } else {
-                    setNewNation()
-                }
-            } else {
-                // console.log("!ports.get(currentPort.Id)");
-                initData()
+    #sortFileNames(): string[] {
+        return this.#fileNames.sort((a, b) => {
+            const ba = path.basename(a)
+            const bb = path.basename(b)
+            if (ba < bb) {
+                return -1
             }
 
-            nationsForPowerMap.push(currentPort.Nation)
+            if (ba > bb) {
+                return 1
+            }
+
+            return 0
+        })
+    }
+
+    #getUnixTimestamp(date: string): number {
+        return new Date(date).getTime()
+    }
+
+    #getObject(): Segment {
+        const dateF = this.#getUnixTimestamp(this.#currentDate)
+        return {
+            timeRange: [dateF, dateF],
+            val: findNationShortNameById(this.#currentPort.Nation),
         }
     }
 
-    // console.log(serverId, currentDate, nationsForPowerMap.length)
-    portOwnershipPerDate.push([currentDate, nationsForPowerMap])
-
-    const numPortsDate = {} as OwnershipNation<number>
-    numPortsDate.date = currentDate
-    for (const nationShortname of nationsCurrentServer) {
-        numPortsDate[nationShortname] = numPorts[nationShortname]
+    #initData(): void {
+        this.#ports.set(this.#currentPort.Id, {
+            name: cleanName(this.#currentPort.Name),
+            region: this.#currentPort.Location,
+            county: capitalToCounty.get(this.#currentPort.CountyCapitalName) ?? "",
+            data: [this.#getObject()],
+        })
     }
 
-    numPortsDates.push(numPortsDate)
-    // console.log("**** 138 -->", [serverId], ports[serverId].get("138"));
-}
+    #getPreviousNation(): NationShortName | "" {
+        const portData = this.#ports.get(this.#currentPort.Id)
+        if (portData) {
+            const index = portData.data.length - 1 ?? 0
+            return portData.data[index].val as NationShortName
+        }
 
-/**
- * Process all files
- * @param serverId - Server id
- * @param fileNames - File names
- * @returns Resolved promise
- */
-const processFiles = async (serverId: ServerId, fileNames: string[]) => {
-    for (const file of fileNames) {
-        unCompressSync(file)
-
-        const parsedFile = path.parse(file)
-        const jsonFN = path.format({ dir: parsedFile.dir, name: parsedFile.name })
-        const json = readJson<APIPort[]>(jsonFN)
-        currentDate = (fileBaseNameRegex[serverId].exec(path.basename(file)) ?? [])[1]
-        parseData(serverId, json)
-
-        await removeFileASync(jsonFN)
+        return ""
     }
-}
 
-/**
- * Write out result
- * @param serverId - Server id
- */
-const writeResult = async (serverId: ServerId): Promise<void> => {
-    const groups = d3Group<Port, string, string>(
-        [...ports.values()],
-        (d) => d.region,
-        (d) => d.county,
-    ) as RegionGroup
+    #setNewNation(): void {
+        // console.log("setNewNation -> ", ports.get(currentPort.Id));
+        const portData = this.#ports.get(this.#currentPort.Id)
+        if (portData) {
+            portData.data.push(this.#getObject())
+            this.#ports.set(this.#currentPort.Id, portData)
+        }
+    }
 
-    // Convert to data structure needed for timelines-chart
-    // region
-    // -- group (counties)
-    //    -- label (ports)
-    const grouped = [...groups]
-        .map(
-            ([regionKey, regionValue]) =>
-                ({
-                    region: regionKey,
-                    data: [...regionValue]
-                        .map(
-                            ([countyKey, countyValue]) =>
-                                ({
-                                    group: countyKey,
-                                    data: countyValue
-                                        .map((port) => {
-                                            return {
-                                                label: port.name,
-                                                data: port.data,
-                                            } as Line
-                                        })
-                                        .sort(sortBy(["label"])),
-                                }) as Group,
-                        )
-                        .sort(sortBy(["group"])),
-                }) as Ownership,
+    #setNewEndDate(): void {
+        const portData = this.#ports.get(this.#currentPort.Id)
+        if (portData) {
+            // console.log("setNewEndDate -> ", ports.get(currentPort.Id), values);
+            portData.data[portData.data.length - 1].timeRange[1] = this.#getUnixTimestamp(this.#currentDate)
+            this.#ports.set(this.#currentPort.Id, portData)
+        }
+    }
+
+    /**
+     * Parse data and construct ports Map
+     */
+    #parseData(apiPorts: APIPort[]) {
+        // console.log("**** new currentDate", currentDate);
+
+        const numPorts = {} as NationList<number>
+        for (const nationShortname of this.#nationsCurrentServer) {
+            numPorts[nationShortname] = 0
+        }
+
+        const nationsForPowerMap = []
+
+        for (this.#currentPort of apiPorts) {
+            // Exclude free towns
+            if (this.#currentPort.Nation !== 9) {
+                const currentNation = findNationShortNameById(this.#currentPort.Nation)
+                numPorts[currentNation] = Number(numPorts[currentNation]) + 1
+                if (this.#ports.get(this.#currentPort.Id)) {
+                    const oldNation = this.#getPreviousNation()
+                    if (currentNation === oldNation) {
+                        this.#setNewEndDate()
+                    } else {
+                        this.#setNewNation()
+                    }
+                } else {
+                    // console.log("!ports.get(currentPort.Id)");
+                    this.#initData()
+                }
+
+                nationsForPowerMap.push(this.#currentPort.Nation)
+            }
+        }
+
+        // console.log(serverId, currentDate, nationsForPowerMap.length)
+        this.#portOwnershipPerDate.push([this.#currentDate, nationsForPowerMap])
+
+        const numPortsDate = {} as OwnershipNation<number>
+        numPortsDate.date = this.#currentDate
+        for (const nationShortname of this.#nationsCurrentServer) {
+            numPortsDate[nationShortname] = numPorts[nationShortname]
+        }
+
+        this.#numPortsDates.push(numPortsDate)
+        // console.log("**** 138 -->", [serverId], ports[serverId].get("138"));
+    }
+
+    /**
+     * Process all files
+     */
+    async #processFiles() {
+        for (const file of this.#fileNames) {
+            unCompressSync(file)
+
+            const parsedFile = path.parse(file)
+            const jsonFN = path.format({ dir: parsedFile.dir, name: parsedFile.name })
+            const apiPorts = readJson<APIPort[]>(jsonFN)
+            this.#currentDate = (this.#fileBaseNameRegex.exec(path.basename(file)) ?? [])[1]
+            this.#parseData(apiPorts)
+
+            await removeFileASync(jsonFN)
+        }
+    }
+
+    #getTimelineGroup() {
+        const groups = d3Group<Port, string, string>(
+            [...this.#ports.values()],
+            (d) => d.region,
+            (d) => d.county,
+        ) as RegionGroup
+
+        // Convert to data structure needed for timelines-chart
+        // region
+        // -- group (counties)
+        //    -- label (ports)
+        return [...groups]
+            .map(
+                ([regionKey, regionValue]) =>
+                    ({
+                        region: regionKey,
+                        data: [...regionValue]
+                            .map(
+                                ([countyKey, countyValue]) =>
+                                    ({
+                                        group: countyKey,
+                                        data: countyValue
+                                            .map((port) => {
+                                                return {
+                                                    label: port.name,
+                                                    data: port.data,
+                                                } as Line
+                                            })
+                                            .sort(sortBy(["label"])),
+                                    }) as Group,
+                            )
+                            .sort(sortBy(["group"])),
+                    }) as Ownership,
+            )
+            .sort(sortBy(["region"]))
+    }
+
+    async #writeResult() {
+        await saveJsonAsync(
+            path.resolve(commonPaths.dirGenServer, `${this.#serverId}-ownership.json`),
+            this.#getTimelineGroup(),
         )
-        .sort(sortBy(["region"]))
-
-    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverId}-ownership.json`), grouped)
-    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverId}-nation.json`), numPortsDates)
-    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverId}-power.json`), portOwnershipPerDate)
-}
-
-/**
- * Retrieve port data for nation/clan ownership
- * @param serverId - Server id
- */
-const convertOwnership = async (serverId: ServerId): Promise<void> => {
-    ports = new Map()
-    numPortsDates = []
-    portOwnershipPerDate = []
-    nationsCurrentServer = nationShortNamesPerServer.get(serverId) ?? []
-
-    try {
-        const files = await readdir(commonPaths.dirAPI, { recursive: true, withFileTypes: true })
-        fileNames[serverId] = files
-            .filter((file) => file.isFile() && file.name.match(fileBaseNameRegex[serverId]))
-            .map((file) => `${file.path}/${file.name}`)
-        sortFileNames(fileNames[serverId])
-        await processFiles(serverId, fileNames[serverId])
-        await writeResult(serverId)
-    } catch (error: unknown) {
-        throw new Error(error as string)
+        await saveJsonAsync(
+            path.resolve(commonPaths.dirGenServer, `${this.#serverId}-nation.json`),
+            this.#numPortsDates,
+        )
+        await saveJsonAsync(
+            path.resolve(commonPaths.dirGenServer, `${this.#serverId}-power.json`),
+            this.#portOwnershipPerDate,
+        )
     }
 }
-
 export const convertOwnershipData = async () => {
-    for (serverId of serverIds) {
-        fileBaseNameRegex[serverId] = new RegExp(`${serverId}-Ports-(20\\d{2}-\\d{2}-\\d{2})${fileExtension}`)
-        await convertOwnership(serverId)
+    for (const serverId of serverIds) {
+        await new PortOwnership(serverId)
     }
 }
