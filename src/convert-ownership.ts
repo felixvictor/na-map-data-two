@@ -35,7 +35,7 @@ class PortOwnership {
     #fileBaseNameRegex = {} as RegExp
     #fileNames = [] as string[]
     #nationsCurrentServer = [] as NationShortName[]
-    #numPortsDates = [] as Array<OwnershipNation<number>>
+    #numPortsPerNationPerDates = [] as Array<OwnershipNation<number>>
     #portOwnershipPerDate = [] as PowerMapList
     #ports = new Map<string, Port>()
     #serverId = "" as ServerId
@@ -54,11 +54,7 @@ class PortOwnership {
      */
     async #convertOwnership() {
         try {
-            const files = await readdir(commonPaths.dirAPI, { recursive: true, withFileTypes: true })
-            this.#fileNames = files
-                .filter((file) => file.isFile() && file.name.match(this.#fileBaseNameRegex))
-                .map((file) => `${file.path}/${file.name}`)
-            this.#sortFileNames()
+            await this.#getFilenames()
             await this.#processFiles()
             await this.#writeResult()
         } catch (error: unknown) {
@@ -82,11 +78,19 @@ class PortOwnership {
         })
     }
 
+    async #getFilenames() {
+        const files = await readdir(commonPaths.dirAPI, { recursive: true, withFileTypes: true })
+        this.#fileNames = files
+            .filter((file) => file.isFile() && file.name.match(this.#fileBaseNameRegex))
+            .map((file) => `${file.path}/${file.name}`)
+        this.#sortFileNames()
+    }
+
     #getUnixTimestamp(date: string): number {
         return new Date(date).getTime()
     }
 
-    #getObject(): Segment {
+    #getNewSegment(): Segment {
         const dateF = this.#getUnixTimestamp(this.#currentDate)
         return {
             timeRange: [dateF, dateF],
@@ -99,7 +103,7 @@ class PortOwnership {
             name: cleanName(this.#currentPort.Name),
             region: this.#currentPort.Location,
             county: capitalToCounty.get(this.#currentPort.CountyCapitalName) ?? "",
-            data: [this.#getObject()],
+            data: [this.#getNewSegment()],
         })
     }
 
@@ -117,7 +121,7 @@ class PortOwnership {
         // console.log("setNewNation -> ", ports.get(currentPort.Id));
         const portData = this.#ports.get(this.#currentPort.Id)
         if (portData) {
-            portData.data.push(this.#getObject())
+            portData.data.push(this.#getNewSegment())
             this.#ports.set(this.#currentPort.Id, portData)
         }
     }
@@ -131,50 +135,50 @@ class PortOwnership {
         }
     }
 
+    #setTimeline(currentNation: string) {
+        if (this.#ports.get(this.#currentPort.Id)) {
+            const oldNation = this.#getPreviousNation()
+            if (currentNation === oldNation) {
+                this.#setNewEndDate()
+            } else {
+                this.#setNewNation()
+            }
+        } else {
+            // console.log("!ports.get(currentPort.Id)");
+            this.#initData()
+        }
+    }
+
     /**
      * Parse data and construct ports Map
      */
     #parseData(apiPorts: APIPort[]) {
         // console.log("**** new currentDate", currentDate);
 
-        const numPorts = {} as NationList<number>
+        const nationPerPorts = [] as number[]
+        const numPortsPerNation = {} as NationList<number>
         for (const nationShortname of this.#nationsCurrentServer) {
-            numPorts[nationShortname] = 0
+            numPortsPerNation[nationShortname] = 0
         }
 
-        const nationsForPowerMap = []
-
-        for (this.#currentPort of apiPorts) {
-            // Exclude free towns
-            if (this.#currentPort.Nation !== 9) {
-                const currentNation = findNationShortNameById(this.#currentPort.Nation)
-                numPorts[currentNation] = Number(numPorts[currentNation]) + 1
-                if (this.#ports.get(this.#currentPort.Id)) {
-                    const oldNation = this.#getPreviousNation()
-                    if (currentNation === oldNation) {
-                        this.#setNewEndDate()
-                    } else {
-                        this.#setNewNation()
-                    }
-                } else {
-                    // console.log("!ports.get(currentPort.Id)");
-                    this.#initData()
-                }
-
-                nationsForPowerMap.push(this.#currentPort.Nation)
-            }
+        // Loop all ports excluding free towns
+        for (this.#currentPort of apiPorts.filter((apiPort) => apiPort.Nation !== 9)) {
+            const currentNation = findNationShortNameById(this.#currentPort.Nation)
+            numPortsPerNation[currentNation] = Number(numPortsPerNation[currentNation]) + 1
+            nationPerPorts.push(this.#currentPort.Nation)
+            this.#setTimeline(currentNation)
         }
 
-        // console.log(serverId, currentDate, nationsForPowerMap.length)
-        this.#portOwnershipPerDate.push([this.#currentDate, nationsForPowerMap])
+        // console.log(serverId, currentDate, nationPerPorts.length)
+        this.#portOwnershipPerDate.push([this.#currentDate, nationPerPorts])
 
         const numPortsDate = {} as OwnershipNation<number>
         numPortsDate.date = this.#currentDate
         for (const nationShortname of this.#nationsCurrentServer) {
-            numPortsDate[nationShortname] = numPorts[nationShortname]
+            numPortsDate[nationShortname] = numPortsPerNation[nationShortname]
         }
 
-        this.#numPortsDates.push(numPortsDate)
+        this.#numPortsPerNationPerDates.push(numPortsDate)
         // console.log("**** 138 -->", [serverId], ports[serverId].get("138"));
     }
 
@@ -239,7 +243,7 @@ class PortOwnership {
         )
         await saveJsonAsync(
             path.resolve(commonPaths.dirGenServer, `${this.#serverId}-nation.json`),
-            this.#numPortsDates,
+            this.#numPortsPerNationPerDates,
         )
         await saveJsonAsync(
             path.resolve(commonPaths.dirGenServer, `${this.#serverId}-power.json`),
