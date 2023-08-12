@@ -14,10 +14,10 @@ import { unCompressApiJson, removeApiJson } from "./common/compress.js"
 const convertApiData = async (): Promise<void> => {
     await convertBuildingData()
     await convertCannons()
-    await convertGenericPortData()
-    await convertLootData()
+    convertGenericPortData()
+    convertLootData()
     await convertModules()
-    await convertRecipeData()
+    convertRecipeData()
     await convertRepairData()
     await convertServerPortData()
     await convertOwnershipData()
