@@ -4,11 +4,20 @@ import { group as d3Group } from "d3-array"
 import { getCommonPaths } from "./common/path.js"
 import { cleanName } from "./common/api.js"
 import { sortBy } from "./common/sort.js"
-import { saveJsonAsync } from "./common/file.js"
+import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
 import { findNationShortNameById, nationShortNamesPerServer } from "./common/nation.js"
 import { compressExt } from "./common/compress.js"
 import { capitalToCounty } from "./common/constants.js"
-import type { Group, Line, Ownership, Port, RegionGroup, Segment } from "./@types/ownership.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
+import type {
+    Group,
+    Line,
+    Ownership,
+    OwnershipPort,
+    OwnershipRegion,
+    RegionGroup,
+    Segment,
+} from "./@types/ownership.js"
 import type { APIPort } from "./@types/api-port.js"
 import type { NationShortName, OwnershipNation } from "./@types/nations.js"
 import type { PowerMapList } from "./@types/power-map.js"
@@ -17,9 +26,10 @@ import type { NationList } from "./@types/nations.js"
 
 export class PortOwnership {
     #currentPort = {} as APIPort
+    #portRegionData = new Map<string, OwnershipRegion>()
     #numPortsPerNationPerDates = [] as Array<OwnershipNation<number>>
     #portOwnershipPerDate = [] as PowerMapList
-    #ports = new Map<string, Port>()
+    #ports = new Map<string, OwnershipPort>()
     currentDate = ""
     fileBaseNameRegex = {} as RegExp
     readonly commonPaths = getCommonPaths()
@@ -31,6 +41,7 @@ export class PortOwnership {
         this.serverId = serverId
         this.fileBaseNameRegex = new RegExp(`${serverId}-Ports-(20(\\d{2})-(\\d{2})-(\\d{2}))${this.fileExtension}`)
         this.#nationsCurrentServer = nationShortNamesPerServer.get(serverId) ?? []
+        this.#getRegionData()
     }
 
     set numPortsPerNationPerDates(numPortsPerNationPerDates: Array<OwnershipNation<number>>) {
@@ -41,8 +52,22 @@ export class PortOwnership {
         this.#portOwnershipPerDate = portOwnershipPerDate
     }
 
-    set ports(ports: Map<string, Port>) {
+    set ports(ports: Map<string, OwnershipPort>) {
         this.#ports = ports
+    }
+
+    #getRegionData() {
+        const lastPortData = readJson<APIPort[]>(getAPIFilename(`${this.serverId}-Ports-${serverDate}.json`))
+        this.#portRegionData = new Map(
+            lastPortData.map((port) => [
+                port.Id,
+                {
+                    name: cleanName(port.Name),
+                    region: port.Location,
+                    county: capitalToCounty.get(cleanName(port.CountyCapitalName)) ?? "",
+                },
+            ]),
+        )
     }
 
     #getUnixTimestamp(date: string): number {
@@ -59,9 +84,9 @@ export class PortOwnership {
 
     #initData(): void {
         this.#ports.set(this.#currentPort.Id, {
-            name: cleanName(this.#currentPort.Name),
-            region: this.#currentPort.Location,
-            county: capitalToCounty.get(this.#currentPort.CountyCapitalName) ?? "",
+            name: this.#portRegionData.get(this.#currentPort.Id)?.name ?? "",
+            region: this.#portRegionData.get(this.#currentPort.Id)?.region ?? "",
+            county: this.#portRegionData.get(this.#currentPort.Id)?.county ?? "",
             data: [this.#getNewSegment()],
         })
     }
@@ -137,7 +162,7 @@ export class PortOwnership {
     }
 
     #getTimelineGroup() {
-        const groups = d3Group<Port, string, string>(
+        const groups = d3Group<OwnershipPort, string, string>(
             [...this.#ports.values()],
             (d) => d.region,
             (d) => d.county,

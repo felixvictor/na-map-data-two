@@ -22,13 +22,16 @@ export interface Ownership {
     data: Group[]
 }
 
-export interface Port {
+export interface OwnershipRegion {
     name: string
     region: string
     county: string
+}
+
+export interface OwnershipPort extends OwnershipRegion {
     data: Segment[]
     id?: string
 }
 
 export type RegionGroup = Map<string, CountyGroup>
-export type CountyGroup = Map<string, Port[]>
+export type CountyGroup = Map<string, OwnershipPort[]>

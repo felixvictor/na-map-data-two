@@ -9,7 +9,7 @@ import type { APIPort } from "./@types/api-port.js"
 import type { ServerId } from "./@types/server.js"
 import type { OwnershipNation } from "./@types/nations.js"
 import type { PowerMapList } from "./@types/power-map.js"
-import type { Ownership, Port, Segment } from "./@types/ownership.js"
+import type { Ownership, OwnershipPort, Segment } from "./@types/ownership.js"
 
 export class PortOwnershipIncrement extends PortOwnership {
     #apiPorts: APIPort[] = []
@@ -48,7 +48,7 @@ export class PortOwnershipIncrement extends PortOwnership {
         const fileName = path.resolve(this.commonPaths.dirGenServer, `${this.serverId}-ownership.json`)
         this.#regionTimeline = readJson<Ownership[]>(fileName)
         const timelines = this.#getTimelines()
-        const ports = new Map<string, Port>(
+        const ports = new Map<string, OwnershipPort>(
             this.#apiPorts
                 .filter((apiPort) => apiPort.Nation !== 9)
                 .map((apiPort) => {
@@ -60,7 +60,7 @@ export class PortOwnershipIncrement extends PortOwnership {
                             region: apiPort.Location,
                             county: capitalToCounty.get(apiPort.CountyCapitalName) ?? "",
                             data: timelines.get(portName),
-                        } as Port,
+                        } as OwnershipPort,
                     ]
                 }),
         )
