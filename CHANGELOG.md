@@ -1,5 +1,12 @@
 
 
+## [1.4.7](///compare/v1.4.6...v1.4.7) (2023-08-13)
+
+
+### Bug Fixes
+
+* **ownership:** use latest region/county assignments 4deaac0
+
 ## [1.4.6](///compare/v1.4.5...v1.4.6) (2023-08-10)
 
 
