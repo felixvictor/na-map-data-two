@@ -21,7 +21,10 @@ export const fileExists = (fileName: string): boolean => {
 }
 
 export const fileExistsAsync = async (fileName: string): Promise<boolean> =>
-    !!(await fsPromises.stat(fileName).catch(() => false))
+    await fsPromises
+        .stat(fileName)
+        .then((stats) => stats.isFile())
+        .catch(() => false)
 
 /**
  * Make directories (recursive)
