@@ -48,7 +48,8 @@ export class PortOwnershipIncrement extends PortOwnership {
         const fileName = path.resolve(this.commonPaths.dirGenServer, `${this.serverId}-ownership.json`)
         this.#regionTimeline = readJson<Ownership[]>(fileName)
         const timelines = this.#getTimelines()
-        const ports = new Map<string, OwnershipPort>(
+
+        return new Map<string, OwnershipPort>(
             this.#apiPorts
                 .filter((apiPort) => apiPort.Nation !== 9)
                 .map((apiPort) => {
@@ -64,8 +65,6 @@ export class PortOwnershipIncrement extends PortOwnership {
                     ]
                 }),
         )
-        console.log("ports", ports.size)
-        return ports
     }
 
     #initData() {
@@ -76,7 +75,6 @@ export class PortOwnershipIncrement extends PortOwnership {
 
     async #processFile() {
         this.currentDate = serverDate
-        console.log("currentDate", this.currentDate)
         this.#apiPorts = readJson<APIPort[]>(getAPIFilename(`${this.serverId}-Ports-${this.currentDate}.json`))
         this.#initData()
         this.parseData(this.#apiPorts)
