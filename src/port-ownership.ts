@@ -1,13 +1,13 @@
-import { group as d3Group } from "d3-array"
 import path from "node:path"
+import { group as d3Group } from "d3-array"
 
 import { getCommonPaths } from "./common/path.js"
 import { cleanName } from "./common/api.js"
 import { sortBy } from "./common/sort.js"
 import { saveJsonAsync } from "./common/file.js"
+import { findNationShortNameById, nationShortNamesPerServer } from "./common/nation.js"
 import { compressExt } from "./common/compress.js"
 import { capitalToCounty } from "./common/constants.js"
-import { findNationShortNameById, nationShortNamesPerServer } from "./common/nation.js"
 import type { Group, Line, Ownership, Port, RegionGroup, Segment } from "./@types/ownership.js"
 import type { APIPort } from "./@types/api-port.js"
 import type { NationShortName, OwnershipNation } from "./@types/nations.js"
@@ -68,7 +68,7 @@ export class PortOwnership {
 
     #getPreviousNation(): NationShortName | "" {
         const portData = this.#ports.get(this.#currentPort.Id)
-        // console.log("#getPreviousNation", this.serverId, this.#currentPort.Id, portData)
+
         if (portData) {
             const index = portData.data.length - 1 ?? 0
             return portData.data[index].val as NationShortName
@@ -78,8 +78,8 @@ export class PortOwnership {
     }
 
     #setNewNation(): void {
-        // console.log("setNewNation -> ", ports.get(currentPort.Id));
         const portData = this.#ports.get(this.#currentPort.Id)
+
         if (portData) {
             portData.data.push(this.#getNewSegment())
             this.#ports.set(this.#currentPort.Id, portData)
@@ -88,16 +88,15 @@ export class PortOwnership {
 
     #setNewEndDate(): void {
         const portData = this.#ports.get(this.#currentPort.Id)
-        // console.log("#setNewEndDate", portData)
+
         if (portData) {
-            // console.log("setNewEndDate -> ", ports.get(currentPort.Id), values);
             portData.data[portData.data.length - 1].timeRange[1] = this.#getUnixTimestamp(this.currentDate)
             this.#ports.set(this.#currentPort.Id, portData)
         }
     }
 
     #setTimeline(currentNation: string) {
-        if (this.#ports.get(this.#currentPort.Id)) {
+        if (this.#ports.has(this.#currentPort.Id)) {
             const oldNation = this.#getPreviousNation()
             if (currentNation === oldNation) {
                 this.#setNewEndDate()
@@ -113,8 +112,6 @@ export class PortOwnership {
      * Parse data and construct ports Map
      */
     parseData(apiPorts: APIPort[]) {
-        // console.log("**** new currentDate", currentDate);
-
         const nationPerPorts = [] as number[]
         const numPortsPerNation = {} as NationList<number>
         for (const nationShortname of this.#nationsCurrentServer) {
@@ -128,8 +125,6 @@ export class PortOwnership {
             nationPerPorts.push(this.#currentPort.Nation)
             this.#setTimeline(currentNation)
         }
-
-        // console.log(serverId, currentDate, nationPerPorts.length)
         this.#portOwnershipPerDate.push([this.currentDate, nationPerPorts])
 
         const numPortsDate = {} as OwnershipNation<number>
@@ -139,7 +134,6 @@ export class PortOwnership {
         }
 
         this.#numPortsPerNationPerDates.push(numPortsDate)
-        // console.log("**** 138 -->", [serverId], ports[serverId].get("138"));
     }
 
     #getTimelineGroup() {
