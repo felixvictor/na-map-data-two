@@ -66,7 +66,13 @@ export const readTextFile = (fileName: string): string => {
     return data
 }
 
-export const readJson = <T>(fileName: string): T => JSON.parse(readTextFile(fileName)) as T
+export const readJson = <T>(fileName: string): T => {
+    try {
+        return JSON.parse(readTextFile(fileName)) as T
+    } catch (error: unknown) {
+        throw Error(`Cannot parse ${fileName}\nError: ${error}` as string)
+    }
+}
 
 export const removeFileSync = (fileName: string) => {
     fs.rmSync(fileName, { force: true })
