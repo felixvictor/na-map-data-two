@@ -20,7 +20,8 @@ export const fileExists = (fileName: string): boolean => {
     return !!stat?.isFile()
 }
 
-export const fileExistsAsync = async (fileName: string): Promise<boolean> => (await fsPromises.stat(fileName)).isFile()
+export const fileExistsAsync = async (fileName: string): Promise<boolean> =>
+    !!(await fsPromises.stat(fileName).catch(() => false))
 
 /**
  * Make directories (recursive)
