@@ -162,7 +162,7 @@ export class PortOwnership {
     }
 
     #getTimelineGroup() {
-        const groups = d3Group<OwnershipPort, string, string>(
+        const groups = d3Group(
             [...this.#ports.values()],
             (d) => d.region,
             (d) => d.county,
