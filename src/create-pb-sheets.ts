@@ -2,11 +2,10 @@ import { range } from "d3-array"
 import Excel from "exceljs"
 
 import { getCommonPaths } from "./common/path.js"
-import { fileExists, readJson } from "./common/file.js"
-import { maxShallowWaterBR, minDeepWaterBR } from "./common/constants.js"
+import { readJson } from "./common/file.js"
 import { sortBy } from "./common/sort.js"
+import { maxShallowWaterBR, minDeepWaterBR } from "./common/constants.js"
 import { currentServerStartDate } from "./common/time.js"
-import { executeCommand } from "./common/command.js"
 import type { ShipData } from "./@types/ships.js"
 import type { PortBasic } from "./@types/ports.js"
 
@@ -126,7 +125,7 @@ const setupData = () => {
             name: port.name,
             br: port.brLimit,
         }))
-        .sort((a, b) => a.name.localeCompare(b.name))
+        .sort(sortBy(["name"]))
 
     portsShallowWater = portsOrig
         .filter((port) => port.shallow)
@@ -134,7 +133,7 @@ const setupData = () => {
             name: port.name,
             br: port.brLimit,
         }))
-        .sort((a, b) => a.name.localeCompare(b.name))
+        .sort(sortBy(["name"]))
 
     dwShips = shipsOrig
         .filter((ship) => !isAIShip(ship.name) && (ship.battleRating >= minDeepWaterBR || ship.name === "Mortar Brig"))
@@ -446,34 +445,7 @@ const createPortBattleSheets = async (): Promise<void> => {
     await workbook.xlsx.writeFile(commonPaths.filePbSheet)
 }
 
-/*
-const getLastCommitDate = (fileName: string): Dayjs => {
-    const gitCommand = "git log -1 --format=%cd"
-
-    const dateString = executeCommand(`${gitCommand} ${fileName}`)
-    return dayjs(dateString.toString())
-}
-*/
-
-const isGitFileChanged = (fileName: string): boolean => {
-    const gitCommand = "git diff"
-
-    const result = executeCommand(`${gitCommand} ${fileName}`)
-
-    return result.length > 0
-}
-
-const isSourceDataChanged = (): boolean => {
-    const files = [commonPaths.filePort, commonPaths.fileShip]
-
-    return files.some((file) => isGitFileChanged(file))
-}
-
 export const createPortBattleSheet = async (): Promise<void> => {
-    const isUpdateNeeded = !fileExists(commonPaths.filePbSheet) || isSourceDataChanged()
-
-    if (isUpdateNeeded) {
-        setupData()
-        await createPortBattleSheets()
-    }
+    setupData()
+    await createPortBattleSheets()
 }
