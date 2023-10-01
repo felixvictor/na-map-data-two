@@ -1,7 +1,32 @@
 /**
- * Simple sort of numbers a and b
+ * Sort by a list of properties (in left-to-right order)
  */
-export const simpleNumberSort = (a: number | undefined, b: number | undefined): number => (a && b ? a - b : 0)
+type sortArg<T> = keyof T | `-${string & keyof T}`
+export const sortBy =
+    <T extends object>(propertyNames: Array<sortArg<T>>) =>
+    (a: T, b: T): number => {
+        let r = 0
+        propertyNames.some((propertyName: sortArg<T>) => {
+            let key = propertyName as keyof T
+            let sign = 1
+
+            // property starts with '-' when sort is descending
+            if (String(propertyName).startsWith("-")) {
+                sign = -1
+                key = String(key).slice(1) as keyof T
+            }
+
+            if (Number.isNaN(Number(a[key])) && Number.isNaN(Number(b[key]))) {
+                r = simpleStringSort(String(a[key]), String(b[key])) * sign
+            } else {
+                r = simpleNumberSort(Number(a[key]), Number(b[key])) * sign
+            }
+
+            return r !== 0
+        })
+
+        return r
+    }
 
 /**
  * Simple sort of strings a and b
@@ -13,29 +38,6 @@ export const simpleStringSort = (a: string | undefined, b: string | undefined): 
     a && b ? a.localeCompare(b) : 0
 
 /**
- * Sort by a list of properties (in left-to-right order)
+ * Simple sort of numbers a and b
  */
-export const sortBy =
-    <T, K extends keyof T>(propertyNames: K[]) =>
-    (a: T, b: T): number => {
-        let r = 0
-        propertyNames.some((propertyName: K) => {
-            let sign = 1
-
-            // property starts with '-' when sort is descending
-            if (String(propertyName).startsWith("-")) {
-                sign = -1
-                propertyName = String(propertyName).slice(1) as K
-            }
-
-            if (Number.isNaN(Number(a[propertyName])) && Number.isNaN(Number(b[propertyName]))) {
-                r = String(a[propertyName]).localeCompare(String(b[propertyName])) * sign
-            } else {
-                r = (Number(a[propertyName]) - Number(b[propertyName])) * sign
-            }
-
-            return r !== 0
-        })
-
-        return r
-    }
+export const simpleNumberSort = (a: number | undefined, b: number | undefined): number => (a && b ? a - b : 0)
