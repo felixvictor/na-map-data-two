@@ -4,24 +4,24 @@
     "packageManager": "yarn@4.0.0",
     "type": "module",
     "scripts": {
-        "build:data:convert": "yarn ts-node --esm src/convert-api-data.ts",
-        "build:load": "yarn ts-node --esm src/load-api-data.ts",
+        "build:data:convert": "yarn node --import ./register-esm.mjs src/convert-api-data.ts",
+        "build:load": "yarn node --import ./register-esm.mjs src/load-api-data.ts",
         "clean:src:js": "find ./src/js -name \"*.ts\" -type f -regextype posix-egrep -regex \".*/(browser|common|node)/.+\" -exec bash -c 'for file in \"${1%.ts}\".js \"${1%.ts}\".js.map; do [ -e \"$file\" ] && rm -f \"$file\"; done' - '{}' ';'",
         "deploy:netlify": "./helper/deploy.sh",
         "dev:deploy": "ssh natopo@byrtz.de './deploy-data.sh'",
-        "helper:build:distances": "yarn ts-node --esm --max-heap-size=10000 src/get-distances.ts",
+        "helper:build:distances": "yarn node --import ./register-esm.mjs --max-heap-size=10000 src/get-distances.ts",
         "helper:build:modules": "run-s 'helper:build:modules:**'",
         "helper:build:modules:1:get": "cp -u /mnt/Modules.zip build/ && unzip -L -u build/Modules.zip -d build/",
         "helper:build:modules:2:correct:dir": "rm -rf build/Modules/; mv build/modules build/Modules",
         "helper:build:modules:3:correct:enc": "/usr/bin/bash -c 'cd build/Modules/; for FILE in *.xml; do dos2unix -m -q \"${FILE}\"; done'",
         "helper:build:modules:4:correct:names": "cd build/Modules/; mv \"traders brig hull.xml\" \"trader brig hull.xml\"; mv \"agamemnon deck armor .xml\" \"agamemnon deck armor.xml\"",
-        "helper:check-neutral-ports": "yarn ts-node --esm helper/check-neutral-ports.ts",
-        "helper:get-ship-speed-constants": "yarn ts-node --esm helper/get-ship-speed-constants.ts",
+        "helper:check-neutral-ports": "yarn node --import ./register-esm.mjs helper/check-neutral-ports.ts",
+        "helper:get-ship-speed-constants": "yarn node --import ./register-esm.mjs helper/get-ship-speed-constants.ts",
         "helper:loc": "npx cloc --by-file --not-match-f='.d.ts' --quiet ./src/js",
         "helper:size:css": "find public/ -iname '*.css' -exec du -bc {} + | sort -k 2 | sed 's|public/||'",
         "helper:size:js": "find public/ -iname '*.js' -not -iname 'data-*.js' -exec du -bc {} + | sort -k 2 | sed 's|public/||'",
         "helper:size:largest": "du -a ~/ -BM | sort -n -r | head -n 15",
-        "helper:xz-to-br": "yarn ts-node --esm helper/xz-to-br.ts",
+        "helper:xz-to-br": "yarn node --import ./register-esm.mjs helper/xz-to-br.ts",
         "lint": "run-s 'lint:*'",
         "lint:js": "eslint -c .eslintrc.cjs --ext .ts,.tsx src/",
         "main:prod": "run-s build:load build:data:convert deploy:netlify",
@@ -71,7 +71,7 @@
         "readdirp": "^3.6.0"
     },
     "engines": {
-        "node": ">= 18"
+        "node": ">= 20"
     },
     "browserslist": [
         "defaults and supports es6-module and last 3 versions, maintained node versions"
