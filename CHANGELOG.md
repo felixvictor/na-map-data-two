@@ -1,5 +1,12 @@
 
 
+## [1.5.1](https://example.com///compare/v1.5.0...v1.5.1) (2023-10-28)
+
+
+### Bug Fixes
+
+* **deps:** node 20 ([9be3a66](https://example.com///commit/9be3a6618225cb3f80d09df852775af6c90eefa2))
+
 ## [1.5.0](https://example.com///compare/v1.4.9...v1.5.0) (2023-10-01)
 
 
