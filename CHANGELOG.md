@@ -1,5 +1,7 @@
 
 
+## [1.5.2](https://example.com///compare/v1.5.1...v1.5.2) (2023-11-25)
+
 ## [1.5.1](https://example.com///compare/v1.5.0...v1.5.1) (2023-10-28)
 
 
