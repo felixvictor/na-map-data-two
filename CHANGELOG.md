@@ -1,5 +1,12 @@
 
 
+## [1.5.3](https://example.com///compare/v1.5.2...v1.5.3) (2023-11-25)
+
+
+### Bug Fixes
+
+* **cors:** added ([f61dd79](https://example.com///commit/f61dd79ff53eb5cfec587fc986d733eaa75d4539))
+
 ## [1.5.2](https://example.com///compare/v1.5.1...v1.5.2) (2023-11-25)
 
 ## [1.5.1](https://example.com///compare/v1.5.0...v1.5.1) (2023-10-28)
