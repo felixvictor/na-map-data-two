@@ -24,7 +24,7 @@
         "helper:size:js": "find public/ -iname '*.js' -not -iname 'data-*.js' -exec du -bc {} + | sort -k 2 | sed 's|public/||'",
         "helper:size:largest": "du -a ~/ -BM | sort -n -r | head -n 15",
         "helper:xz-to-br": "yarn node --import ./register-esm.mjs helper/xz-to-br.ts",
-        "lint": "run-s lint:css lint:js pretty-print pretty-print-package",
+        "lint": "run-s lint:js pretty-print pretty-print-package",
         "lint:js": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts,.jsx,.tsx,.vue --fix",
         "main:prod": "run-s build:load build:data:convert deploy:netlify",
         "main:release": "run-s release push dev:deploy",
