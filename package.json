@@ -1,16 +1,15 @@
 {
     "name": "na-map-data",
     "version": "1.5.4",
-    "packageManager": "yarn@4.1.0",
     "type": "module",
     "scripts": {
         "build:data:convert": "yarn node --import ./register-esm.mjs src/convert-api-data.ts",
         "build:load": "yarn node --import ./register-esm.mjs src/load-api-data.ts",
+        "clean:cache": "yarn cache clean --all && rm -rf node_modules yarn.lock .pnp/ .pnp.cjs .pnp.loader.mjs .yarn/{install-state.gz,unplugged,cache} && yarn",
         "clean:src:js": "find ./src/js -name \"*.ts\" -type f -regextype posix-egrep -regex \".*/(browser|common|node)/.+\" -exec bash -c 'for file in \"${1%.ts}\".js \"${1%.ts}\".js.map; do [ -e \"$file\" ] && rm -f \"$file\"; done' - '{}' ';'",
         "deploy:netlify": "./helper/deploy.sh",
-        "clean:cache": "yarn cache clean --all && rm -rf node_modules yarn.lock .pnp/ .pnp.cjs .pnp.loader.mjs .yarn/{install-state.gz,unplugged,cache} && yarn",
-        "git:chore": "git add package.json yarn.lock .yarn .yarnrc.yml && git commit -m 'chore(deps): bump'",
         "dev:deploy": "ssh natopo@byrtz.de './deploy-data.sh'",
+        "git:chore": "git add package.json yarn.lock .yarn .yarnrc.yml && git commit -m 'chore(deps): bump'",
         "helper:build:distances": "yarn node --import ./register-esm.mjs --max-heap-size=10000 src/get-distances.ts",
         "helper:build:modules": "run-s 'helper:build:modules:**'",
         "helper:build:modules:1:get": "cp -u /mnt/Modules.zip build/ && unzip -L -u build/Modules.zip -d build/",
@@ -34,6 +33,9 @@
         "release": "release-it --ci",
         "typecheck": "tsc --noEmit",
         "update": "yarn set version stable && yarn upgrade-interactive"
+    },
+    "resolutions": {
+        "readdirp": "^3.6.0"
     },
     "devDependencies": {
         "@commitlint/cli": "^18.6.1",
@@ -69,23 +71,12 @@
         "utility-types": "^3.11.0",
         "xml-js": "^1.6.11"
     },
-    "resolutions": {
-        "readdirp": "^3.6.0"
-    },
     "engines": {
         "node": ">= 20"
     },
     "browserslist": [
         "defaults and supports es6-module and last 3 versions, maintained node versions"
     ],
-    "prettier": {
-        "printWidth": 120,
-        "semi": false,
-        "tabWidth": 4
-    },
-    "prettier-package-json": {
-        "tabWidth": 4
-    },
     "commitlint": {
         "extends": [
             "@commitlint/config-conventional"
@@ -118,6 +109,15 @@
                 ]
             ]
         }
+    },
+    "packageManager": "yarn@4.1.0",
+    "prettier": {
+        "printWidth": 120,
+        "semi": false,
+        "tabWidth": 4
+    },
+    "prettier-package-json": {
+        "tabWidth": 4
     },
     "release-it": {
         "git": {
