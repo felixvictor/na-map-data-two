@@ -615,8 +615,8 @@ const convertShipBlueprints = async (): Promise<void> => {
                 price: apiBlueprint.GoldRequirements,
                 permit:
                     (
-                        apiBlueprint.FullRequirements.find(
-                            (requirement) => itemNames.get(requirement.Template)?.endsWith(" Permit"),
+                        apiBlueprint.FullRequirements.find((requirement) =>
+                            itemNames.get(requirement.Template)?.endsWith(" Permit"),
                         ) ?? {}
                     ).Amount ?? 0,
                 ship: {

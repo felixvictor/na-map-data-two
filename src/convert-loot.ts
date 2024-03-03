@@ -63,8 +63,8 @@ const getLootContent = (
                 itemProbability.length > 0
                     ? Number(itemProbability[Number(item.Chance)])
                     : revertChance
-                    ? 1 - Number(item.Chance)
-                    : Number(item.Chance),
+                      ? 1 - Number(item.Chance)
+                      : Number(item.Chance),
             amount: { min: Number(item.Stack?.Min), max: Number(item.Stack?.Max) },
         }),
     )
