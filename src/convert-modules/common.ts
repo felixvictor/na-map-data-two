@@ -3,6 +3,7 @@
 import type { APIModifierName, ModifierName } from "../@types/modules.js"
 
 export const notUsedModules = new Set([
+    617, // TEST1
     1338, // Locust Frame Parts
 ])
 
@@ -87,6 +88,10 @@ export const modifiers = new Map<APIModifierName, ModifierName>([
     ["NONE MUSKETS_ACCURACY_BONUS", "Muskets accuracy"],
     ["NONE MUSKETS_PERCENTAGE_OF_CREW", "Crew with muskets"],
     ["NONE PERK_BOARDING_ATTACK_COST_MODIFIER", "Boarding attack cost"],
+
+    ["NONE PERK_REPAIR_REDUCE_TIMER_ARMOR", "Armour repair reduction"],
+    ["NONE PERK_REPAIR_REDUCE_TIMER_SAILS", "Sail repair reduction"],
+    ["NONE PERK_REPAIR_REDUCE_TIMER_CREW", "Crew repair reduction"],
 
     ["NONE DAMAGE_CANNON_DESTROY_PROBABILITY", ""],
     ["NONE PERK_ARSENAL_CASTIRONKNOWLEDGE", ""],

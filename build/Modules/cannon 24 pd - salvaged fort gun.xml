@@ -76,7 +76,7 @@
     <Pair>
       <Key>CANNON_DISPERSION_VERTICAL_PER100M</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>7</Value>
+        <Value>4</Value>
       </Value>
     </Pair>
     <Pair>
@@ -130,7 +130,7 @@
     <Pair>
       <Key>CANNON_BASIC_PENETRATION</Key>
       <Value xsi:type="FloatAttribute" Action="Relative" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>350</Value>
+        <Value>200</Value>
       </Value>
     </Pair>
     <Pair>
@@ -250,7 +250,7 @@
     <Pair>
       <Key>CANNON_DISPERSION_REDUCTION_ANGLE_CHANGE_MULTIPLIER</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>0.4</Value>
+        <Value>0.5</Value>
       </Value>
     </Pair>
     <Pair>
@@ -362,17 +362,11 @@
           <Time>0.6</Time>
           <Value>1</Value>
           <TangentIn>0</TangentIn>
-          <TangentOut>-2.50000024</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.8</Time>
-          <Value>0.5</Value>
-          <TangentIn>-2.50000024</TangentIn>
           <TangentOut>0</TangentOut>
         </Value>
         <Value>
           <Time>1.5</Time>
-          <Value>0.5</Value>
+          <Value>1</Value>
           <TangentIn>0</TangentIn>
           <TangentOut>0</TangentOut>
         </Value>
@@ -381,13 +375,13 @@
     <Pair>
       <Key>ARMOR_THICKNESS</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>108</Value>
+        <Value>90</Value>
       </Value>
     </Pair>
     <Pair>
       <Key>CANNON_BALL_ARMOR_SPLINTERS_DAMAGE_FOR_CREW</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>9</Value>
+        <Value>12.6</Value>
       </Value>
     </Pair>
     <Pair>

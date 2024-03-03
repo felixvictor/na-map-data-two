@@ -192,7 +192,7 @@
     <Pair>
       <Key>FIREZONE_HORIZONTAL_ROTATION_SPEED</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
-        <Value>5</Value>
+        <Value>1</Value>
       </Value>
     </Pair>
     <Pair>
@@ -274,7 +274,7 @@
     <Pair>
       <Key>SHIP_TURNING_SPEED_RHEAS</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
-        <Value>1.75</Value>
+        <Value>1.7</Value>
       </Value>
     </Pair>
     <Pair>
@@ -675,7 +675,7 @@
     <Pair>
       <Key>SHIP_TURNING_ACCELERATION_TIME_RHEAS</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
-        <Value>7</Value>
+        <Value>1</Value>
       </Value>
     </Pair>
     <Pair>
@@ -687,19 +687,19 @@
     <Pair>
       <Key>SHIP_STAYSAILS_DRIFT</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
-        <Value>1.25</Value>
+        <Value>1.2</Value>
       </Value>
     </Pair>
     <Pair>
       <Key>SHIP_SPEED_YARD_POWER_MODIFIER</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
-        <Value>2.4</Value>
+        <Value>1.8</Value>
       </Value>
     </Pair>
     <Pair>
       <Key>SHIP_SPEED_DRIFT_MODIFIER</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
-        <Value>2.4</Value>
+        <Value>1.8</Value>
       </Value>
     </Pair>
     <Pair>

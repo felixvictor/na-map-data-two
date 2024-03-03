@@ -16,19 +16,19 @@
     <Pair>
       <Key>REPAIR_PERCENT</Key>
       <Value xsi:type="FloatAttribute" Action="Relative" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>0.25</Value>
+        <Value>0.5</Value>
       </Value>
     </Pair>
     <Pair>
       <Key>REPAIR_MODULE_TIME</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>90</Value>
+        <Value>240</Value>
       </Value>
     </Pair>
     <Pair>
       <Key>REPAIR_COOLDOWN</Key>
       <Value xsi:type="IntegerAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>720</Value>
+        <Value>3600</Value>
       </Value>
     </Pair>
     <Pair>

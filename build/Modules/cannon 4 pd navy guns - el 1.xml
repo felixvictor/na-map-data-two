@@ -335,9 +335,21 @@
           <TangentOut>0</TangentOut>
         </Value>
         <Value>
-          <Time>1.5</Time>
+          <Time>1.1</Time>
           <Value>1</Value>
           <TangentIn>0</TangentIn>
+          <TangentOut>-0.5</TangentOut>
+        </Value>
+        <Value>
+          <Time>1.5</Time>
+          <Value>0.8</Value>
+          <TangentIn>-0.5</TangentIn>
+          <TangentOut>-5.96046334E-07</TangentOut>
+        </Value>
+        <Value>
+          <Time>1.6</Time>
+          <Value>0.799999952</Value>
+          <TangentIn>-5.96046334E-07</TangentIn>
           <TangentOut>0</TangentOut>
         </Value>
       </Value>
