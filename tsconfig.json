@@ -1,16 +1,12 @@
 {
+    "$schema": "https://json.schemastore.org/tsconfig",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "baseUrl": "./src",
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "module": "ESNext",
-        "moduleResolution": "Node16",
         "noEmit": true,
         "removeComments": true,
         "resolveJsonModule": true,
-        "sourceMap": true,
-        "strict": true,
-        "target": "ESNext",
-    }
+        "target": "ESNext"
+    },
+    "extends": "@tsconfig/node20/tsconfig.json"
 }
