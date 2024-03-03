@@ -1,5 +1,12 @@
 
 
+## [1.6.1](https://example.com///compare/v1.6.0...v1.6.1) (2024-03-03)
+
+
+### Bug Fixes
+
+* **ships:** 'Duke of Kent' ignored ([8b18cbc](https://example.com///commit/8b18cbcb8ce095c87abe4c6677f1379050671e3d))
+
 ## [1.6.0](https://example.com///compare/v1.5.4...v1.6.0) (2024-03-03)
 
 
