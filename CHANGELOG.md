@@ -1,5 +1,12 @@
 
 
+## [1.6.0](https://example.com///compare/v1.5.4...v1.6.0) (2024-03-03)
+
+
+### Features
+
+* Feb 2024 patch ([e42c118](https://example.com///commit/e42c1182ea4ee04578f9c2913570fbb26221b49c))
+
 ## [1.5.4](https://example.com///compare/v1.5.3...v1.5.4) (2023-12-19)
 
 ## [1.5.3](https://example.com///compare/v1.5.2...v1.5.3) (2023-11-25)
