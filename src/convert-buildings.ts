@@ -29,7 +29,6 @@ const obsoleteBuildings = new Set([
     "Saltpeter Cave",
     "Silver Mine",
     "Sulphur Mine",
-    "Tobacco Plantation",
 ])
 
 const itemIsUsed = new Set([
