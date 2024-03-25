@@ -1,5 +1,13 @@
 
 
+## [1.6.2](https://example.com///compare/v1.6.1...v1.6.2) (2024-03-25)
+
+
+### Bug Fixes
+
+* **buildings:** tobacco plantation added ([cd88779](https://example.com///commit/cd8877932f1f6c38754039df0cd8cdd89838bff5))
+* **data:** labour related data removed ([e7f2cfa](https://example.com///commit/e7f2cfa95b7013ec708ff8b3b7521559258c3715))
+
 ## [1.6.1](https://example.com///compare/v1.6.0...v1.6.1) (2024-03-03)
 
 
