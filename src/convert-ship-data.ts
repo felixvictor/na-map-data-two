@@ -632,7 +632,6 @@ const convertShipBlueprints = async (): Promise<void> => {
                 shipyardLevel: apiBlueprint.BuildingRequirements[0].Level + 1,
                 craftLevel: apiBlueprint.RequiresLevel,
                 craftXP: apiBlueprint.GivesXP,
-                labourHours: apiBlueprint.LaborPrice,
             } as ShipBlueprint
         })
         // Sort by id

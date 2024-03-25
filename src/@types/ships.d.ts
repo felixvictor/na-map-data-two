@@ -155,7 +155,6 @@ export interface ShipBlueprint {
     shipyardLevel: number
     craftLevel: number
     craftXP: number
-    labourHours: number
 }
 interface ShipBlueprintResource {
     name: string

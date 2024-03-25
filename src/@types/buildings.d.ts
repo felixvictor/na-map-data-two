@@ -14,10 +14,8 @@ export interface BuildingResult {
 export interface BuildingBatch {
     price: number
     amount: number
-    labour: number
 }
 export interface BuildingLevelsEntity {
-    labourDiscount: number
     production: number
     maxStorage: number
     price: number

@@ -85,7 +85,6 @@ const getBuildings = (): Building[] => {
             {
                 price: recipe.GoldRequirements,
                 amount: recipe.Results[0].Amount,
-                labour: recipe.LaborPrice,
             },
         ]),
     )
@@ -111,7 +110,6 @@ const getBuildings = (): Building[] => {
             batch: resourceRecipes.get(apiBuilding.RequiredPortResource),
             levels: apiBuilding.Levels.map(
                 (level: LevelsEntity): BuildingLevelsEntity => ({
-                    labourDiscount: level.LaborDiscount,
                     production: level.ProductionLevel * apiBuilding.BaseProduction,
                     maxStorage: level.MaxStorage,
                     price: level.UpgradePriceGold,
@@ -179,7 +177,6 @@ const getPrices = (buildings: Building[]): Price => {
                 id: result.id,
                 name: result.name.replace(" Log", ""),
                 reales: result.price,
-                labour: building?.batch?.labour ?? 0,
             }
         })
         .sort((a, b) => a.id - b.id)
@@ -217,7 +214,6 @@ const getPrices = (buildings: Building[]): Price => {
                 id: apiSeasonedItem.Id,
                 name,
                 reales: getStandardPrices(name) ?? 0,
-                labour: apiSeasonedItem.LaborPrice,
                 doubloon:
                     apiSeasonedItem.FullRequirements.find((requirement) => requirement.Template === idDoubloons)
                         ?.Amount ?? 0,

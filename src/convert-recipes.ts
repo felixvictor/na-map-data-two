@@ -97,7 +97,6 @@ const convertRecipes = async (): Promise<void> => {
                 .replace("u2013", "–")
                 .replace(/ $/, ""),
             module: typeof apiRecipe.Results[0] === "undefined" ? "" : moduleNames.get(apiRecipe.Results[0].Template),
-            labourPrice: apiRecipe.LaborPrice,
             goldPrice: apiRecipe.GoldRequirements,
             itemRequirements: apiRecipe.FullRequirements.map((requirement) => ({
                 name: itemNames.get(requirement.Template),
