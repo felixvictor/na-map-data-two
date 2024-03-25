@@ -1,9 +1,3 @@
-import { cleanName } from "./common/api.js"
-import { getCommonPaths } from "./common/path.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
-import { sortBy } from "./common/sort.js"
-import { serverIds } from "./common/servers.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
 import type { APIBuilding, APIItemGeneric, APIRecipeResource, LevelsEntity, TemplateEntity } from "./@types/api-item.js"
 import type {
     Building,
@@ -14,6 +8,12 @@ import type {
     BuildingWithResult,
 } from "./@types/buildings.js"
 import type { Price, PriceSeasonedWood, PriceStandardWood } from "./@types/prices.js"
+import { cleanName } from "./common/api.js"
+import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { getCommonPaths } from "./common/path.js"
+import { serverIds } from "./common/servers.js"
+import { sortBy } from "./common/sort.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
 
 const idWorkshop = 450
 const idAcademy = 879
@@ -98,12 +98,17 @@ const getBuildings = (): Building[] => {
         const building: Building = {
             id: Number(apiBuilding.Id),
             name: cleanName(apiBuilding.Name),
-            result: [
-                buildingResources.get(
-                    apiBuilding.ProduceResource ? apiBuilding.ProduceResource : apiBuilding.RequiredPortResource,
-                )!,
-            ],
-            batch: resourceRecipes.get(apiBuilding.RequiredPortResource)!,
+            result: buildingResources.has(
+                apiBuilding.ProduceResource ? apiBuilding.ProduceResource : apiBuilding.RequiredPortResource,
+            )
+                ? ([
+                      buildingResources.get(
+                          apiBuilding.ProduceResource ? apiBuilding.ProduceResource : apiBuilding.RequiredPortResource,
+                      ),
+                  ] as BuildingResult[])
+                : undefined,
+
+            batch: resourceRecipes.get(apiBuilding.RequiredPortResource),
             levels: apiBuilding.Levels.map(
                 (level: LevelsEntity): BuildingLevelsEntity => ({
                     labourDiscount: level.LaborDiscount,

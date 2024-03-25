@@ -1,5 +1,5 @@
-import { simpleStringSort, sortBy } from "./sort.js"
 import type { Nation, NationShortName } from "../@types/nations.js"
+import { simpleStringSort, sortBy } from "./sort.js"
 
 export const nations: Nation[] = [
     { id: 0, short: "NT", name: "Neutral", sortName: "Neutral", colours: ["#cec1c1"] },

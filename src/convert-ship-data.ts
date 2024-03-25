@@ -2,19 +2,19 @@ import * as fs from "fs"
 import path from "node:path"
 import convert, { type ElementCompact } from "xml-js"
 
-import { getCommonPaths } from "./common/path.js"
-import { cleanName } from "./common/api.js"
-import { round, roundToThousands } from "./common/format.js"
-import { speedConstB, speedConstM } from "./common/constants.js"
-import { fileExists, getAPIFilename, readJson, readTextFile, saveJsonAsync } from "./common/file.js"
-import { isEmpty } from "./common/common.js"
-import { sortBy } from "./common/sort.js"
-import { serverIds } from "./common/servers.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
 import type { APIItemGeneric, APIShip, APIShipBlueprint, Limit, Specs } from "./@types/api-item.js"
 import type { Cannon, CannonEntity } from "./@types/cannons.js"
 import type { ShipBlueprint, ShipData, ShipGunDeck, ShipGuns } from "./@types/ships.js"
 import type { TextEntity, XmlGeneric } from "./@types/xml.js"
+import { cleanName } from "./common/api.js"
+import { isEmpty } from "./common/common.js"
+import { speedConstB, speedConstM } from "./common/constants.js"
+import { fileExists, getAPIFilename, readJson, readTextFile, saveJsonAsync } from "./common/file.js"
+import { round, roundToThousands } from "./common/format.js"
+import { getCommonPaths } from "./common/path.js"
+import { serverIds } from "./common/servers.js"
+import { sortBy } from "./common/sort.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
 
 const commonPaths = getCommonPaths()
 
@@ -24,7 +24,11 @@ interface SubFileStructure {
     elements: ElementMap
 }
 
-type GunData = { damage: number; weight: number; crew: number }
+interface GunData {
+    damage: number
+    weight: number
+    crew: number
+}
 type GunDataMap = Map<number, GunData>
 
 /**
@@ -90,7 +94,7 @@ const blueprintsNotUsed = new Set([
 /**
  * Maps the ship name (lower case for the file name) to the ship id
  */
-const shipNames: Map<string, { id: number; master: string[] }> = new Map([
+const shipNames = new Map<string, { id: number; master: string[] }>([
     ["agamemnon", { id: 694, master: [] }],
     ["basiccutter", { id: 413, master: ["cutter"] }],
     ["basiclynx", { id: 275, master: ["lynx"] }],
@@ -441,7 +445,7 @@ const convertGenericShipData = (): ShipData[] => {
 /**
  * List of file names to be read
  */
-const baseFileNames: Set<string> = new Set()
+const baseFileNames = new Set<string>()
 
 /**
  * Gets all files from directory <dir> and stores valid ship names in <fileNames>
@@ -483,7 +487,7 @@ const getAdditionalData = (elements: ElementMap, fileData: XmlGeneric): ShipData
         // Check if pair is considered additional data
         if (elements.has(key)) {
             const value = Number((pair.Value.Value as TextEntity)._text)
-            const { group, element } = elements.get(key)!
+            const { group, element } = elements.get(key) as { [p: string]: string; group: string; element: string }
             if (!addData[group]) {
                 addData[group] = {}
             }

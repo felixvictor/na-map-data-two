@@ -1,9 +1,9 @@
-import path from "node:path"
 import { readdir } from "node:fs/promises"
+import path from "node:path"
 
-import { getCommonPaths } from "../src/common/path.js"
-import { compressAsync } from "../src/common/compress.js"
 import { execSync } from "node:child_process"
+import { compressAsync } from "../src/common/compress.js"
+import { getCommonPaths } from "../src/common/path.js"
 
 const commonPaths = getCommonPaths()
 

@@ -1,6 +1,6 @@
 import type { Server, ServerId, ServerType } from "../@types/server.js"
 
-export const serverIds = ["eu1", "eu2", "eu3"]!
+export const serverIds = ["eu1", "eu2", "eu3"]
 
 // If changed check also webpack.config
 export const servers: Server[] = [
@@ -15,4 +15,5 @@ export const servers: Server[] = [
    server_names=(dev)
 */
 
-export const getServerType = (serverId: ServerId): ServerType => servers.find((server) => server.id === serverId)!.type
+export const getServerType = (serverId: ServerId): ServerType =>
+    servers.find((server) => server.id === serverId)?.type ?? "PVP"

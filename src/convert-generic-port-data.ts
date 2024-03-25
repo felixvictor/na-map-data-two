@@ -1,26 +1,26 @@
 import polylabel from "polylabel"
-import { getCommonPaths } from "./common/path.js"
-import { convertCoordX, convertCoordY, rotationAngleInDegrees } from "./common/coordinates.js"
-import { cleanName } from "./common/api.js"
-import { sortBy } from "./common/sort.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
-import { capitalToCounty, degreesHalfCircle } from "./common/constants.js"
-import { serverIds } from "./common/servers.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
-import type { Coordinate, Point } from "./@types/coordinates.js"
 import type {
     APIPort,
     PortElementsSlotGroupsEntity,
     PortPosition,
     PortRaidSpawnPointsEntity,
 } from "./@types/api-port.js"
-import type { FeaturesEntity, GeoJson } from "./@types/region-labels.js"
+import type { Coordinate, Point } from "./@types/coordinates.js"
 import type { PbZone, PortBasic } from "./@types/ports.js"
+import type { FeaturesEntity, GeoJson } from "./@types/region-labels.js"
+import { cleanName } from "./common/api.js"
+import { capitalToCounty, degreesHalfCircle } from "./common/constants.js"
+import { convertCoordX, convertCoordY, rotationAngleInDegrees } from "./common/coordinates.js"
+import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { getCommonPaths } from "./common/path.js"
+import { serverIds } from "./common/servers.js"
+import { sortBy } from "./common/sort.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
 
 const commonPaths = getCommonPaths()
 
 let apiPorts = [] as APIPort[]
-let apiPortPos: Map<number, Coordinate> = new Map()
+let apiPortPos = new Map<number, Coordinate>()
 
 const counties = new Map()
 const regions = new Map()
@@ -41,13 +41,12 @@ const setAndSavePortData = async (): Promise<void> => {
                 Math.trunc(convertCoordX(apiPort.PortBattleZonePositions[0].x, apiPort.PortBattleZonePositions[0].z)),
                 Math.trunc(convertCoordY(apiPort.PortBattleZonePositions[0].x, apiPort.PortBattleZonePositions[0].z)),
             ] as Point
-            const { x, y } = apiPortPos.get(Number(apiPort.Id))!
+            const { x, y } = apiPortPos.get(Number(apiPort.Id)) as Coordinate
             const angle = Math.round(rotationAngleInDegrees([x, y], circleAPos))
-            const coordinates = apiPortPos.get(Number(apiPort.Id))!
             return {
                 id: Number(apiPort.Id),
                 name: cleanName(apiPort.Name),
-                coordinates: [coordinates.x, coordinates.y],
+                coordinates: [x, y],
                 angle,
                 region: apiPort.Location,
                 countyCapitalName: cleanName(apiPort.CountyCapitalName),
@@ -93,7 +92,7 @@ const getTowers = (portElementsSlotGroups: PortElementsSlotGroupsEntity[]): Poin
         )
 
 const getJoinCircle = (id: number, rotation: number): Point => {
-    const { x: x0, y: y0 } = apiPortPos.get(id)!
+    const { x: x0, y: y0 } = apiPortPos.get(id) as Coordinate
     const distance = 5
     const degrees = degreesHalfCircle - rotation
     const radians = (degrees * Math.PI) / degreesHalfCircle
@@ -128,7 +127,7 @@ const setAndSavePBZones = async (): Promise<void> => {
     const ports = apiPorts
         .filter((port) => !port.NonCapturable)
         .map((port) => {
-            const { x, y } = apiPortPos.get(Number(port.Id))!
+            const { x, y } = apiPortPos.get(Number(port.Id)) as Coordinate
             return {
                 id: Number(port.Id),
                 position: [x, y],
@@ -203,7 +202,7 @@ const setRegionFeature = (location: string, portPos: Point): void => {
 
 const setAndSaveCountyRegionData = async (): Promise<void> => {
     for (const apiPort of apiPorts) {
-        const { x, y } = apiPortPos.get(Number(apiPort.Id))!
+        const { x, y } = apiPortPos.get(Number(apiPort.Id)) as Coordinate
         setCountyFeature(apiPort.CountyCapitalName, [x, y])
         setRegionFeature(apiPort.Location, [x, y])
     }
@@ -212,7 +211,7 @@ const setAndSaveCountyRegionData = async (): Promise<void> => {
     await saveJsonAsync(`${commonPaths.dirGenGeneric}/counties.json`, geoJsonCounties)
 
     for (const region of geoJsonRegions.features) {
-        // @ts-expect-error polylabel
+        // @ts-expect-error polylabel params
         const label = polylabel([region.geometry.coordinates], 1) as number[] & { distance: number }
         region.geometry.type = "Point"
 
@@ -222,7 +221,7 @@ const setAndSaveCountyRegionData = async (): Promise<void> => {
     await saveJsonAsync(`${commonPaths.dirGenGeneric}/region-labels.json`, geoJsonRegions)
 
     for (const county of geoJsonCounties.features) {
-        // @ts-expect-error polylabel
+        // @ts-expect-error polylabel params
         const label = polylabel([county.geometry.coordinates], 1) as number[] & { distance: number }
         county.geometry.type = "Point"
         county.geometry.coordinates = [label.map((coordinate) => Math.trunc(coordinate)) as Point]

@@ -3,7 +3,7 @@
  */
 type sortArg<T> = keyof T | `-${string & keyof T}`
 export const sortBy =
-    <T extends object>(propertyNames: Array<sortArg<T>>) =>
+    <T extends object>(propertyNames: sortArg<T>[]) =>
     (a: T, b: T): number => {
         let r = 0
         propertyNames.some((propertyName: sortArg<T>) => {

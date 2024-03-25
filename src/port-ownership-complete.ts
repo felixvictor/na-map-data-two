@@ -1,12 +1,12 @@
-import path from "node:path"
 import { readdir } from "node:fs/promises"
+import path from "node:path"
 
-import { PortOwnership } from "./port-ownership.js"
+import type { APIPort } from "./@types/api-port.js"
+import type { ServerId } from "./@types/server.js"
 import { unCompressSync } from "./common/compress.js"
 import { readJson, removeFileASync } from "./common/file.js"
 import { getCommonPaths } from "./common/path.js"
-import type { ServerId } from "./@types/server.js"
-import type { APIPort } from "./@types/api-port.js"
+import { PortOwnership } from "./port-ownership.js"
 
 const commonPaths = getCommonPaths()
 

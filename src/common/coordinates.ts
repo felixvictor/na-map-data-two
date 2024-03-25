@@ -1,5 +1,5 @@
-import { degreesFullCircle, degreesHalfCircle, degreesQuarterCircle, speedFactor, timeFactor } from "./constants.js"
 import type { Coordinate, Point } from "../@types/coordinates.js"
+import { degreesFullCircle, degreesHalfCircle, degreesQuarterCircle, speedFactor, timeFactor } from "./constants.js"
 
 const transformMatrix = {
     A: -0.004_998_667_793_638_28,

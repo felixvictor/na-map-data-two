@@ -1,15 +1,15 @@
 import path from "node:path"
 
-import { PortOwnership } from "./port-ownership.js"
-import { getAPIFilename, readJson } from "./common/file.js"
-import { cleanName } from "./common/api.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
-import { capitalToCounty } from "./common/constants.js"
 import type { APIPort } from "./@types/api-port.js"
-import type { ServerId } from "./@types/server.js"
 import type { OwnershipNation } from "./@types/nations.js"
-import type { PowerMapList } from "./@types/power-map.js"
 import type { Ownership, OwnershipPort, Segment } from "./@types/ownership.js"
+import type { PowerMapList } from "./@types/power-map.js"
+import type { ServerId } from "./@types/server.js"
+import { cleanName } from "./common/api.js"
+import { capitalToCounty } from "./common/constants.js"
+import { getAPIFilename, readJson } from "./common/file.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
+import { PortOwnership } from "./port-ownership.js"
 
 export class PortOwnershipIncrement extends PortOwnership {
     #apiPorts: APIPort[] = []
@@ -25,7 +25,7 @@ export class PortOwnershipIncrement extends PortOwnership {
     // Get data and remove entries for current date
     getNumPortsPerNationPerDates() {
         const fileName = path.resolve(this.commonPaths.dirGenServer, `${this.serverId}-nation.json`)
-        const json = readJson<Array<OwnershipNation<number>>>(fileName)
+        const json = readJson<OwnershipNation<number>[]>(fileName)
         return json.filter((ownership) => ownership.date !== this.currentDate)
     }
 

@@ -1,14 +1,8 @@
-import path from "node:path"
 import { group as d3Group } from "d3-array"
+import path from "node:path"
 
-import { getCommonPaths } from "./common/path.js"
-import { cleanName } from "./common/api.js"
-import { sortBy } from "./common/sort.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
-import { findNationShortNameById, nationShortNamesPerServer } from "./common/nation.js"
-import { compressExt } from "./common/compress.js"
-import { capitalToCounty } from "./common/constants.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
+import type { APIPort } from "./@types/api-port.js"
+import type { NationList, NationShortName, OwnershipNation } from "./@types/nations.js"
 import type {
     Group,
     Line,
@@ -18,16 +12,21 @@ import type {
     RegionGroup,
     Segment,
 } from "./@types/ownership.js"
-import type { APIPort } from "./@types/api-port.js"
-import type { NationShortName, OwnershipNation } from "./@types/nations.js"
 import type { PowerMapList } from "./@types/power-map.js"
 import type { ServerId } from "./@types/server.js"
-import type { NationList } from "./@types/nations.js"
+import { cleanName } from "./common/api.js"
+import { compressExt } from "./common/compress.js"
+import { capitalToCounty } from "./common/constants.js"
+import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { findNationShortNameById, nationShortNamesPerServer } from "./common/nation.js"
+import { getCommonPaths } from "./common/path.js"
+import { sortBy } from "./common/sort.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
 
 export class PortOwnership {
     #currentPort = {} as APIPort
     #portRegionData = new Map<string, OwnershipRegion>()
-    #numPortsPerNationPerDates = [] as Array<OwnershipNation<number>>
+    #numPortsPerNationPerDates = [] as OwnershipNation<number>[]
     #portOwnershipPerDate = [] as PowerMapList
     #ports = new Map<string, OwnershipPort>()
     currentDate = ""
@@ -44,7 +43,7 @@ export class PortOwnership {
         this.#getRegionData()
     }
 
-    set numPortsPerNationPerDates(numPortsPerNationPerDates: Array<OwnershipNation<number>>) {
+    set numPortsPerNationPerDates(numPortsPerNationPerDates: OwnershipNation<number>[]) {
         this.#numPortsPerNationPerDates = numPortsPerNationPerDates
     }
 

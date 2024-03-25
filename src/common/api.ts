@@ -17,7 +17,7 @@ const portNameMapping = new Map([
 
 export const cleanName = (name: string): string => {
     if (portNameMapping.has(name)) {
-        name = portNameMapping.get(name)!
+        name = portNameMapping.get(name) ?? ""
     }
 
     return name

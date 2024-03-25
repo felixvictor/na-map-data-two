@@ -1,19 +1,16 @@
-import { cannonEntityType, cannonType, peneDistance } from "./constants.js"
-import type { ObjectIndexer } from "./index.js"
+import { cannonType, peneDistance } from "./constants.js"
 
 export type CannonType = (typeof cannonType)[number]
 export type CannonTypeList<T> = {
     [K in CannonType]: T
 }
 export type CannonFamily = string
-export type CannonEntityType = (typeof cannonEntityType)[number]
 export type PeneDistance = (typeof peneDistance)[number]
 
 type Cannon = {
     [K in CannonType]: CannonEntity[]
 }
 export interface CannonEntity {
-    [index: string]: string | CannonDamage | CannonFamily | CannonGeneric | CannonPenetration
     name: string
     family: CannonFamily
     damage: CannonDamage
@@ -21,22 +18,22 @@ export interface CannonEntity {
     penetration: CannonPenetration
 }
 export type CannonElementIndex = CannonValue | undefined
-export interface CannonDamage extends ObjectIndexer<CannonElementIndex> {
+export interface CannonDamage {
     basic: CannonValue
     "reload time": CannonValue
     splinter: CannonValue
     "per second": CannonValue
     penetration?: CannonValue
 }
-export interface CannonTraverse extends ObjectIndexer<CannonElementIndex> {
+export interface CannonTraverse {
     up: CannonValue
     down: CannonValue
 }
-export interface CannonDispersion extends ObjectIndexer<CannonElementIndex> {
+export interface CannonDispersion {
     horizontal: CannonValue
     vertical: CannonValue
 }
-export interface CannonGeneric extends ObjectIndexer<CannonElementIndex> {
+export interface CannonGeneric {
     weight: CannonValue
     crew: CannonValue
 }

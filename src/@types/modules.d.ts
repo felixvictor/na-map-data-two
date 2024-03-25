@@ -26,7 +26,7 @@ export interface ModulePropertiesEntity {
     isPercentage: boolean
 }
 
-export type CleanedModule = {
+export interface CleanedModule {
     id: number
     name: string
     usageType: string

@@ -1,18 +1,18 @@
+import Deque from "collections"
 import * as fs from "fs"
 import path from "path"
-import Deque from "collections"
 import { default as PNG } from "pngjs"
 
-import { getCommonPaths } from "./common/path.js"
-import { getAPIFilename, readJson, removeFileSync, saveJsonAsync } from "./common/file.js"
-import { serverIds } from "./common/servers.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
-import { compressExt, unCompressSync } from "./common/compress.js"
-import { convertCoordX, convertCoordY } from "./common/coordinates.js"
-import { distanceMapSize, mapSize } from "./common/constants.js"
-import { simpleNumberSort } from "./common/sort.js"
 import type { APIPort } from "./@types/api-port.js"
 import type { Distance, Point } from "./@types/coordinates.js"
+import { compressExt, unCompressSync } from "./common/compress.js"
+import { distanceMapSize, mapSize } from "./common/constants.js"
+import { convertCoordX, convertCoordY } from "./common/coordinates.js"
+import { getAPIFilename, readJson, removeFileSync, saveJsonAsync } from "./common/file.js"
+import { getCommonPaths } from "./common/path.js"
+import { serverIds } from "./common/servers.js"
+import { simpleNumberSort } from "./common/sort.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
 
 type Index = number
 type PixelDistance = number
@@ -60,7 +60,7 @@ class Map {
     #mapScale!: number
     #mapWidth!: number
     #port: Port = {} as Port
-    #completedPorts: Set<number> = new Set()
+    #completedPorts = new Set<number>()
     #LAND = 0
     #WATER = 0
     #VISITED = 0
@@ -195,7 +195,7 @@ class Map {
         this.visit(startIndex)
 
         // Queue holds unchecked positions ([index, distance from start port])
-        // @ts-expect-error type
+        // @ts-expect-error typing error
         const queue = new Deque([[startIndex, 0]])
 
         while (foundPortIds.size + this.#completedPorts.size < this.#port.numPorts && queue.length > 0) {

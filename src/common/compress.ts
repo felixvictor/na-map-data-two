@@ -1,8 +1,8 @@
 import { exec, execSync } from "node:child_process"
 import path from "node:path"
 
-import { serverIds } from "./servers.js"
 import { apiBaseFiles, fileExists, fileExistsAsync, getAPIFilename, removeFileSync } from "./file.js"
+import { serverIds } from "./servers.js"
 import { currentServerStartDate } from "./time.js"
 
 const commandCompress = "brotli --rm"

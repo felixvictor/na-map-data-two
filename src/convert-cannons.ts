@@ -1,20 +1,14 @@
+import fs from "node:fs"
 import path from "node:path"
-import * as fs from "node:fs"
-import convert, { type ElementCompact } from "xml-js"
+import type { ElementCompact } from "xml-js"
+import convert from "xml-js"
 
-import { getCommonPaths } from "./common/path.js"
+import type { Cannon, CannonEntity, CannonPenetration, CannonType, CannonValue } from "./@types/cannons.js"
+import { cannonType, peneDistance } from "./@types/constants.js"
+import type { PairEntity, TangentEntity, TextEntity, XmlGeneric } from "./@types/xml.js"
 import { readTextFile, saveJsonAsync } from "./common/file.js"
 import { round } from "./common/format.js"
-import { cannonEntityType, cannonType, peneDistance } from "./@types/constants.js"
-import type { PairEntity, TangentEntity, TextEntity, XmlGeneric } from "./@types/xml.js"
-import type {
-    Cannon,
-    CannonEntity,
-    CannonEntityType,
-    CannonPenetration,
-    CannonType,
-    CannonValue,
-} from "./@types/cannons.js"
+import { getCommonPaths } from "./common/path.js"
 
 const commonPaths = getCommonPaths()
 
@@ -45,7 +39,7 @@ const getFileData = (baseFileName: string): XmlGeneric => {
 /**
  * List of file names to be read
  */
-const fileNames: Set<string> = new Set()
+const fileNames = new Set<string>()
 
 /**
  * Gets all files from directory <directory> and stores valid cannon/carronade file names in <fileNames>
@@ -71,7 +65,7 @@ const getBaseFileNames = (directory: string): void => {
 /**
  * Data mapping for content of the individual files.
  */
-const dataMapping: Map<string, { group: CannonEntityType; element: string }> = new Map([
+const dataMapping = new Map<string, { group: keyof CannonEntity; element: string }>([
     // ["CANNON_BLOW_CHANCE", { group: "generic", element: "blow chance" }],
     // ["HIT_PROBABILITY", { group: "damage", element: "hit probability" }],
     // ["DAMAGE_MULTIPLIER", { group: "damage", element: "multiplier" }],
@@ -171,11 +165,12 @@ const addData = (fileData: XmlGeneric): void => {
 
     const cannon = {} as CannonEntity
     for (const [value, { group, element }] of dataMapping) {
-        if (!cannon[group]) {
+        if (cannon[group] == null) {
+            // @ts-expect-error typing multi-dim objects
             cannon[group] = {}
         }
 
-        // @ts-expect-error lala
+        // @ts-expect-error typing multi-dim objects
         cannon[group][element] = {
             value: Number(
                 (fileData.Attributes.Pair.find((pair) => pair.Key._text === value)?.Value.Value as TextEntity)._text ??
@@ -185,7 +180,7 @@ const addData = (fileData: XmlGeneric): void => {
     }
 
     // Calculate penetrations
-    const penetrations: Map<number, number> = new Map(
+    const penetrations = new Map<number, number>(
         (
             fileData.Attributes.Pair.find((pair: PairEntity) => pair.Key._text === "CANNON_PENETRATION_DEGRADATION")
                 ?.Value.Value as TangentEntity[]
@@ -237,15 +232,18 @@ export const convertCannons = async (): Promise<void> => {
     }
 
     // Set maximum digits after decimal point
-    const maxDigits = new Map<[CannonType, CannonEntityType, string], number>()
+    const maxDigits = new Map<[CannonType, keyof CannonEntity, string], number>()
     for (const type of cannonType) {
         for (const cannon of cannons[type]) {
-            for (const group of cannonEntityType) {
-                // @ts-expect-error lala
+            for (const group of Object.keys(cannon)) {
+                // @ts-expect-error typing multi-dim objects
                 for (const [elementKey, elementValue] of Object.entries<CannonValue>(cannon[group])) {
                     maxDigits.set(
-                        [type, group, elementKey],
-                        Math.max(maxDigits.get([type, group, elementKey]) ?? 0, countDecimals(elementValue?.value)),
+                        [type, group as keyof CannonEntity, elementKey],
+                        Math.max(
+                            maxDigits.get([type, group as keyof CannonEntity, elementKey]) ?? 0,
+                            countDecimals(elementValue?.value),
+                        ),
                     )
                 }
             }
@@ -255,8 +253,8 @@ export const convertCannons = async (): Promise<void> => {
     for (const [key, value] of maxDigits) {
         if (value > 0) {
             for (const cannon of cannons[key[0]]) {
-                // @ts-expect-error lala
-                cannon[key[1]][key[2]]!.digits = value
+                // @ts-expect-error typing multi-dim objects
+                cannon[key[1]][key[2]].digits = value
             }
         }
     }

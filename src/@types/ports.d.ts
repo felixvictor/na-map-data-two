@@ -67,7 +67,7 @@ type PortIntersection =
     | undefined
     | GoodList
     | Point
-    | Array<string | InventoryEntity | TradeGoodProfit>
+    | (string | InventoryEntity | TradeGoodProfit)[]
 // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 export interface Port extends PortBasic, PortPerServer, PortBattlePerServer {
     [index: string]: PortIntersection

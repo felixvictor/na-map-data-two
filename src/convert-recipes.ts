@@ -1,11 +1,5 @@
 import { group as d3Group } from "d3-array"
 
-import { getCommonPaths } from "./common/path.js"
-import { cleanName } from "./common/api.js"
-import { simpleStringSort, sortBy } from "./common/sort.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
-import { serverIds } from "./common/servers.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
 import type {
     APIItemGeneric,
     APIRecipeModuleResource,
@@ -13,6 +7,12 @@ import type {
     APIShipUpgradeBookItem,
 } from "./@types/api-item.js"
 import type { Recipe, RecipeEntity, RecipeGroup } from "./@types/recipes.js"
+import { cleanName } from "./common/api.js"
+import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { getCommonPaths } from "./common/path.js"
+import { serverIds } from "./common/servers.js"
+import { simpleStringSort, sortBy } from "./common/sort.js"
+import { currentServerStartDate as serverDate } from "./common/time.js"
 
 interface Ingredient {
     id: number
@@ -127,7 +127,7 @@ const convertRecipes = async (): Promise<void> => {
         for (const apiIngredient of apiIngredients) {
             const recipeName = recipe.module ? recipe.module : recipe.name.replace(" Blueprint", "")
             if (ingredients.has(apiIngredient.Template)) {
-                const updatedIngredient = ingredients.get(apiIngredient.Template)!
+                const updatedIngredient = ingredients.get(apiIngredient.Template) ?? ({} as Ingredient)
                 updatedIngredient.recipeNames.push(recipeName)
                 updatedIngredient.recipeNames.sort(simpleStringSort)
                 ingredients.set(apiIngredient.Template, updatedIngredient)
@@ -142,19 +142,17 @@ const convertRecipes = async (): Promise<void> => {
         }
     }
 
-    data.recipe = [...d3Group(recipes, (recipe) => recipe.craftGroup)]
-        // @ts-expect-error lala
-        .sort(sortBy(["id"]))
-        .map(([group, recipes]) => {
-            return {
-                group,
-                recipes: recipes.map((recipe) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    const { craftGroup, ...recipeCleaned } = recipe
-                    return recipeCleaned
-                }),
-            } as RecipeGroup
-        })
+    // @ts-expect-error typing sort
+    data.recipe = [...d3Group(recipes, (recipe) => recipe.craftGroup)].sort(sortBy(["id"])).map(([group, recipes]) => {
+        return {
+            group,
+            recipes: recipes.map((recipe) => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { craftGroup, ...recipeCleaned } = recipe
+                return recipeCleaned
+            }),
+        } as RecipeGroup
+    })
     const result = [...ingredients.values()]
     data.ingredient = result.sort(sortBy(["id"]))
 

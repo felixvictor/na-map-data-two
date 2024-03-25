@@ -1,13 +1,13 @@
 import { range } from "d3-array"
 import Excel from "exceljs"
 
-import { getCommonPaths } from "./common/path.js"
-import { readJson } from "./common/file.js"
-import { sortBy } from "./common/sort.js"
-import { maxShallowWaterBR, minDeepWaterBR } from "./common/constants.js"
-import { currentServerStartDate } from "./common/time.js"
-import type { ShipData } from "./@types/ships.js"
 import type { PortBasic } from "./@types/ports.js"
+import type { ShipData } from "./@types/ships.js"
+import { maxShallowWaterBR, minDeepWaterBR } from "./common/constants.js"
+import { readJson } from "./common/file.js"
+import { getCommonPaths } from "./common/path.js"
+import { sortBy } from "./common/sort.js"
+import { currentServerStartDate } from "./common/time.js"
 
 interface PortBR {
     name: string
@@ -89,7 +89,7 @@ const defaultFont: Partial<Excel.Font> = {
  * Set default font
  * {@link https://github.com/exceljs/exceljs/issues/572#issuecomment-631788521}
  */
-// @ts-expect-error lala
+// @ts-expect-error import function
 import StylesXform from "exceljs/lib/xlsx/xform/style/styles-xform.js"
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const origStylesXformInit = StylesXform.prototype.init

@@ -1,10 +1,5 @@
 import { group as d3Group } from "d3-array"
 
-import { getCommonPaths } from "../common/path.js"
-import { capitalizeFirstLetter } from "../common/format.js"
-import { sortBy } from "../common/sort.js"
-import { saveJsonAsync } from "../common/file.js"
-import { bonusRegex, flipAmountForModule, modifiers, moduleRate, notPercentage } from "./common.js"
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import type {
     APIModifierName,
@@ -13,6 +8,11 @@ import type {
     ModuleEntity,
     ModulePropertiesEntity,
 } from "../@types/modules.d.ts"
+import { saveJsonAsync } from "../common/file.js"
+import { capitalizeFirstLetter } from "../common/format.js"
+import { getCommonPaths } from "../common/path.js"
+import { sortBy } from "../common/sort.js"
+import { bonusRegex, flipAmountForModule, modifiers, moduleRate, notPercentage } from "./common.js"
 
 const modules = new Map<string, CleanedModule>()
 const commonPaths = getCommonPaths()

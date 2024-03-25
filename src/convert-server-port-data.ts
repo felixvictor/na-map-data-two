@@ -1,20 +1,20 @@
-import path from "node:path"
 import { group as d3Group } from "d3-array"
+import path from "node:path"
 
-import { getCommonPaths } from "./common/path.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
-import { simpleNumberSort, sortBy } from "./common/sort.js"
-import { cleanItemName, cleanName } from "./common/api.js"
-import { findNationById, findNationShortNameById, nations, nationShortName } from "./common/nation.js"
-import { serverIds } from "./common/servers.js"
-import { currentServerStartDate as serverDate, getTimeFromTicks } from "./common/time.js"
 import type { APIItemGeneric } from "./@types/api-item.js"
 import type { APIPort } from "./@types/api-port.js"
 import type { APIShop } from "./@types/api-shop.js"
+import type { Distance } from "./@types/coordinates.js"
+import type { NationList, NationShortName } from "./@types/nations.js"
 import type { InventoryEntity, PortBattlePerServer, PortPerServer } from "./@types/ports.js"
 import type { Trade, TradeItem } from "./@types/trade.js"
-import type { NationList, NationShortName } from "./@types/nations.js"
-import type { Distance } from "./@types/coordinates.js"
+import { cleanItemName, cleanName } from "./common/api.js"
+import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { findNationById, findNationShortNameById, nationShortName, nations } from "./common/nation.js"
+import { getCommonPaths } from "./common/path.js"
+import { serverIds } from "./common/servers.js"
+import { simpleNumberSort, sortBy } from "./common/sort.js"
+import { getTimeFromTicks, currentServerStartDate as serverDate } from "./common/time.js"
 
 interface Item {
     name: string
@@ -338,7 +338,7 @@ const setAndSaveFrontlines = async (serverName: string): Promise<void> => {
             .sort(sortBy(["key"]))
     }
 
-    const frontlineDefendingNationMap: Map<string, Set<string>> = new Map()
+    const frontlineDefendingNationMap = new Map<string, Set<string>>()
     for (const attackingNation of nationShortName) {
         if (frontlineAttackingNationGroupedByFromPort[attackingNation]) {
             for (const fromPort of frontlineAttackingNationGroupedByFromPort[attackingNation]) {
@@ -363,7 +363,7 @@ const setAndSaveFrontlines = async (serverName: string): Promise<void> => {
 
     const frontlineDefendingNation = {} as NationList<FDNPort[]>
     for (const [key, fromPorts] of frontlineDefendingNationMap) {
-        const nationShortName = key.slice(0, 2)!
+        const nationShortName = key.slice(0, 2)
         const toPortId = Number(key.slice(2))
         if (!frontlineDefendingNation[nationShortName]) {
             frontlineDefendingNation[nationShortName] = []
