@@ -1,5 +1,12 @@
 
 
+## [1.6.3](https://example.com///compare/v1.6.2...v1.6.3) (2024-03-26)
+
+
+### Bug Fixes
+
+* **buildings:** reserved buildings removed ([b4f6c18](https://example.com///commit/b4f6c185450901e31ba5a9e331d43c65c8822195))
+
 ## [1.6.2](https://example.com///compare/v1.6.1...v1.6.2) (2024-03-25)
 
 
