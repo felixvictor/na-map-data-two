@@ -1,5 +1,13 @@
 
 
+## [1.6.4](https://example.com///compare/v1.6.3...v1.6.4) (2024-06-12)
+
+
+### Bug Fixes
+
+* **commitlint:** husky ([6214391](https://example.com///commit/6214391b19eb27934a29297929a988c3c27c0d29))
+* **modules:** June 2024 patch ([082351b](https://example.com///commit/082351b16fc35662032c3a0c7204bfb542a80265))
+
 ## [1.6.3](https://example.com///compare/v1.6.2...v1.6.3) (2024-03-26)
 
 
