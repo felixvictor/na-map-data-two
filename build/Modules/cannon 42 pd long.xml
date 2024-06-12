@@ -369,7 +369,7 @@
     <Pair>
       <Key>CANNON_BALL_ARMOR_SPLINTERS_DAMAGE_FOR_CREW</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>6.615</Value>
+        <Value>0.882</Value>
       </Value>
     </Pair>
     <Pair>
