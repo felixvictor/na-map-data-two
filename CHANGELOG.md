@@ -1,5 +1,12 @@
 
 
+## [1.6.5](https://example.com///compare/v1.6.4...v1.6.5) (2024-06-12)
+
+
+### Bug Fixes
+
+* **ships:** Galeon not yet used ([2d85e65](https://example.com///commit/2d85e6596ca6e7b99df055ba871ce5c44cd431b0))
+
 ## [1.6.4](https://example.com///compare/v1.6.3...v1.6.4) (2024-06-12)
 
 
