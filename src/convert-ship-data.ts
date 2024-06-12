@@ -69,6 +69,7 @@ const shipsNotUsed = new Set([
     2454, // tutorial brig 2
     2483, // Travel Balloon
     2898, // Duke of Kent
+    2963, // Galeon
 ])
 const blueprintsNotUsed = new Set([
     665, // Santa Cecilia
