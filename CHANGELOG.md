@@ -1,5 +1,12 @@
 
 
+## [1.6.6](https://example.com///compare/v1.6.5...v1.6.6) (2024-06-13)
+
+
+### Bug Fixes
+
+* **modules:** 13 June 2024 patch ([1c39617](https://example.com///commit/1c396176a507e826b223031b8e7fcf1b3a0eba2b))
+
 ## [1.6.5](https://example.com///compare/v1.6.4...v1.6.5) (2024-06-12)
 
 
