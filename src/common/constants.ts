@@ -8,8 +8,8 @@ export const minDeepWaterBR = 22
 export const serverBaseName = "cleanopenworldprod"
 export const sourceBaseDir = "nacleanopenworldprodshards"
 export const sourceBaseUrl = "https://storage.googleapis.com/"
-export const speedConstB = 0.03674732580751794
-export const speedConstM = 0.07112484049898693
+export const speedConstB = 0.005231716065306813
+export const speedConstM = 0.07139287078320584
 export const speedFactor = 390
 export const timeFactor = 2.63
 

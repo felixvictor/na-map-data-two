@@ -82,12 +82,12 @@
     {
         "id": 1674,
         "name": "Constitution",
-        "maxSpeed": 12.2
+        "maxSpeed": 12.19
     },
     {
         "id": 270,
         "name": "United States",
-        "maxSpeed": 11.79
+        "maxSpeed": 12.06
     },
     {
         "id": 293,
@@ -115,11 +115,6 @@
         "maxSpeed": 12.15
     },
     {
-        "id": 986,
-        "name": "L'hermione",
-        "maxSpeed": 12.1
-    },
-    {
         "id": 281,
         "name": "Pirate Frigate",
         "maxSpeed": 12.6
@@ -137,7 +132,7 @@
     {
         "id": 288,
         "name": "Surprise",
-        "maxSpeed": 12.47
+        "maxSpeed": 12.46
     },
     {
         "id": 1675,
@@ -157,12 +152,7 @@
     {
         "id": 269,
         "name": "Cerberus",
-        "maxSpeed": 12.47
-    },
-    {
-        "id": 1020,
-        "name": "Pandora",
-        "maxSpeed": 12.33
+        "maxSpeed": 12.46
     },
     {
         "id": 1561,
@@ -177,12 +167,12 @@
     {
         "id": 292,
         "name": "TradersSnow",
-        "maxSpeed": 12
+        "maxSpeed": 11.97
     },
     {
         "id": 278,
         "name": "Niagara",
-        "maxSpeed": 12.5
+        "maxSpeed": 12.6
     },
     {
         "id": 396,
