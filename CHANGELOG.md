@@ -1,5 +1,12 @@
 
 
+## [1.6.7](https://example.com///compare/v1.6.6...v1.6.7) (2024-06-24)
+
+
+### Bug Fixes
+
+* **ships:** ship speeds ([2e162a9](https://example.com///commit/2e162a9d91870628de76ca90384ca79983e84ee4))
+
 ## [1.6.6](https://example.com///compare/v1.6.5...v1.6.6) (2024-06-13)
 
 
