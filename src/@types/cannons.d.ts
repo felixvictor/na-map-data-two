@@ -1,4 +1,4 @@
-import { cannonType, peneDistance } from "./constants.js"
+import type { cannonType, peneDistance } from "./constants.js"
 
 export type CannonType = (typeof cannonType)[number]
 export type CannonTypeList<T> = {

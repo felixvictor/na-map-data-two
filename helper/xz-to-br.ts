@@ -7,12 +7,12 @@ import { getCommonPaths } from "../src/common/path.js"
 
 const commonPaths = getCommonPaths()
 
-const unCompress = async (fileName: string) => {
+const unCompress = (fileName: string) => {
     execSync(`unxz ${fileName}`)
 }
 
 const reCompressFile = async (fileName: string) => {
-    await unCompress(fileName)
+    unCompress(fileName)
     const parsedFile = path.parse(fileName)
     const json = path.format({ dir: parsedFile.dir, name: parsedFile.name })
     await compressAsync(json)

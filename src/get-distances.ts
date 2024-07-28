@@ -196,10 +196,12 @@ class Map {
 
         // Queue holds unchecked positions ([index, distance from start port])
         // @ts-expect-error typing error
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const queue = new Deque([[startIndex, 0]])
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         while (foundPortIds.size + this.#completedPorts.size < this.#port.numPorts && queue.length > 0) {
-            // eslint-disable-next-line prefer-const
+            // eslint-disable-next-line prefer-const,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
             let [index, pixelDistance] = queue.shift() as [Index, PixelDistance]
             const spot = this.getPortId(this.getSpot(index))
 
@@ -218,6 +220,7 @@ class Map {
                 // Add not visited non-land neighbour index
                 if (this.isSpotNotVisitedNonLand(neighbourIndex)) {
                     this.visit(neighbourIndex)
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
                     queue.push([neighbourIndex, pixelDistance])
                 }
             }

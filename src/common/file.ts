@@ -20,6 +20,11 @@ export const fileExists = (fileName: string): boolean => {
     return !!stat?.isFile()
 }
 
+export const fileEmpty = (fileName: string): boolean => {
+    const stat = fs.statSync(fileName, { throwIfNoEntry: false })
+    return stat?.size === 0
+}
+
 export const fileExistsAsync = async (fileName: string): Promise<boolean> =>
     await fsPromises
         .stat(fileName)
@@ -49,7 +54,6 @@ export const saveTextFileSync = (fileName: string, data: string): void => {
     fs.writeFileSync(fileName, data, { encoding: "utf8" })
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const saveJsonAsync = async (fileName: string, data: object): Promise<void> => {
     await makeDirAsync(path.dirname(fileName))
     await saveTextFileAsync(fileName, JSON.stringify(data))
@@ -74,7 +78,7 @@ export const readJson = <T>(fileName: string): T => {
     try {
         return JSON.parse(readTextFile(fileName)) as T
     } catch (error: unknown) {
-        throw Error(`Cannot parse ${fileName}\nError: ${error}` as string)
+        throw Error(`Cannot parse ${fileName}\nError: ${error as string}`)
     }
 }
 

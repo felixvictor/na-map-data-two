@@ -4,5 +4,5 @@
  * @param   object - Object
  * @returns True if object is empty
  */
-export const isEmpty = (object: Record<string, unknown> | unknown | undefined): boolean =>
+export const isEmpty = (object: Record<string, unknown> | undefined): boolean =>
     object !== undefined && Object.getOwnPropertyNames(object).length === 0

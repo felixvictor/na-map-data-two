@@ -65,7 +65,7 @@ const getLootContent = (
                     : revertChance
                       ? 1 - Number(item.Chance)
                       : Number(item.Chance),
-            amount: { min: Number(item.Stack?.Min), max: Number(item.Stack?.Max) },
+            amount: { min: Number(item.Stack.Min), max: Number(item.Stack.Max) },
         }),
     )
 
@@ -73,7 +73,7 @@ const getChestItems = (lootItems: ItemsEntity[]): LootChestItemsEntity[] =>
     lootItems.map((item) => ({
         id: Number(item.Template),
         name: itemNames.get(Number(item.Template)) ?? "",
-        amount: { min: Number(item.Stack?.Min), max: Number(item.Stack?.Max) },
+        amount: { min: Number(item.Stack.Min), max: Number(item.Stack.Max) },
     }))
 
 const getChestItemsFromChestLootTable = (chestLootTableId: number): LootChestItemsEntity[] =>
@@ -91,7 +91,7 @@ const convertLoot = async (): Promise<void> => {
                 ({
                     id: Number(item.Id),
                     name: getLootName(Number(item.Class), item.EventLootTable),
-                    items: getLootContent(item.Items ?? [], item.itemProbability ?? []).sort(sortBy(["chance", "id"])),
+                    items: getLootContent(item.Items, item.itemProbability).sort(sortBy(["chance", "id"])),
                 }) as LootLootEntity,
         )
         .sort(sortBy(["id"]))
@@ -106,7 +106,7 @@ const convertLoot = async (): Promise<void> => {
                     name: cleanName(item.Name),
                     weight: Number(item.ItemWeight),
                     lifetime: Number(item.LifetimeSeconds) / secondsPerHour,
-                    itemGroup: item.ExtendedLootTable?.map((lootChestLootTableId) => ({
+                    itemGroup: item.ExtendedLootTable.map((lootChestLootTableId) => ({
                         chance: getLootItemsChance(lootChestLootTableId),
                         items: getChestItemsFromChestLootTable(lootChestLootTableId).sort(sortBy(["id"])),
                     })).sort(sortBy(["chance"])),
@@ -123,7 +123,7 @@ const convertLoot = async (): Promise<void> => {
                 ({
                     id: Number(item.Id),
                     name: cleanName(item.Name.replace(" Fishing Loot Table", "")),
-                    items: getLootContent(item.Items ?? [], [], true).sort(sortBy(["chance", "id"])),
+                    items: getLootContent(item.Items, [], true).sort(sortBy(["chance", "id"])),
                 }) as LootLootEntity,
         )
         .sort(sortBy(["id"]))

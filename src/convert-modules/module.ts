@@ -51,9 +51,7 @@ const getModuleType = (module: ModuleConvertEntity): string => {
         const result = bonusRegex.exec(name)
         sortingGroup = result ? `\u202F\u2013\u202F${result[1]}` : ""
     } else {
-        sortingGroup = sortingGroup
-            ? `\u202F\u2013\u202F${capitalizeFirstLetter(sortingGroup ?? "").replace("_", "/")}`
-            : ""
+        sortingGroup = sortingGroup ? `\u202F\u2013\u202F${capitalizeFirstLetter(sortingGroup).replace("_", "/")}` : ""
     }
 
     permanentType = permanentType === "Default" ? "" : `\u202F\u25CB\u202F${permanentType}`
@@ -139,9 +137,7 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
     module.type = getModuleType(module)
 
     for (const rate of moduleRate) {
-        // eslint-disable-next-line max-depth
         for (const name of rate.names) {
-            // eslint-disable-next-line max-depth
             if (module.name.endsWith(name)) {
                 module.name = module.name.replace(name, "")
                 module.moduleLevel = rate.level

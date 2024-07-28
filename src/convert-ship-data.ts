@@ -7,7 +7,6 @@ import type { Cannon, CannonEntity } from "./@types/cannons.js"
 import type { ShipBlueprint, ShipData, ShipGunDeck, ShipGuns } from "./@types/ships.js"
 import type { TextEntity, XmlGeneric } from "./@types/xml.js"
 import { cleanName } from "./common/api.js"
-import { isEmpty } from "./common/common.js"
 import { speedConstB, speedConstM } from "./common/constants.js"
 import { fileExists, getAPIFilename, readJson, readTextFile, saveJsonAsync } from "./common/file.js"
 import { round, roundToThousands } from "./common/format.js"
@@ -347,7 +346,8 @@ const convertGenericShipData = (): ShipData[] => {
         const { maxSpeed, speedDegrees } = getSpeedDegrees(apiShip.Specs)
 
         const addDeck = (deckLimit: Limit, index: number) => {
-            if (deckLimit) {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (deckLimit != null) {
                 const gunsPerDeck = apiShip.GunsPerDeck[index]
                 const currentDeck = {
                     amount: gunsPerDeck,
@@ -493,21 +493,26 @@ const getAdditionalData = (elements: ElementMap, fileData: XmlGeneric): ShipData
                 addData[group] = {}
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             addData[group][element] = value
 
             // Add calculated mast thickness
             if (key === "MAST_THICKNESS") {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 addData[group].middleThickness = value * middleMastThicknessRatio
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 addData[group].topThickness = value * topMastThicknessRatio
             }
 
             // Set default value for preparation per round
             if (key === "PREPARATION_BONUS_PER_ROUND") {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-plus-operands
                 addData[group][element] += 18
             }
 
             // Set default value for morale
             if (key === "HANDBOOK_MORALE_BONUS") {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-plus-operands
                 addData[group][element] += 100
             }
         }
@@ -527,8 +532,10 @@ const addAdditionalData = (addData: ShipData, id: number): void => {
             }
 
             // Get all elements per group
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             for (const [element, value] of Object.entries(values)) {
                 // add value
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 ship[group][element] = value
             }
         }
@@ -549,7 +556,7 @@ const getFileData = (baseFileName: string, ext: string): XmlGeneric => {
 const getAndAddAdditionalData = (fileName: string, shipId: number): void => {
     for (const file of subFileStructure) {
         const fileData = getFileData(fileName, file.ext)
-        if (!isEmpty(fileData)) {
+        if (Object.keys(fileData).length > 0) {
             const additionalData = getAdditionalData(file.elements, fileData)
             addAdditionalData(additionalData, shipId)
         }
@@ -613,18 +620,14 @@ const convertShipBlueprints = async (): Promise<void> => {
                     }))
                     .sort(sortBy(["name"])),
                 provisions:
-                    (
-                        apiBlueprint.FullRequirements.find(
-                            (requirement) => itemNames.get(requirement.Template) === "Provisions",
-                        ) ?? {}
-                    ).Amount ?? 0,
+                    apiBlueprint.FullRequirements.find(
+                        (requirement) => itemNames.get(requirement.Template) === "Provisions",
+                    )?.Amount ?? 0,
                 price: apiBlueprint.GoldRequirements,
                 permit:
-                    (
-                        apiBlueprint.FullRequirements.find((requirement) =>
-                            itemNames.get(requirement.Template)?.endsWith(" Permit"),
-                        ) ?? {}
-                    ).Amount ?? 0,
+                    apiBlueprint.FullRequirements.find((requirement) =>
+                        itemNames.get(requirement.Template)?.endsWith(" Permit"),
+                    )?.Amount ?? 0,
                 ship: {
                     id: apiBlueprint.Results[0].Template,
                     name: itemNames.get(apiBlueprint.Results[0].Template),

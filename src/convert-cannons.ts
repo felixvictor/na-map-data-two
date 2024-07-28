@@ -21,7 +21,7 @@ const countDecimals = (value: number | undefined): number => {
         return 0
     }
 
-    return value.toString().split(".")[1].length ?? 0
+    return value.toString().split(".")[1].length
 }
 
 /**
@@ -165,7 +165,7 @@ const addData = (fileData: XmlGeneric): void => {
 
     const cannon = {} as CannonEntity
     for (const [value, { group, element }] of dataMapping) {
-        if (cannon[group] == null) {
+        if (!Object.hasOwn(cannon, group)) {
             // @ts-expect-error typing multi-dim objects
             cannon[group] = {}
         }
@@ -173,8 +173,7 @@ const addData = (fileData: XmlGeneric): void => {
         // @ts-expect-error typing multi-dim objects
         cannon[group][element] = {
             value: Number(
-                (fileData.Attributes.Pair.find((pair) => pair.Key._text === value)?.Value.Value as TextEntity)._text ??
-                    0,
+                (fileData.Attributes.Pair.find((pair) => pair.Key._text === value)?.Value.Value as TextEntity)._text,
             ),
         } as CannonValue
     }
@@ -237,12 +236,13 @@ export const convertCannons = async (): Promise<void> => {
         for (const cannon of cannons[type]) {
             for (const group of Object.keys(cannon)) {
                 // @ts-expect-error typing multi-dim objects
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 for (const [elementKey, elementValue] of Object.entries<CannonValue>(cannon[group])) {
                     maxDigits.set(
                         [type, group as keyof CannonEntity, elementKey],
                         Math.max(
                             maxDigits.get([type, group as keyof CannonEntity, elementKey]) ?? 0,
-                            countDecimals(elementValue?.value),
+                            countDecimals(elementValue.value),
                         ),
                     )
                 }
@@ -251,10 +251,12 @@ export const convertCannons = async (): Promise<void> => {
     }
 
     for (const [key, value] of maxDigits) {
+        const [cannonType, cannonEntityKey, elementKey] = key
         if (value > 0) {
-            for (const cannon of cannons[key[0]]) {
+            for (const cannon of cannons[cannonType]) {
                 // @ts-expect-error typing multi-dim objects
-                cannon[key[1]][key[2]].digits = value
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                cannon[cannonEntityKey][elementKey].digits = value
             }
         }
     }

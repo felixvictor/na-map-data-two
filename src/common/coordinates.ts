@@ -157,9 +157,8 @@ export const degreesToCompass = (degrees: number): string => {
  * @returns True if value is between a and b
  */
 export const between = (value: number, a: number, b: number, inclusive: boolean): boolean => {
-    // eslint-disable-next-line no-useless-call
     const min = Math.min.apply(Math, [a, b])
-    // eslint-disable-next-line no-useless-call
+
     const max = Math.max.apply(Math, [a, b])
 
     return inclusive ? value >= min && value <= max : value > min && value < max

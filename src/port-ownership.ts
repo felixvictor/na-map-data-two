@@ -90,11 +90,11 @@ export class PortOwnership {
         })
     }
 
-    #getPreviousNation(): NationShortName | "" {
+    #getPreviousNation(): NationShortName {
         const portData = this.#ports.get(this.#currentPort.Id)
 
         if (portData) {
-            const index = portData.data.length - 1 ?? 0
+            const index = portData.data.length - 1
             return portData.data[index].val as NationShortName
         }
 

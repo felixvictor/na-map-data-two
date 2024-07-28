@@ -16,7 +16,7 @@ const isDoubleEntry = (module: ModuleConvertEntity): boolean => addedModules.has
 /**
  * Convert API module data
  */
-export const convertModulesAndWoodData = async (): Promise<void> => {
+export const convertModulesAndWoodData = (): void => {
     const apiModules = apiItems
         .filter((item) => item.ItemType === "Module")
         .filter((item) => !notUsedModules.has(item.Id))
@@ -69,7 +69,7 @@ export const convertModulesAndWoodData = async (): Promise<void> => {
 export const convertModules = async () => {
     apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`))
 
-    await convertModulesAndWoodData()
+    convertModulesAndWoodData()
     await saveModules()
     await saveWoods()
 }

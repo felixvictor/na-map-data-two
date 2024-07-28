@@ -91,11 +91,13 @@ const defaultFont: Partial<Excel.Font> = {
  */
 // @ts-expect-error import function
 import StylesXform from "exceljs/lib/xlsx/xform/style/styles-xform.js"
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
 const origStylesXformInit = StylesXform.prototype.init
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 StylesXform.prototype.init = function () {
-    // eslint-disable-next-line prefer-rest-params
+    // eslint-disable-next-line prefer-rest-params,@typescript-eslint/no-unsafe-argument
     Reflect.apply(origStylesXformInit, this, arguments)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
     this._addFont(defaultFont)
 }
 

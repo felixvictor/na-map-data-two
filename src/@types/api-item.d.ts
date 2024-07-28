@@ -1,6 +1,6 @@
 // https://jvilk.com/MakeTypes/
 
-import { ValuesType } from "utility-types"
+import type { ValuesType } from "utility-types"
 
 /****************************
  * Items

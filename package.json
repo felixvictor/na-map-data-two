@@ -23,16 +23,16 @@
         "helper:size:js": "find public/ -iname '*.js' -not -iname 'data-*.js' -exec du -bc {} + | sort -k 2 | sed 's|public/||'",
         "helper:size:largest": "du -a ~/ -BM | sort -n -r | head -n 15",
         "helper:xz-to-br": "yarn tsx helper/xz-to-br.ts",
+        "lint": "run-s lint:js pretty-print pretty-print-package",
+        "lint:js": "eslint . --fix",
         "main:prod": "run-s build:load build:data:convert deploy:netlify",
         "main:release": "run-s release push dev:deploy",
+        "pretty-print": "yarn prettier --config .prettierrc --log-level error --write .",
+        "pretty-print-package": "yarn prettier-package-json --write ./package.json",
         "push": "git push",
         "release": "release-it --ci",
         "typecheck": "tsc --noEmit",
-        "update": "yarn set version stable && yarn upgrade-interactive",
-        "lint": "run-s lint:js pretty-print pretty-print-package",
-        "lint:js": "eslint . --fix",
-        "pretty-print": "yarn prettier --config .prettierrc --log-level error --write .",
-        "pretty-print-package": "yarn prettier-package-json --write ./package.json"
+        "update": "yarn set version stable && yarn upgrade-interactive"
     },
     "devDependencies": {
         "@commitlint/cli": "^19.3.0",

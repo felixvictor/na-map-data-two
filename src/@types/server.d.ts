@@ -1,4 +1,4 @@
-import { serverIds } from "../common/servers.js"
+import type { serverIds } from "../common/servers.js"
 
 export type ServerId = (typeof serverIds)[number]
 export type ServerType = "PVE" | "PVP"

@@ -41,7 +41,7 @@ const setAndSavePortData = async (): Promise<void> => {
                 Math.trunc(convertCoordX(apiPort.PortBattleZonePositions[0].x, apiPort.PortBattleZonePositions[0].z)),
                 Math.trunc(convertCoordY(apiPort.PortBattleZonePositions[0].x, apiPort.PortBattleZonePositions[0].z)),
             ] as Point
-            const { x, y } = apiPortPos.get(Number(apiPort.Id)) as Coordinate
+            const { x, y } = apiPortPos.get(Number(apiPort.Id)) ?? { x: 0, y: 0 }
             const angle = Math.round(rotationAngleInDegrees([x, y], circleAPos))
             return {
                 id: Number(apiPort.Id),
@@ -92,7 +92,7 @@ const getTowers = (portElementsSlotGroups: PortElementsSlotGroupsEntity[]): Poin
         )
 
 const getJoinCircle = (id: number, rotation: number): Point => {
-    const { x: x0, y: y0 } = apiPortPos.get(id) as Coordinate
+    const { x: x0, y: y0 } = apiPortPos.get(id) ?? { x: 0, y: 0 }
     const distance = 5
     const degrees = degreesHalfCircle - rotation
     const radians = (degrees * Math.PI) / degreesHalfCircle
@@ -127,7 +127,7 @@ const setAndSavePBZones = async (): Promise<void> => {
     const ports = apiPorts
         .filter((port) => !port.NonCapturable)
         .map((port) => {
-            const { x, y } = apiPortPos.get(Number(port.Id)) as Coordinate
+            const { x, y } = apiPortPos.get(Number(port.Id)) ?? { x: 0, y: 0 }
             return {
                 id: Number(port.Id),
                 position: [x, y],
@@ -202,7 +202,7 @@ const setRegionFeature = (location: string, portPos: Point): void => {
 
 const setAndSaveCountyRegionData = async (): Promise<void> => {
     for (const apiPort of apiPorts) {
-        const { x, y } = apiPortPos.get(Number(apiPort.Id)) as Coordinate
+        const { x, y } = apiPortPos.get(Number(apiPort.Id)) ?? { x: 0, y: 0 }
         setCountyFeature(apiPort.CountyCapitalName, [x, y])
         setRegionFeature(apiPort.Location, [x, y])
     }

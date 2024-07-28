@@ -17,7 +17,7 @@ export class PortOwnershipIncrement extends PortOwnership {
 
     constructor(serverId: ServerId) {
         super(serverId)
-        ;(async () => {
+        void (async () => {
             await this.#convertOwnership()
         })()
     }

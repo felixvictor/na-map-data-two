@@ -1,4 +1,4 @@
-import {
+import type {
     attackerNationShortName,
     nationFullName,
     nationShortName,
@@ -34,7 +34,7 @@ export type NationList<T> = T & {
     [K in NationShortName]: T
 }
 export type NationListAlternative<T> = {
-    [K in NationShortName | NationShortNameAlternative]: T
+    [K in NationShortName]: T
 }
 export type OwnershipNation<T> = NationList<T> & {
     date: string

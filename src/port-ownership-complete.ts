@@ -15,7 +15,7 @@ export class PortOwnershipComplete extends PortOwnership {
 
     constructor(serverId: ServerId) {
         super(serverId)
-        ;(async () => {
+        void (async () => {
             await this.#convertOwnership()
         })()
     }
@@ -49,7 +49,7 @@ export class PortOwnershipComplete extends PortOwnership {
         const files = await readdir(commonPaths.dirAPI, { recursive: true, withFileTypes: true })
         this.#fileNames = files
             .filter((file) => file.isFile() && file.name.match(this.fileBaseNameRegex))
-            .map((file) => `${file.path}/${file.name}`)
+            .map((file) => `${file.parentPath}/${file.name}`)
         this.#sortFileNames()
     }
 

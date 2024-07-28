@@ -129,7 +129,6 @@ const getBuildings = (): Building[] => {
 
         // Ignore double entries
         if (!buildings.has(building.name)) {
-            // eslint-disable-next-line default-case
             switch (building.name) {
                 case "Shipyard":
                     building.result = [{ id: 0, name: "Ships", price: 0 }]

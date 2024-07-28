@@ -55,8 +55,8 @@ let itemWeights: Map<number, number>
 
 const getDistance = (fromPortId: number, toPortId: number): number =>
     fromPortId < toPortId
-        ? distances.get(fromPortId * numberPorts + toPortId) ?? 0
-        : distances.get(toPortId * numberPorts + fromPortId) ?? 0
+        ? (distances.get(fromPortId * numberPorts + toPortId) ?? 0)
+        : (distances.get(toPortId * numberPorts + fromPortId) ?? 0)
 
 const getPriceTierQuantity = (id: number): number => apiItems.find((item) => item.Id === id)?.PriceTierQuantity ?? 0
 
@@ -161,7 +161,7 @@ const setAndSaveTradeData = async (serverName: string): Promise<void> => {
                     const quantity = Math.min(buyQuantity, sellQuantity)
                     const profitPerItem = sellPrice - buyPrice
                     const profitTotal = profitPerItem * quantity
-                    // eslint-disable-next-line max-depth
+
                     if (profitTotal >= minProfit) {
                         const trade = {
                             good: buyGoodId,
@@ -290,7 +290,7 @@ const setAndSaveFrontlines = async (serverName: string): Promise<void> => {
                 ({ Nation: fromPortNation }) =>
                     fromPortNation === nationId || fromPortNation === 0 || fromPortNation === 9,
             )
-            // eslint-disable-next-line @typescript-eslint/no-loop-func
+
             .flatMap((fromPort) =>
                 apiPorts
                     // toPort must be a capturable port from a nation other than fromNation
@@ -340,14 +340,13 @@ const setAndSaveFrontlines = async (serverName: string): Promise<void> => {
 
     const frontlineDefendingNationMap = new Map<string, Set<string>>()
     for (const attackingNation of nationShortName) {
-        if (frontlineAttackingNationGroupedByFromPort[attackingNation]) {
+        if (Object.hasOwn(frontlineAttackingNationGroupedByFromPort, attackingNation)) {
             for (const fromPort of frontlineAttackingNationGroupedByFromPort[attackingNation]) {
                 if (fromPort.value) {
-                    // eslint-disable-next-line max-depth
                     for (const toPort of fromPort.value) {
                         const key = String(toPort.nation) + String(toPort.id)
                         let fromPorts = frontlineDefendingNationMap.get(key)
-                        // eslint-disable-next-line max-depth
+
                         if (fromPorts) {
                             fromPorts.add(String(fromPort.key))
                         } else {
@@ -365,7 +364,8 @@ const setAndSaveFrontlines = async (serverName: string): Promise<void> => {
     for (const [key, fromPorts] of frontlineDefendingNationMap) {
         const nationShortName = key.slice(0, 2)
         const toPortId = Number(key.slice(2))
-        if (!frontlineDefendingNation[nationShortName]) {
+        if (!Object.hasOwn(frontlineDefendingNation, nationShortName)) {
+            // if (Object.keys(frontlineDefendingNation[nationShortName]).length === 0) {
             frontlineDefendingNation[nationShortName] = []
         }
 
@@ -421,7 +421,6 @@ export const convertServerPortData = async () => {
         portData = []
         numberPorts = apiPorts.length
         distances = new Map(
-            // eslint-disable-next-line @typescript-eslint/no-loop-func
             distancesOrig.map(([fromPortId, toPortId, distance]) => [fromPortId * numberPorts + toPortId, distance]),
         )
 

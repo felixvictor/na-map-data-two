@@ -28,6 +28,7 @@ const deleteAPIFiles = async (fileName: string): Promise<void> => {
  */
 const readNAJson = async (url: URL): Promise<Error | APIType[]> => {
     try {
+        // eslint-disable-next-line n/no-unsupported-features/node-builtins
         const response = await fetch(url.toString())
         if (response.ok) {
             const text = (await response.text()).replace(/^var .+ = /, "").replace(/;$/, "")
