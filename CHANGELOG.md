@@ -1,5 +1,12 @@
 
 
+## [1.6.8](https://example.com///compare/v1.6.7...v1.6.8) (2024-07-28)
+
+
+### Bug Fixes
+
+* **load:** fetch with throw ([963e894](https://example.com///commit/963e894c5d2dd3715da4be14f30338ce898b4a08))
+
 ## [1.6.7](https://example.com///compare/v1.6.6...v1.6.7) (2024-06-24)
 
 
