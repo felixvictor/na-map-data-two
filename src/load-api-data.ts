@@ -26,18 +26,19 @@ const deleteAPIFiles = async (fileName: string): Promise<void> => {
  * Download Naval Action API data
  * @param url - Download url
  */
-const readNAJson = async (url: URL): Promise<Error | APIType[]> => {
+const readNAJson = async (url: URL): Promise<APIType[]> => {
     try {
         // eslint-disable-next-line n/no-unsupported-features/node-builtins
         const response = await fetch(url.toString())
-        if (response.ok) {
-            const text = (await response.text()).replace(/^var .+ = /, "").replace(/;$/, "")
-            return JSON.parse(text) as APIType[]
+
+        if (!response.ok) {
+            throw new Error(`Cannot load ${url.href}: ${response.statusText}`)
         }
 
-        return new Error(`Cannot load ${url.href}: ${response.statusText}`)
+        const text = (await response.text()).replace(/^var .+ = /, "").replace(/;$/, "")
+        return JSON.parse(text) as APIType[]
     } catch (error: unknown) {
-        throw new Error(error as string)
+        throw new Error(`Cannot load ${url.href}: ${error as string}`)
     }
 }
 
@@ -46,11 +47,7 @@ const readNAJson = async (url: URL): Promise<Error | APIType[]> => {
  */
 const getAPIDataAndSave = async (serverName: string, apiBaseFile: string, outfileName: string): Promise<boolean> => {
     const url = new URL(`${sourceBaseUrl}${sourceBaseDir}/${apiBaseFile}_${serverBaseName}${serverName}.json`)
-    const data: Error | APIType[] = await readNAJson(url)
-
-    if (data instanceof Error) {
-        throw data
-    }
+    const data = await readNAJson(url)
 
     data.sort(sortBy(["Id"]))
     await saveJsonAsync(outfileName, data)
