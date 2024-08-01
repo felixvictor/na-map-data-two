@@ -74,9 +74,9 @@ export const readTextFile = (fileName: string): string => {
     return data
 }
 
-export const readJson = <T>(fileName: string): T => {
+export const readJson = (fileName: string): unknown => {
     try {
-        return JSON.parse(readTextFile(fileName)) as T
+        return JSON.parse(readTextFile(fileName))
     } catch (error: unknown) {
         throw Error(`Cannot parse ${fileName}\nError: ${error as string}`)
     }

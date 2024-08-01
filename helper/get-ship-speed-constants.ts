@@ -15,7 +15,7 @@ interface InGameSpeed {
 
 const fileNameAPIItems = path.resolve(baseAPIFilename, `${serverIds[0]}-ItemTemplates-${serverDate}.json`)
 unCompressSync(`${fileNameAPIItems}.${compressExt}`)
-const apiItems = readJson<APIItemGeneric[]>(fileNameAPIItems)
+const apiItems = readJson(fileNameAPIItems) as APIItemGeneric[]
 removeFileSync(fileNameAPIItems)
 
 const apiSpeedMap = new Map(
@@ -24,7 +24,7 @@ const apiSpeedMap = new Map(
     ),
 )
 
-const inGameSpeedJson = readJson<InGameSpeed[]>(path.resolve("helper", "ship-speed.json"))
+const inGameSpeedJson = readJson(path.resolve("helper", "ship-speed.json")) as InGameSpeed[]
 
 //const selectedShips = new Set([272, 274, 278, 287, 650, 768, 1021, 1664])
 

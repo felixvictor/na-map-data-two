@@ -56,7 +56,7 @@ export class PortOwnership {
     }
 
     #getRegionData() {
-        const lastPortData = readJson<APIPort[]>(getAPIFilename(`${this.serverId}-Ports-${serverDate}.json`))
+        const lastPortData = readJson(getAPIFilename(`${this.serverId}-Ports-${serverDate}.json`)) as APIPort[]
         this.#portRegionData = new Map(
             lastPortData.map((port) => [
                 port.Id,

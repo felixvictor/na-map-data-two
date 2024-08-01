@@ -25,14 +25,14 @@ export class PortOwnershipIncrement extends PortOwnership {
     // Get data and remove entries for current date
     getNumPortsPerNationPerDates() {
         const fileName = path.resolve(this.commonPaths.dirGenServer, `${this.serverId}-nation.json`)
-        const json = readJson<OwnershipNation<number>[]>(fileName)
+        const json = readJson(fileName) as OwnershipNation<number>[]
         return json.filter((ownership) => ownership.date !== this.currentDate)
     }
 
     // Get data and remove entries for current date
     getPortOwnershipPerDate() {
         const fileName = path.resolve(this.commonPaths.dirGenServer, `${this.serverId}-power.json`)
-        const json = readJson<PowerMapList>(fileName)
+        const json = readJson(fileName) as PowerMapList
         return json.filter((powerMap) => powerMap[0] !== this.currentDate)
     }
 
@@ -46,7 +46,7 @@ export class PortOwnershipIncrement extends PortOwnership {
 
     getPorts() {
         const fileName = path.resolve(this.commonPaths.dirGenServer, `${this.serverId}-ownership.json`)
-        this.#regionTimeline = readJson<Ownership[]>(fileName)
+        this.#regionTimeline = readJson(fileName) as Ownership[]
         const timelines = this.#getTimelines()
 
         return new Map<string, OwnershipPort>(
@@ -75,7 +75,7 @@ export class PortOwnershipIncrement extends PortOwnership {
 
     async #processFile() {
         this.currentDate = serverDate
-        this.#apiPorts = readJson<APIPort[]>(getAPIFilename(`${this.serverId}-Ports-${this.currentDate}.json`))
+        this.#apiPorts = readJson(getAPIFilename(`${this.serverId}-Ports-${this.currentDate}.json`)) as APIPort[]
         this.#initData()
         this.parseData(this.#apiPorts)
         await this.writeResult()
