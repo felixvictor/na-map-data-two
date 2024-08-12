@@ -15,38 +15,68 @@ type APIType = APIItemGeneric | APIPort | APIShop
 
 /**
  * Delete API data (uncompressed and compressed)
- * @param fileName - File name
  */
 const deleteAPIFiles = async (fileName: string): Promise<void> => {
     await removeFileASync(fileName)
     await removeFileASync(`${fileName}.${compressExt}`)
 }
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+const fetchWithRetry = async (url: URL, { tries } = { tries: 3 }): Promise<string> => {
+    let attempt = 0
+    const fib = [3, 5]
+    const controller = new AbortController()
+    const signal = controller.signal
+
+    while (attempt <= tries) {
+        try {
+            // eslint-disable-next-line n/no-unsupported-features/node-builtins
+            const response = await fetch(url.toString(), { signal })
+
+            if (!response.ok) {
+                throw new Error(`Cannot load ${url.href}: ${response.statusText}`)
+            }
+
+            return await response.text()
+        } catch (error: unknown) {
+            if (attempt === tries) {
+                controller.abort()
+                throw error // If it's the last attempt, re-throw the error
+            } else {
+                const waitTime = fib[attempt]
+                console.log(
+                    `Attempt ${attempt + 1} of ${tries + 1} to load ${url.href} failed. Retrying in ${waitTime} seconds.`,
+                )
+                console.error(error)
+
+                await sleep(waitTime * 1000)
+                attempt++
+
+                // Generate the next Fibonacci number
+                fib.push(fib[fib.length - 1] + fib[fib.length - 2])
+            }
+        }
+    }
+
+    controller.abort()
+    throw new Error(`All ${tries + 1} attempts to load ${url.href} failed.`)
+}
+
 /**
  * Download Naval Action API data
- * @param url - Download url
+ * {@link https://dev.to/thanhphuchuynh/efficient-retries-implementing-fibonacci-backoff-in-javascript-fetch-requests-2h4p}
  */
 const readNAJson = async (url: URL): Promise<APIType[]> => {
-    try {
-        // eslint-disable-next-line n/no-unsupported-features/node-builtins
-        const response = await fetch(url.toString())
-
-        if (!response.ok) {
-            throw new Error(`Cannot load ${url.href}: ${response.statusText}`)
-        }
-
-        const text = (await response.text()).replace(/^var .+ = /, "").replace(/;$/, "")
-        return JSON.parse(text) as APIType[]
-    } catch (error: unknown) {
-        throw new Error(`Cannot load ${url.href}: ${error as string}`)
-    }
+    const text = (await fetchWithRetry(url)).replace(/^var .+ = /, "").replace(/;$/, "")
+    return JSON.parse(text) as APIType[]
 }
 
 /**
  * Load API data and save sorted data
  */
 const getAPIDataAndSave = async (serverName: string, apiBaseFile: string, outfileName: string): Promise<boolean> => {
-    const url = new URL(`${sourceBaseUrl}${sourceBaseDir}/${apiBaseFile}_${serverBaseName}${serverName}.json`)
+    const url = new URL(path.join(sourceBaseDir, `${apiBaseFile}_${serverBaseName}${serverName}.json`), sourceBaseUrl)
     const data = await readNAJson(url)
 
     data.sort(sortBy(["Id"]))
@@ -60,19 +90,14 @@ const getAPIDataAndSave = async (serverName: string, apiBaseFile: string, outfil
  * Load data for all servers and data files
  */
 const loadData = async (baseAPIFilename: string): Promise<boolean> => {
-    const deletePromise = []
-    const getPromise = []
     for (const serverName of serverIds) {
         for (const apiBaseFile of apiBaseFiles) {
             const outfileName = path.resolve(baseAPIFilename, `${serverName}-${apiBaseFile}-${serverDate}.json`)
 
-            deletePromise.push(deleteAPIFiles(outfileName))
-            getPromise.push(getAPIDataAndSave(serverName, apiBaseFile, outfileName))
+            await deleteAPIFiles(outfileName)
+            await getAPIDataAndSave(serverName, apiBaseFile, outfileName)
         }
     }
-
-    await Promise.all(deletePromise)
-    await Promise.all(getPromise)
 
     return true
 }
