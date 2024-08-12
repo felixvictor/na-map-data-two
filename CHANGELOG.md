@@ -1,5 +1,7 @@
 
 
+## [1.6.11](https://example.com///compare/v1.6.8...v1.6.11) (2024-08-12)
+
 ## [1.6.10](https://example.com///compare/v1.6.9...v1.6.10) (2024-08-01)
 
 ## [1.6.9](https://example.com///compare/v1.6.8...v1.6.9) (2024-08-01)
