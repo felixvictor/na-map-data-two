@@ -73,7 +73,7 @@
         "xml-js": "^1.6.11"
     },
     "engines": {
-        "node": ">= 20"
+        "node": ">= 22"
     },
     "browserslist": [
         "defaults and supports es6-module and last 3 versions, maintained node versions"
