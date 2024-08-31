@@ -1,5 +1,12 @@
 
 
+## [1.6.16](https://example.com///compare/v1.6.15...v1.6.16) (2024-08-31)
+
+
+### Bug Fixes
+
+* **cannons:** ignored families ([84afb94](https://example.com///commit/84afb94542de98c258475a57fab1241ed850fcfa))
+
 ## [1.6.15](https://example.com///compare/v1.6.14...v1.6.15) (2024-08-31)
 
 
