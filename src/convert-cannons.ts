@@ -217,7 +217,7 @@ const addData = (fileData: XmlGeneric): void => {
 
     // Calculate damage per second
     cannon.damage["per second"] = {
-        value: Math.trunc(cannon.damage.basic.value / cannon.damage["reload time"].value),
+        value: round(cannon.damage.basic.value / cannon.damage["reload time"].value, 2),
     }
 
     cannon.name = getName()
