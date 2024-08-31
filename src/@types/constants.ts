@@ -1,4 +1,4 @@
-import type { CannonFamily, CannonType } from "./cannons.js"
+import type { CannonFamily, CannonType, PeneDistance } from "./cannons.js"
 
 // Cannons
 export const cannonType = ["medium", "long", "carronade"]
@@ -7,7 +7,7 @@ export const cannonFamilyList: Record<CannonType, CannonFamily[]> = {
     long: ["regular", "navy", "blomefield"],
     carronade: ["regular", "obusiers"],
 }
-export const peneDistance: Record<CannonType, number[]> = {
+export const peneDistance: PeneDistance = {
     medium: [100, 750, 1000, 1250, 1500],
     long: [100, 1000, 1250, 1500],
     carronade: [100, 400, 500, 750, 1000, 1500],

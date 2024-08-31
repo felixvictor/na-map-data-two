@@ -106,6 +106,7 @@ for (const type of cannonType) {
 }
 
 const defenseFamily = new Set(["fort", "tower"])
+const familyIgnored = ["standard", "unicorn", "useless"]
 
 const getFamily = (name: string): string => {
     const regex = /\s+\(?(\w+)\)?/
@@ -223,8 +224,7 @@ const addData = (fileData: XmlGeneric): void => {
     cannon.name = getName()
     cannon.family = getFamily(cannon.name)
     if (
-        cannon.family !== "standard" &&
-        cannon.family !== "unicorn" &&
+        !familyIgnored.includes(cannon.family) &&
         !(cannon.family === "defense" && cannon.name === "24 (Fort)") &&
         !(cannon.family === "defense" && cannon.name === "24 (Tower)")
     ) {
