@@ -31,7 +31,6 @@ const fetchWithRetry = async (url: URL, { tries } = { tries: 3 }): Promise<strin
 
     while (attempt <= tries) {
         try {
-            // eslint-disable-next-line n/no-unsupported-features/node-builtins
             const response = await fetch(url.toString(), { signal })
 
             if (!response.ok) {

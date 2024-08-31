@@ -23,7 +23,7 @@ try {
     for (const file of files) {
         console.log("loop", file.name)
         if (file.isFile() && path.parse(file.name).ext === ".xz") {
-            await reCompressFile(`${file.path}/${file.name}`)
+            await reCompressFile(`${file.parentPath}/${file.name}`)
         }
     }
 } catch (err) {
