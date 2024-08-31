@@ -1,5 +1,12 @@
 
 
+## [1.6.15](https://example.com///compare/v1.6.14...v1.6.15) (2024-08-31)
+
+
+### Bug Fixes
+
+* **cannon:** damage per second ([856325b](https://example.com///commit/856325bd90092cb6a435246658b7bf8f9f92520e))
+
 ## [1.6.14](https://example.com///compare/v1.6.13...v1.6.14) (2024-08-31)
 
 
