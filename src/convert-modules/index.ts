@@ -67,7 +67,7 @@ export const convertModulesAndWoodData = (): void => {
 }
 
 export const convertModules = async () => {
-    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`))
+    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
 
     convertModulesAndWoodData()
     await saveModules()

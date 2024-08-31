@@ -159,7 +159,7 @@ const convertRecipes = async (): Promise<void> => {
 }
 
 export const convertRecipeData = (): void => {
-    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`))
+    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
 
     void convertRecipes()
 }

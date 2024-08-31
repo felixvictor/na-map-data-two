@@ -263,7 +263,7 @@ const getEquidistantPorts = async (): Promise<void> => {
 */
 
 export const convertGenericPortData = (): void => {
-    apiPorts = readJson<APIPort[]>(getAPIFilename(`${serverIds[0]}-Ports-${serverDate}.json`))
+    apiPorts = readJson(getAPIFilename(`${serverIds[0]}-Ports-${serverDate}.json`)) as APIPort[]
 
     apiPortPos = new Map(
         apiPorts.map((apiPort) => [

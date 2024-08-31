@@ -132,7 +132,7 @@ const convertLoot = async (): Promise<void> => {
 }
 
 export const convertLootData = (): void => {
-    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`))
+    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
     itemNames = new Map(apiItems.map((item) => [Number(item.Id), getLootItemName(item.Name, item.ItemType)]))
 
     void convertLoot()

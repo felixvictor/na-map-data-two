@@ -242,7 +242,7 @@ const convertBuildings = async (): Promise<void> => {
 }
 
 export const convertBuildingData = async (): Promise<void> => {
-    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`))
+    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
 
     await convertBuildings()
 }

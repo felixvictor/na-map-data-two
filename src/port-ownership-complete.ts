@@ -60,7 +60,7 @@ export class PortOwnershipComplete extends PortOwnership {
             unCompressSync(fileName)
             const parsedFileName = path.parse(fileName)
             const jsonFN = path.format({ dir: parsedFileName.dir, name: parsedFileName.name })
-            const apiPorts = readJson<APIPort[]>(jsonFN)
+            const apiPorts = readJson(jsonFN) as APIPort[]
             this.parseData(apiPorts)
             await removeFileASync(jsonFN)
         }

@@ -38,7 +38,7 @@ class Port {
         const fileName = getAPIFilename(`${serverIds[0]}-Ports-${serverDate}.json`)
 
         unCompressSync(`${fileName}.${compressExt}`)
-        const ports = readJson<APIPort[]>(fileName)
+        const ports = readJson(fileName) as APIPort[]
         removeFileSync(fileName)
         return ports
     }

@@ -45,7 +45,7 @@ let apiShops: APIShop[]
 
 const commonPaths = getCommonPaths()
 const distancesFile = commonPaths.fileDistances
-const distancesOrig: Distance[] = readJson(distancesFile)
+const distancesOrig = readJson(distancesFile) as Distance[]
 let distances: Map<number, number>
 let numberPorts: number
 
@@ -384,9 +384,9 @@ const setAndSaveFrontlines = async (serverName: string): Promise<void> => {
 
 export const convertServerPortData = async () => {
     for (const serverName of serverIds) {
-        apiItems = readJson(getAPIFilename(`${serverName}-ItemTemplates-${serverDate}.json`))
-        apiPorts = readJson(getAPIFilename(`${serverName}-Ports-${serverDate}.json`))
-        apiShops = readJson(getAPIFilename(`${serverName}-Shops-${serverDate}.json`))
+        apiItems = readJson(getAPIFilename(`${serverName}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
+        apiPorts = readJson(getAPIFilename(`${serverName}-Ports-${serverDate}.json`)) as APIPort[]
+        apiShops = readJson(getAPIFilename(`${serverName}-Shops-${serverDate}.json`)) as APIShop[]
 
         /**
          * Item names

@@ -118,8 +118,8 @@ const wsOptions: Partial<Excel.AddWorksheetOptions> = {
 }
 
 const setupData = () => {
-    const portsOrig: PortBasic[] = readJson(commonPaths.filePort)
-    const shipsOrig: ShipData[] = readJson(commonPaths.fileShip)
+    const portsOrig = readJson(commonPaths.filePort) as PortBasic[]
+    const shipsOrig = readJson(commonPaths.fileShip) as ShipData[]
 
     portsDeepWater = portsOrig
         .filter((port) => !port.shallow)

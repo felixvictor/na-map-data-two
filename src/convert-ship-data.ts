@@ -684,8 +684,8 @@ const convertShips = async (): Promise<void> => {
 }
 
 export const convertShipData = async (): Promise<void> => {
-    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`))
-    cannons = readJson(commonPaths.fileCannon)
+    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
+    cannons = readJson(commonPaths.fileCannon) as Cannon
 
     await convertShips()
     await convertShipBlueprints()
