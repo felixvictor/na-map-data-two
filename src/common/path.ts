@@ -58,7 +58,7 @@ export function getCommonPaths(appRoot = process.env.PWD ?? ""): DirList {
 
         fileBuilding: buildPath(dirGenGeneric, "buildings.json"),
         fileDistances: buildPath(dirLib, "distances.json"),
-        fileCannon: buildPath(dirGenGeneric, "cannons.json"),
+        fileCannon: buildPath(dirGenGeneric, "cannonsTwo.json"),
         fileLoot: buildPath(dirGenGeneric, "loot.json"),
         fileModules: buildPath(dirGenGeneric, "modules.json"),
         filePbSheet: buildPath(dirGenGeneric, "port-battle.xlsx"),

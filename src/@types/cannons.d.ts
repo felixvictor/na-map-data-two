@@ -37,9 +37,7 @@ export interface CannonGeneric {
     weight: CannonValue
     crew: CannonValue
 }
-export type CannonPenetration = {
-    [K in PeneDistance]: CannonValue
-}
+export type CannonPenetration = Record<number, CannonValue>
 export interface CannonValue {
     value: number
     digits?: number

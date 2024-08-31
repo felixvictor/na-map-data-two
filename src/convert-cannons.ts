@@ -52,10 +52,11 @@ const getBaseFileNames = (directory: string): void => {
         const fileNameFirstPart = fileName.slice(0, fileName.indexOf(" "))
         // noinspection OverlyComplexBooleanExpressionJS
         if (
-            (fileNameFirstPart === "cannon" && fileName !== "cannon repair kit.xml") ||
-            fileNameFirstPart === "carronade" ||
-            fileNameFirstPart === "carr" ||
-            fileName.startsWith("tower cannon")
+            !fileName.endsWith("el 1.xml") &&
+            ((fileNameFirstPart === "cannon" && fileName !== "cannon repair kit.xml") ||
+                fileNameFirstPart === "carronade" ||
+                fileNameFirstPart === "carr" ||
+                fileName.startsWith("tower cannon"))
         ) {
             fileNames.add(fileName)
         }
@@ -179,6 +180,7 @@ const addData = (fileData: XmlGeneric): void => {
     }
 
     // Calculate penetrations
+    const type = getType()
     const penetrations = new Map<number, number>(
         (
             fileData.Attributes.Pair.find((pair: PairEntity) => pair.Key._text === "CANNON_PENETRATION_DEGRADATION")
@@ -186,15 +188,26 @@ const addData = (fileData: XmlGeneric): void => {
         ).map((penetration) => [Number(penetration.Time._text) * 1000, Number(penetration.Value._text)]),
     )
 
-    penetrations.set(50, ((penetrations.get(0) ?? 0) + (penetrations.get(100) ?? 0)) / 2)
-    penetrations.set(
-        750,
-        (penetrations.get(800) ?? 0) + ((penetrations.get(600) ?? 0) - (penetrations.get(800) ?? 0)) * 0.25,
-    )
-    penetrations.set(1250, ((penetrations.get(1200) ?? 0) + (penetrations.get(1300) ?? 0)) / 2)
+    const interpolate = (lowerDist: number, higherDist: number, targetDist: number): number => {
+        const lowerPene = penetrations.get(lowerDist) ?? 1
+        const higherPene = penetrations.get(higherDist) ?? 1
+        return lowerPene + ((targetDist - lowerDist) * (higherPene - lowerPene)) / (higherDist - lowerDist)
+    }
+
+    if (type === "long") {
+        penetrations.set(100, interpolate(0, 1100, 100))
+        penetrations.set(1000, interpolate(0, 1100, 1000))
+        penetrations.set(1250, interpolate(1100, 1500, 1250))
+    } else if (type === "medium") {
+        penetrations.set(750, interpolate(700, 800, 750))
+        penetrations.set(1000, interpolate(800, 1500, 1000))
+        penetrations.set(1250, interpolate(800, 1500, 1250))
+    } else {
+        penetrations.set(750, interpolate(700, 800, 750))
+    }
 
     cannon.penetration = {} as CannonPenetration
-    for (const distance of peneDistance) {
+    for (const distance of peneDistance[type]) {
         cannon.penetration[distance] = {
             value: Math.trunc((penetrations.get(distance) ?? 0) * (cannon.damage.penetration?.value ?? 0)),
         }
@@ -204,17 +217,18 @@ const addData = (fileData: XmlGeneric): void => {
 
     // Calculate damage per second
     cannon.damage["per second"] = {
-        value: round(cannon.damage.basic.value / cannon.damage["reload time"].value, 2),
+        value: Math.trunc(cannon.damage.basic.value / cannon.damage["reload time"].value),
     }
 
     cannon.name = getName()
     cannon.family = getFamily(cannon.name)
     if (
+        cannon.family !== "standard" &&
         cannon.family !== "unicorn" &&
         !(cannon.family === "defense" && cannon.name === "24 (Fort)") &&
         !(cannon.family === "defense" && cannon.name === "24 (Tower)")
     ) {
-        cannons[getType()].push(cannon)
+        cannons[type].push(cannon)
     }
 }
 

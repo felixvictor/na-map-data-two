@@ -7,7 +7,11 @@ export const cannonFamilyList: Record<CannonType, CannonFamily[]> = {
     long: ["regular", "navy", "blomefield"],
     carronade: ["regular", "obusiers"],
 }
-export const peneDistance = [50, 100, 200, 300, 400, 500, 750, 1000, 1250, 1500]
+export const peneDistance: Record<CannonType, number[]> = {
+    medium: [100, 750, 1000, 1250, 1500],
+    long: [100, 1000, 1250, 1500],
+    carronade: [100, 400, 500, 750, 1000, 1500],
+}
 
 // Loot
 export const lootType = ["item", "loot", "chest", "fish"]
