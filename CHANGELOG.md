@@ -1,5 +1,12 @@
 
 
+## [1.6.14](https://example.com///compare/v1.6.13...v1.6.14) (2024-08-31)
+
+
+### Bug Fixes
+
+* **cannon:** penetration data fixed and 'el 1' cannon ignored ([30e6c2d](https://example.com///commit/30e6c2dbd86ed6d8fdc713c151ea8e4c1cc1b7e4))
+
 ## [1.6.13](https://example.com///compare/v1.6.12...v1.6.13) (2024-08-31)
 
 ## [1.6.12](https://example.com///compare/v1.6.11...v1.6.12) (2024-08-18)
