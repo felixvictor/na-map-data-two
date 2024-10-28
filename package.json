@@ -16,7 +16,6 @@
         "helper:build:modules:2:correct:dir": "rm -rf build/Modules/; mv build/modules build/Modules",
         "helper:build:modules:3:correct:enc": "/usr/bin/bash -c 'cd build/Modules/; for FILE in *.xml; do dos2unix -m -q \"${FILE}\"; done'",
         "helper:build:modules:4:correct:names": "cd build/Modules/; mv \"traders brig hull.xml\" \"trader brig hull.xml\"; mv \"agamemnon deck armor .xml\" \"agamemnon deck armor.xml\"",
-        "helper:check-neutral-ports": "yarn tsx helper/check-neutral-ports.ts",
         "helper:get-ship-speed-constants": "yarn tsx helper/get-ship-speed-constants.ts",
         "helper:loc": "npx cloc --by-file --not-match-f='.d.ts' --quiet ./src/js",
         "helper:size:css": "find public/ -iname '*.css' -exec du -bc {} + | sort -k 2 | sed 's|public/||'",
@@ -27,7 +26,7 @@
         "lint:js": "eslint . --fix",
         "main:prod": "run-s build:load build:data:convert deploy:netlify",
         "main:release": "run-s release push dev:deploy",
-        "pretty-print": "yarn prettier --config .prettierrc --log-level error --write .",
+        "pretty-print": "prettier --config .prettierrc.json --log-level error --write .",
         "pretty-print-package": "yarn prettier-package-json --write ./package.json",
         "push": "git push",
         "release": "release-it --ci",
@@ -37,9 +36,11 @@
     "devDependencies": {
         "@commitlint/cli": "^19.5.0",
         "@commitlint/config-conventional": "^19.5.0",
+        "@commitlint/types": "^19.5.0",
         "@eslint/eslintrc": "^3.1.0",
+        "@eslint/js": "^9.13.0",
         "@release-it/conventional-changelog": "^8.0.1",
-        "@tsconfig/node20": "^20.1.4",
+        "@tsconfig/node22": "^22.0.0",
         "@types/collections": "^5.1.5",
         "@types/d3-array": "^3.2.1",
         "@types/eslint": "^9.6.1",
@@ -79,11 +80,6 @@
         "defaults and supports es6-module and last 3 versions, maintained node versions"
     ],
     "packageManager": "yarn@4.5.1",
-    "prettier": {
-        "printWidth": 120,
-        "semi": false,
-        "tabWidth": 4
-    },
     "prettier-package-json": {
         "tabWidth": 4
     },

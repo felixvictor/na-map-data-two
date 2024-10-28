@@ -1,6 +1,4 @@
-// eslint-disable-next-line n/no-extraneous-import
 import type { UserConfig } from "@commitlint/types"
-// eslint-disable-next-line n/no-extraneous-import
 import { RuleConfigSeverity } from "@commitlint/types"
 
 const config: UserConfig = {
