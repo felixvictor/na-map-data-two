@@ -1,5 +1,6 @@
 import fs from "node:fs"
 import path from "node:path"
+
 import type { ElementCompact } from "xml-js"
 import convert from "xml-js"
 
@@ -50,7 +51,6 @@ const getBaseFileNames = (directory: string): void => {
          * First part of the file name containing the type
          */
         const fileNameFirstPart = fileName.slice(0, fileName.indexOf(" "))
-        // noinspection OverlyComplexBooleanExpressionJS
         if (
             !fileName.endsWith("el 1.xml") &&
             ((fileNameFirstPart === "cannon" && fileName !== "cannon repair kit.xml") ||
@@ -172,7 +172,6 @@ const addData = (fileData: XmlGeneric): void => {
             cannon[group] = {}
         }
 
-        // @ts-expect-error typing multi-dim objects
         cannon[group][element] = {
             value: Number(
                 (fileData.Attributes.Pair.find((pair) => pair.Key._text === value)?.Value.Value as TextEntity)._text,
@@ -249,7 +248,6 @@ export const convertCannons = async (): Promise<void> => {
     for (const type of cannonType) {
         for (const cannon of cannons[type]) {
             for (const group of Object.keys(cannon)) {
-                // @ts-expect-error typing multi-dim objects
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 for (const [elementKey, elementValue] of Object.entries<CannonValue>(cannon[group])) {
                     maxDigits.set(
@@ -268,7 +266,6 @@ export const convertCannons = async (): Promise<void> => {
         const [cannonType, cannonEntityKey, elementKey] = key
         if (value > 0) {
             for (const cannon of cannons[cannonType]) {
-                // @ts-expect-error typing multi-dim objects
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 cannon[cannonEntityKey][elementKey].digits = value
             }

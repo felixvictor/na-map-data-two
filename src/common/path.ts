@@ -14,7 +14,7 @@ const buildPath = (...args: string[]) => {
 
 // https://stackoverflow.com/a/50052194
 
-interface DirList {
+export interface DirList {
     dirAPI: string
     dirGenGeneric: string
     dirGenServer: string

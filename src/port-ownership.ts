@@ -1,5 +1,6 @@
-import { group as d3Group } from "d3-array"
 import path from "node:path"
+
+import { group as d3Group } from "d3-array"
 
 import type { APIPort } from "./@types/api-port.js"
 import type { NationList, NationShortName, OwnershipNation } from "./@types/nations.js"

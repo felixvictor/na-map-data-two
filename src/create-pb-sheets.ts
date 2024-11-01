@@ -1,6 +1,12 @@
 import { range } from "d3-array"
 import Excel from "exceljs"
 
+/**
+ * Set default font
+ * {@link https://github.com/exceljs/exceljs/issues/572#issuecomment-631788521}
+ */
+import StylesXform from "exceljs/lib/xlsx/xform/style/styles-xform.js"
+
 import type { PortBasic } from "./@types/ports.js"
 import type { ShipData } from "./@types/ships.js"
 import { maxShallowWaterBR, minDeepWaterBR } from "./common/constants.js"
@@ -85,12 +91,6 @@ const defaultFont: Partial<Excel.Font> = {
     underline: false,
 }
 
-/**
- * Set default font
- * {@link https://github.com/exceljs/exceljs/issues/572#issuecomment-631788521}
- */
-// @ts-expect-error import function
-import StylesXform from "exceljs/lib/xlsx/xform/style/styles-xform.js"
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
 const origStylesXformInit = StylesXform.prototype.init
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
