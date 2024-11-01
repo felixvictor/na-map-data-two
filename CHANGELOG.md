@@ -1,5 +1,13 @@
 
 
+## [1.6.18](https://example.com///compare/v1.6.17...v1.6.18) (2024-11-01)
+
+
+### Bug Fixes
+
+* **cors:** netlify config ([84af7d4](https://example.com///commit/84af7d4990bd00ee85bf9205a00197697eeeaf3f))
+* **gitignore:** yarn dir ([2c076c7](https://example.com///commit/2c076c7b765e97be64b0d2c777a5b88531a8860e))
+
 ## [1.6.17](https://example.com///compare/v1.6.16...v1.6.17) (2024-10-28)
 
 ## [1.6.16](https://example.com///compare/v1.6.15...v1.6.16) (2024-08-31)
