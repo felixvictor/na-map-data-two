@@ -1,7 +1,7 @@
+import { execSync } from "node:child_process"
 import { readdir } from "node:fs/promises"
 import path from "node:path"
 
-import { execSync } from "node:child_process"
 import { compressAsync } from "../src/common/compress.js"
 import { getCommonPaths } from "../src/common/path.js"
 

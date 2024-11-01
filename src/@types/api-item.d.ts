@@ -1,5 +1,4 @@
 // https://jvilk.com/MakeTypes/
-
 import type { ValuesType } from "utility-types"
 
 /****************************

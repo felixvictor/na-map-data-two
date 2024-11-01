@@ -1,15 +1,11 @@
 import type { cannonType } from "./constants.js"
 
 export type CannonType = (typeof cannonType)[number]
-export type CannonTypeList<T> = {
-    [K in CannonType]: T
-}
+export type CannonTypeList<T> = Record<CannonType, T>
 export type CannonFamily = string
 export type PeneDistance = Record<CannonType, number[]>
 
-type Cannon = {
-    [K in CannonType]: CannonEntity[]
-}
+type Cannon = Record<CannonType, CannonEntity[]>
 export interface CannonEntity {
     name: string
     family: CannonFamily

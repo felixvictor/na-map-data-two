@@ -1,5 +1,6 @@
-import { group as d3Group } from "d3-array"
 import path from "node:path"
+
+import { group as d3Group } from "d3-array"
 
 import type { APIItemGeneric } from "./@types/api-item.js"
 import type { APIPort } from "./@types/api-port.js"

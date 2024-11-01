@@ -1,5 +1,6 @@
-import * as fs from "fs"
 import path from "node:path"
+
+import * as fs from "fs"
 import convert, { type ElementCompact } from "xml-js"
 
 import type { APIItemGeneric, APIShip, APIShipBlueprint, Limit, Specs } from "./@types/api-item.js"

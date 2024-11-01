@@ -1,5 +1,4 @@
 // noinspection SpellCheckingInspection
-
 import type { APIModifierName, ModifierName } from "../@types/modules.js"
 
 export const notUsedModules = new Set([

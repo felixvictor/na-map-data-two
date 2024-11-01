@@ -4,9 +4,7 @@ import type { ObjectIndexer } from "./index.js"
 export type WoodFamily = (typeof woodFamily)[number]
 export type WoodType = (typeof woodType)[number]
 
-export type WoodJsonData = {
-    [K in WoodType]: WoodTrimOrFrame[]
-}
+export type WoodJsonData = Record<WoodType, WoodTrimOrFrame[]>
 interface WoodTrimOrFrame {
     id: number
     properties: WoodProperty[]

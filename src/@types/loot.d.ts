@@ -1,9 +1,7 @@
 import type { lootType } from "./constants.js"
 
 export type LootType = (typeof lootType)[number]
-export type LootTypeList<T> = {
-    [K in LootType]: T
-}
+export type LootTypeList<T> = Record<LootType, T>
 export type Loot = LootTypeList<LootLootEntity[] | LootChestsEntity[]>
 interface LootGenericEntity {
     id: number
