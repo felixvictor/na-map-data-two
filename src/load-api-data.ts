@@ -4,9 +4,15 @@ import type { APIItemGeneric } from "./@types/api-item.d.ts"
 import type { APIPort } from "./@types/api-port.d.ts"
 import type { APIShop } from "./@types/api-shop.d.ts"
 import { compressAsync, compressExt } from "./common/compress.js"
-import { serverBaseName, sourceBaseDir, sourceBaseUrl } from "./common/constants.js"
+import {
+    serverBaseName,
+    sourceBaseDir,
+    sourceBaseUrl,
+    testServerBaseName,
+    testSourceBaseDir,
+} from "./common/constants.js"
 import { apiBaseFiles, baseAPIFilename, removeFileASync, saveJsonAsync } from "./common/file.js"
-import { serverIds } from "./common/servers.js"
+import { serverIds, testServerIds } from "./common/servers.js"
 import { sortBy } from "./common/sort.js"
 import { currentServerStartDate as serverDate } from "./common/time.js"
 
@@ -74,8 +80,15 @@ const readNAJson = async (url: URL): Promise<APIType[]> => {
 /**
  * Load API data and save sorted data
  */
-const getAPIDataAndSave = async (serverName: string, apiBaseFile: string, outfileName: string): Promise<boolean> => {
-    const url = new URL(path.join(sourceBaseDir, `${apiBaseFile}_${serverBaseName}${serverName}.json`), sourceBaseUrl)
+const getAPIDataAndSave = async (
+    serverName: string,
+    apiBaseFile: string,
+    outfileName: string,
+    test = false,
+): Promise<boolean> => {
+    const url = test
+        ? new URL(path.join(testSourceBaseDir, `${apiBaseFile}_${testServerBaseName}${serverName}.json`), sourceBaseUrl)
+        : new URL(path.join(sourceBaseDir, `${apiBaseFile}_${serverBaseName}${serverName}.json`), sourceBaseUrl)
     const data = await readNAJson(url)
 
     data.sort(sortBy(["Id"]))
@@ -95,6 +108,15 @@ const loadData = async (baseAPIFilename: string): Promise<boolean> => {
 
             await deleteAPIFiles(outfileName)
             await getAPIDataAndSave(serverName, apiBaseFile, outfileName)
+        }
+    }
+
+    for (const serverName of testServerIds) {
+        for (const apiBaseFile of apiBaseFiles) {
+            const outfileName = path.resolve(baseAPIFilename, `${serverName}-${apiBaseFile}-${serverDate}.json`)
+
+            await deleteAPIFiles(outfileName)
+            await getAPIDataAndSave(serverName, apiBaseFile, outfileName, true)
         }
     }
 
