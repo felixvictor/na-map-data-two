@@ -1,5 +1,10 @@
 
 
+## 1.7.0 (2024-12-02)
+
+* feat: download data for test server ([d2f0cdd](https://example.com/commits/d2f0cdd))
+* chore(deps): bump ([4a1326b](https://example.com/commits/4a1326b))
+
 ## [1.6.18](https://example.com///compare/v1.6.17...v1.6.18) (2024-11-01)
 
 
