@@ -1,5 +1,11 @@
 
 
+## <small>1.7.1 (2024-12-06)</small>
+
+* fix(ports): calculate port income ([0051823](https://example.com/commits/0051823))
+* chore(deps): bump ([254954c](https://example.com/commits/254954c))
+* refactor: yarn scripts ([7ee521a](https://example.com/commits/7ee521a))
+
 ## 1.7.0 (2024-12-02)
 
 * feat: download data for test server ([d2f0cdd](https://example.com/commits/d2f0cdd))
