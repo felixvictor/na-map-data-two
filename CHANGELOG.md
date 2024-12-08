@@ -1,5 +1,9 @@
 
 
+## <small>1.7.2 (2024-12-08)</small>
+
+* Revert "fix(ports): calculate port income" ([fc4201b](https://example.com/commits/fc4201b))
+
 ## <small>1.7.1 (2024-12-06)</small>
 
 * fix(ports): calculate port income ([0051823](https://example.com/commits/0051823))
