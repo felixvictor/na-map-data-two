@@ -11,7 +11,6 @@ import type { InventoryEntity, PortBattlePerServer, PortPerServer } from "./@typ
 import type { Trade, TradeItem } from "./@types/trade.js"
 import { cleanItemName, cleanName } from "./common/api.js"
 import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
-import { round, roundToThousands } from "./common/format.js"
 import { findNationById, findNationShortNameById, nationShortName, nations } from "./common/nation.js"
 import { getCommonPaths } from "./common/path.js"
 import { serverIds } from "./common/servers.js"
@@ -73,19 +72,15 @@ const setPortFeaturePerServer = (apiPort: APIPort): void => {
     const portShop = apiShops.find((shop) => shop.Id === apiPort.Id)
 
     if (portShop) {
-        const taxLevel = roundToThousands(apiPort.PortTax)
         const portFeaturesPerServer = {
             id: Number(apiPort.Id),
             portBattleStartTime: apiPort.PortBattleStartTime,
             availableForAll: apiPort.AvailableForAll,
             capturable: !apiPort.NonCapturable,
             conquestMarksPension: apiPort.ConquestMarksPension,
-            portTax: taxLevel,
+            portTax: Math.round(apiPort.PortTax * 100) / 100,
             taxIncome: apiPort.LastTax,
-            netIncome:
-                apiPort.LastCost === 0
-                    ? round(apiPort.LastTax - apiPort.LastTax * taxLevel)
-                    : apiPort.LastTax - apiPort.LastCost,
+            netIncome: apiPort.LastTax - apiPort.LastCost,
             tradingCompany: apiPort.TradingCompany,
             laborHoursDiscount: apiPort.LaborHoursDiscount,
             dropsTrading: [
