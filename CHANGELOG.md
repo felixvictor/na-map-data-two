@@ -1,5 +1,9 @@
 
 
+## 1.11.0 (2024-12-16)
+
+* feat: coordinate adjustments for openlayers ([8d46d63](https://example.com/commits/8d46d63))
+
 ## 1.10.0 (2024-12-16)
 
 * feat: coordinate adjustments for openlayers ([2678de7](https://example.com/commits/2678de7))
