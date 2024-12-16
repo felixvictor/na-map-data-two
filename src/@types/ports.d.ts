@@ -1,4 +1,4 @@
-import type { Point } from "./coordinates.js"
+import type { PointTuple } from "./coordinates.js"
 import type { AttackerNationShortName, PortBattleNationShortName } from "./nations.js"
 
 export interface PortBattlePerServer {
@@ -48,7 +48,7 @@ export type PortBattleType = "Small" | "Medium" | "Large"
 export interface PortBasic {
     id: number
     name: string
-    coordinates: Point
+    coordinates: PointTuple
     angle: number
     region: string
     countyCapitalName: string
@@ -66,7 +66,7 @@ type PortIntersection =
     | string
     | undefined
     | GoodList
-    | Point
+    | PointTuple
     | (string | InventoryEntity | TradeGoodProfit)[]
 // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 export interface Port extends PortBasic, PortPerServer, PortBattlePerServer {
@@ -97,24 +97,24 @@ export interface PortWithTrades extends Port {
 
 export interface PbZoneDefence {
     id: number
-    forts: Point[]
-    towers: Point[]
+    forts: PointTuple[]
+    towers: PointTuple[]
 }
 export interface PbZoneBasic {
     id: number
-    joinCircle: Point
-    pbCircles: Point[]
-    spawnPoints: Point[]
+    joinCircle: PointTuple
+    pbCircles: PointTuple[]
+    spawnPoints: PointTuple[]
 }
 
 export interface PbZoneRaid {
     id: number
-    joinCircle: Point
-    raidCircles: Point[]
-    raidPoints: Point[]
+    joinCircle: PointTuple
+    raidCircles: PointTuple[]
+    raidPoints: PointTuple[]
 }
 
 export interface PbZone extends PbZoneBasic, PbZoneDefence, PbZoneRaid {
     id: number
-    position: Point
+    position: PointTuple
 }

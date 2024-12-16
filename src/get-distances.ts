@@ -4,7 +4,7 @@ import path from "path"
 import { default as PNG } from "pngjs"
 
 import type { APIPort } from "./@types/api-port.js"
-import type { Distance, Point } from "./@types/coordinates.js"
+import type { Distance, PointTuple } from "./@types/coordinates.js"
 import { compressExt, unCompressSync } from "./common/compress.js"
 import { distanceMapSize, mapSize } from "./common/constants.js"
 import { convertCoordX, convertCoordY } from "./common/coordinates.js"
@@ -43,7 +43,7 @@ class Port {
         return ports
     }
 
-    getCoordinates(y: number, x: number, mapScale: number): Point {
+    getCoordinates(y: number, x: number, mapScale: number): PointTuple {
         return [Math.trunc(convertCoordY(x, y) * mapScale), Math.trunc(convertCoordX(x, y) * mapScale)]
     }
 }

@@ -1,4 +1,4 @@
-import type { Coordinate, Point } from "../@types/coordinates.js"
+import type { Coordinate, PointTuple } from "../@types/coordinates.js"
 import { degreesFullCircle, degreesHalfCircle, degreesQuarterCircle, speedFactor, timeFactor } from "./constants.js"
 
 const transformMatrix = {
@@ -42,11 +42,11 @@ export const radiansToDegrees = (radians: number): number => (radians * degreesH
 /**
  * Calculate the angle in correctionValueDegrees between two points
  * see {@link https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees}
- * @param   centerPt - Center point
- * @param   targetPt - Target point
+ * @param   centerPt - Center PointTuple
+ * @param   targetPt - Target PointTuple
  * @returns Degrees between centerPt and targetPt
  */
-export const rotationAngleInDegrees = (centerPt: Point, targetPt: Point): number => {
+export const rotationAngleInDegrees = (centerPt: PointTuple, targetPt: PointTuple): number => {
     let theta = Math.atan2(targetPt[1] - centerPt[1], targetPt[0] - centerPt[0])
     theta -= Math.PI / 2
     const degrees = radiansToDegrees(theta)
@@ -57,14 +57,14 @@ export const rotationAngleInDegrees = (centerPt: Point, targetPt: Point): number
  * Calculate the angle in correctionValueDegrees between two points
  * @see https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
  */
-export const rotationAngleInRadians = (centerPt: Point, targetPt: Point): number =>
+export const rotationAngleInRadians = (centerPt: PointTuple, targetPt: PointTuple): number =>
     Math.atan2(centerPt[1], centerPt[0]) - Math.atan2(targetPt[1], targetPt[0])
 
 /**
  * Calculate the distance between two points
  * see {@link https://www.mathsisfun.com/algebra/distance-2-points.html}
- * @param   centerPt - Center point
- * @param   targetPt - Target point
+ * @param   centerPt - Center PointTuple
+ * @param   targetPt - Target PointTuple
  * @returns Distance between centerPt and targetPt
  */
 export const distancePoints = (centerPt: Coordinate, targetPt: Coordinate): number =>
