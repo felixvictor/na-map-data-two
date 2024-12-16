@@ -206,17 +206,17 @@ const setAndSavePBZonesGJ = async () => {
             // Port battle circles
             {
                 type: "Feature",
-                id: `${port.Name}-pb-circles`,
+                id: `${port.Id}-pbc`,
                 geometry: {
                     type: "MultiPoint",
                     coordinates: coordinateAdjust(getPBCircles(port.PortBattleZonePositions)) as Position[],
                 },
-                properties: { name: "Port battle circles" },
+                properties: { name: "Pb circles" },
             },
             // Forts
             {
                 type: "Feature",
-                id: `${port.Name}-forts`,
+                id: `${port.Id}-f`,
                 geometry: {
                     type: "MultiPoint",
                     coordinates: coordinateAdjust(getForts(port.PortElementsSlotGroups)) as Position[],
@@ -226,7 +226,7 @@ const setAndSavePBZonesGJ = async () => {
             // Join circle
             {
                 type: "Feature",
-                id: `${port.Name}-join-circle`,
+                id: `${port.Id}-jc`,
                 geometry: {
                     type: "Point",
                     coordinates: coordinateAdjust(getJoinCircle(Number(port.Id), Number(port.Rotation))) as Position,
@@ -236,7 +236,7 @@ const setAndSavePBZonesGJ = async () => {
             // Spawn points
             {
                 type: "Feature",
-                id: `${port.Name}-spawn-points`,
+                id: `${port.Id}-sp`,
                 geometry: {
                     type: "MultiPoint",
                     coordinates: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)) as Position[],
