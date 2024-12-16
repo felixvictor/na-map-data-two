@@ -213,16 +213,19 @@ const setAndSavePBZonesGJ = async () => {
                     {
                         type: "Point",
                         coordinates: coordinateAdjust(x, y) as Position,
+                        properties: { name: "Center" },
                     },
                     // Port battle circles
                     {
                         type: "MultiPoint",
                         coordinates: coordinateAdjust(getPBCircles(port.PortBattleZonePositions)) as Position[],
+                        properties: { name: "Port battle circles" },
                     },
                     // Forts
                     {
                         type: "MultiPoint",
                         coordinates: coordinateAdjust(getForts(port.PortElementsSlotGroups)) as Position[],
+                        properties: { name: "Forts" },
                     },
                     // Join circle
                     {
@@ -230,11 +233,13 @@ const setAndSavePBZonesGJ = async () => {
                         coordinates: coordinateAdjust(
                             getJoinCircle(Number(port.Id), Number(port.Rotation)),
                         ) as Position,
+                        properties: { name: "Join circle" },
                     },
                     // Spawn points
                     {
                         type: "MultiPoint",
                         coordinates: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)) as Position[],
+                        properties: { name: "Spawn points" },
                     },
                 ],
             },
