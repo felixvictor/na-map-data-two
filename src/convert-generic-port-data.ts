@@ -23,8 +23,8 @@ const commonPaths = getCommonPaths()
 let apiPorts = [] as APIPort[]
 let apiPortPos = new Map<number, Coordinate>()
 
-const counties = new Map()
-const regions = new Map()
+const counties = new Set<string>()
+const regions = new Set<string>()
 const geoJsonRegions: FeatureCollection<MultiPoint> = { type: "FeatureCollection", features: [] }
 const geoJsonCounties: FeatureCollection<MultiPoint> = { type: "FeatureCollection", features: [] }
 
@@ -200,54 +200,54 @@ const setAndSavePBZonesGJ = async () => {
     ],
 }
      */
-    const features: Feature[] = []
-    apiPorts.map((port) => {
-        const { x, y } = apiPortPos.get(Number(port.Id)) ?? { x: 0, y: 0 }
-        const feature: Feature<GeometryCollection> = {
-            type: "Feature",
-            id: port.Id,
-            geometry: {
-                type: "GeometryCollection",
-                geometries: [
-                    // Center
-                    {
-                        type: "Point",
-                        coordinates: coordinateAdjust(x, y) as Position,
-                        properties: { name: "Center" },
-                    },
-                    // Port battle circles
-                    {
-                        type: "MultiPoint",
-                        coordinates: coordinateAdjust(getPBCircles(port.PortBattleZonePositions)) as Position[],
-                        properties: { name: "Port battle circles" },
-                    },
-                    // Forts
-                    {
-                        type: "MultiPoint",
-                        coordinates: coordinateAdjust(getForts(port.PortElementsSlotGroups)) as Position[],
-                        properties: { name: "Forts" },
-                    },
-                    // Join circle
-                    {
-                        type: "Point",
-                        coordinates: coordinateAdjust(
-                            getJoinCircle(Number(port.Id), Number(port.Rotation)),
-                        ) as Position,
-                        properties: { name: "Join circle" },
-                    },
-                    // Spawn points
-                    {
-                        type: "MultiPoint",
-                        coordinates: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)) as Position[],
-                        properties: { name: "Spawn points" },
-                    },
-                ],
+    let features: Feature<GJPoint | MultiPoint>[] = []
+    apiPorts.forEach((port) => {
+        const featuresPerPort: Feature<GJPoint | MultiPoint>[] = [
+            // Port battle circles
+            {
+                type: "Feature",
+                id: port.Name,
+                geometry: {
+                    type: "MultiPoint",
+                    coordinates: coordinateAdjust(getPBCircles(port.PortBattleZonePositions)) as Position[],
+                },
+                properties: { name: "Port battle circles" },
             },
-            properties: { name: port.Name },
-        }
+            // Forts
+            {
+                type: "Feature",
+                id: port.Name,
+                geometry: {
+                    type: "MultiPoint",
+                    coordinates: coordinateAdjust(getForts(port.PortElementsSlotGroups)) as Position[],
+                },
+                properties: { name: "Forts" },
+            },
+            // Join circle
+            {
+                type: "Feature",
+                id: port.Name,
+                geometry: {
+                    type: "Point",
+                    coordinates: coordinateAdjust(getJoinCircle(Number(port.Id), Number(port.Rotation))) as Position,
+                },
+                properties: { name: "Join circle" },
+            },
+            // Spawn points
+            {
+                type: "Feature",
+                id: port.Name,
+                geometry: {
+                    type: "MultiPoint",
+                    coordinates: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)) as Position[],
+                },
+                properties: { name: "Spawn points" },
+            },
+        ]
 
-        features.push(feature)
+        features = features.concat(featuresPerPort)
     })
+
     const geoJson: FeatureCollection = { type: "FeatureCollection", features }
     await saveJsonAsync(commonPaths.filePbZoneGJ, geoJson)
 }
@@ -258,7 +258,7 @@ const setAndSavePBZonesGJ = async () => {
  * @param portPos - Port screen x/y coordinates.
  */
 const setCountyFeature = (countyCapitalName: string, portPos: PointTuple): void => {
-    const countyName = capitalToCounty.has(countyCapitalName) ? capitalToCounty.get(countyCapitalName) : ""
+    const countyName = capitalToCounty.get(countyCapitalName) ?? ""
     if (countyName === "") {
         return
     }
@@ -269,7 +269,7 @@ const setCountyFeature = (countyCapitalName: string, portPos: PointTuple): void 
         )
         countyGJ?.geometry.coordinates.push(portPos)
     } else {
-        counties.set(countyName, countyName)
+        counties.add(countyName)
 
         const feature: Feature<MultiPoint> = {
             type: "Feature",
@@ -290,13 +290,13 @@ const setCountyFeature = (countyCapitalName: string, portPos: PointTuple): void 
  * @param portPos - Port screen x/y coordinates.
  */
 const setRegionFeature = (locationName: string, portPos: PointTuple): void => {
-    // noinspection DuplicatedCode
     if (regions.has(locationName)) {
-        geoJsonRegions.features
-            .filter((region) => region.id === locationName)
-            .some((region) => region.geometry.coordinates.push(portPos))
+        const regionGJ: Feature<MultiPoint> | undefined = geoJsonRegions.features.find(
+            (region) => region.id === locationName,
+        )
+        regionGJ?.geometry.coordinates.push(portPos)
     } else {
-        regions.set(locationName, locationName)
+        regions.add(locationName)
 
         const feature: Feature<MultiPoint> = {
             type: "Feature",
