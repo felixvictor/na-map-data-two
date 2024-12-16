@@ -1,5 +1,9 @@
 
 
+## 1.8.0 (2024-12-16)
+
+* feat: coordinate adjustments for openlayers ([cd7de28](https://example.com/commits/cd7de28))
+
 ## <small>1.7.2 (2024-12-08)</small>
 
 * Revert "fix(ports): calculate port income" ([fc4201b](https://example.com/commits/fc4201b))
