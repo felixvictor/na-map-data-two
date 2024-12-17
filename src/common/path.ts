@@ -28,7 +28,7 @@ export interface DirList {
     fileModules: string
     filePbSheet: string
     filePbZone: string
-    filePbZoneGJ: string
+    filePbZoneTwo: string
     filePort: string
     filePortTwo: string
     filePrices: string
@@ -65,7 +65,7 @@ export function getCommonPaths(appRoot = process.env.PWD ?? ""): DirList {
         fileModules: buildPath(dirGenGeneric, "modules.json"),
         filePbSheet: buildPath(dirGenGeneric, "port-battle.xlsx"),
         filePbZone: buildPath(dirGenGeneric, "pb-zones.json"),
-        filePbZoneGJ: buildPath(dirGenGeneric, "pb-zones-two.json"),
+        filePbZoneTwo: buildPath(dirGenGeneric, "pb-zones-two.json"),
         filePort: buildPath(dirGenGeneric, "ports.json"),
         filePortTwo: buildPath(dirGenGeneric, "ports-two.json"),
         filePrices: buildPath(dirGenGeneric, "prices.json"),

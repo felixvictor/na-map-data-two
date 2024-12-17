@@ -167,62 +167,24 @@ const setAndSavePBZones = async (): Promise<void> => {
     await saveJsonAsync(commonPaths.filePbZone, ports)
 }
 
-const setAndSavePBZonesGJ = async () => {
-    const features: Feature<GJPoint | MultiPoint>[] = apiPorts.flatMap((port) => [
-        // Port battle circles
-        {
-            type: "Feature",
-            id: `${port.Id}-pbc`,
-            geometry: {
-                type: "MultiPoint",
-                coordinates: coordinateAdjust(getPBCircles(port.PortBattleZonePositions)) as Position[],
-            },
-            properties: null,
-        },
-        // Forts
-        {
-            type: "Feature",
-            id: `${port.Id}-f`,
-            geometry: {
-                type: "MultiPoint",
-                coordinates: coordinateAdjust(getForts(port.PortElementsSlotGroups)) as Position[],
-            },
-            properties: null,
-        },
-        // Towers
-        {
-            type: "Feature",
-            id: `${port.Id}-t`,
-            geometry: {
-                type: "MultiPoint",
-                coordinates: coordinateAdjust(getForts(port.PortElementsSlotGroups)) as Position[],
-            },
-            properties: null,
-        },
-        // Join circle
-        {
-            type: "Feature",
-            id: `${port.Id}-jc`,
-            geometry: {
-                type: "Point",
-                coordinates: coordinateAdjust(getJoinCircle(Number(port.Id), Number(port.Rotation))) as Position,
-            },
-            properties: null,
-        },
-        // Spawn points
-        {
-            type: "Feature",
-            id: `${port.Id}-sp`,
-            geometry: {
-                type: "MultiPoint",
-                coordinates: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)) as Position[],
-            },
-            properties: null,
-        },
-    ])
+const setAndSavePBZonesTwo = async () => {
+    const ports = apiPorts
+        .filter((port) => !port.NonCapturable)
+        .map((port) => {
+            return {
+                id: Number(port.Id),
+                pbCircles: coordinateAdjust(getPBCircles(port.PortBattleZonePositions)),
+                forts: coordinateAdjust(getForts(port.PortElementsSlotGroups)),
+                towers: coordinateAdjust(getTowers(port.PortElementsSlotGroups)),
+                joinCircle: coordinateAdjust(getJoinCircle(Number(port.Id), Number(port.Rotation))),
+                spawnPoints: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)),
+                raidCircles: coordinateAdjust(getRaidCircles(port.PortRaidZonePositions)),
+                raidPoints: coordinateAdjust(getRaidPoints(port.PortRaidSpawnPoints)),
+            } as PbZone
+        })
+        .sort(sortBy(["id"]))
 
-    const geoJson: FeatureCollection = { type: "FeatureCollection", features }
-    await saveJsonAsync(commonPaths.filePbZoneGJ, geoJson)
+    await saveJsonAsync(commonPaths.filePbZoneTwo, ports)
 }
 
 /**
@@ -377,6 +339,6 @@ export const convertGenericPortData = (): void => {
 
     void setAndSavePortData()
     void setAndSavePBZones()
-    void setAndSavePBZonesGJ()
+    void setAndSavePBZonesTwo()
     void setAndSaveCountyRegionData()
 }
