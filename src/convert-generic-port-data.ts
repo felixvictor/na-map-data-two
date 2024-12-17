@@ -171,15 +171,15 @@ const setAndSavePBZonesTwo = async () => {
     const ports = apiPorts
         .filter((port) => !port.NonCapturable)
         .map((port) => {
+            const { x, y } = apiPortPos.get(Number(port.Id)) ?? { x: 0, y: 0 }
             return {
                 id: Number(port.Id),
+                position: coordinateAdjust([x, y]),
                 pbCircles: coordinateAdjust(getPBCircles(port.PortBattleZonePositions)),
                 forts: coordinateAdjust(getForts(port.PortElementsSlotGroups)),
                 towers: coordinateAdjust(getTowers(port.PortElementsSlotGroups)),
                 joinCircle: coordinateAdjust(getJoinCircle(Number(port.Id), Number(port.Rotation))),
                 spawnPoints: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)),
-                raidCircles: coordinateAdjust(getRaidCircles(port.PortRaidZonePositions)),
-                raidPoints: coordinateAdjust(getRaidPoints(port.PortRaidSpawnPoints)),
             } as PbZone
         })
         .sort(sortBy(["id"]))
