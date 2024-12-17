@@ -1,5 +1,10 @@
 
 
+## 1.13.0 (2024-12-17)
+
+* chore(deps): bump ([820dd66](https://example.com/commits/820dd66))
+* feat: coordinate adjustments for openlayers ([8c9485f](https://example.com/commits/8c9485f))
+
 ## 1.12.0 (2024-12-16)
 
 * feat: coordinate adjustments for openlayers ([b7d9d03](https://example.com/commits/b7d9d03))
