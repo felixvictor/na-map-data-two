@@ -168,85 +168,58 @@ const setAndSavePBZones = async (): Promise<void> => {
 }
 
 const setAndSavePBZonesGJ = async () => {
-    /*
-    const t = {
-    id: 3,
-    position: [4013, 1702],
-    pbCircles: [
-        [4002, 1700],
-        [4028, 1709],
-        [4016, 1682],
-    ],
-    forts: [[4022, 1694]],
-    towers: [
-        [4012, 1699],
-        [4023, 1714],
-    ],
-    joinCircle: [4008, 1702],
-    spawnPoints: [
-        [3959, 1683],
-        [3956, 1722],
-    ],
-    raidCircles: [
-        [4006, 1700],
-        [4017, 1714],
-        [4026, 1687],
-    ],
-    raidPoints: [
-        [3999, 1639],
-        [3959, 1683],
-        [3956, 1722],
-        [4011, 1756],
-    ],
-}
-     */
-    let features: Feature<GJPoint | MultiPoint>[] = []
-    apiPorts.forEach((port) => {
-        const featuresPerPort: Feature<GJPoint | MultiPoint>[] = [
-            // Port battle circles
-            {
-                type: "Feature",
-                id: `${port.Id}-pbc`,
-                geometry: {
-                    type: "MultiPoint",
-                    coordinates: coordinateAdjust(getPBCircles(port.PortBattleZonePositions)) as Position[],
-                },
-                properties: { name: "Pb circles" },
+    const features: Feature<GJPoint | MultiPoint>[] = apiPorts.flatMap((port) => [
+        // Port battle circles
+        {
+            type: "Feature",
+            id: `${port.Id}-pbc`,
+            geometry: {
+                type: "MultiPoint",
+                coordinates: coordinateAdjust(getPBCircles(port.PortBattleZonePositions)) as Position[],
             },
-            // Forts
-            {
-                type: "Feature",
-                id: `${port.Id}-f`,
-                geometry: {
-                    type: "MultiPoint",
-                    coordinates: coordinateAdjust(getForts(port.PortElementsSlotGroups)) as Position[],
-                },
-                properties: { name: "Forts" },
+            properties: null,
+        },
+        // Forts
+        {
+            type: "Feature",
+            id: `${port.Id}-f`,
+            geometry: {
+                type: "MultiPoint",
+                coordinates: coordinateAdjust(getForts(port.PortElementsSlotGroups)) as Position[],
             },
-            // Join circle
-            {
-                type: "Feature",
-                id: `${port.Id}-jc`,
-                geometry: {
-                    type: "Point",
-                    coordinates: coordinateAdjust(getJoinCircle(Number(port.Id), Number(port.Rotation))) as Position,
-                },
-                properties: { name: "Join circle" },
+            properties: null,
+        },
+        // Towers
+        {
+            type: "Feature",
+            id: `${port.Id}-t`,
+            geometry: {
+                type: "MultiPoint",
+                coordinates: coordinateAdjust(getForts(port.PortElementsSlotGroups)) as Position[],
             },
-            // Spawn points
-            {
-                type: "Feature",
-                id: `${port.Id}-sp`,
-                geometry: {
-                    type: "MultiPoint",
-                    coordinates: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)) as Position[],
-                },
-                properties: { name: "Spawn points" },
+            properties: null,
+        },
+        // Join circle
+        {
+            type: "Feature",
+            id: `${port.Id}-jc`,
+            geometry: {
+                type: "Point",
+                coordinates: coordinateAdjust(getJoinCircle(Number(port.Id), Number(port.Rotation))) as Position,
             },
-        ]
-
-        features = features.concat(featuresPerPort)
-    })
+            properties: null,
+        },
+        // Spawn points
+        {
+            type: "Feature",
+            id: `${port.Id}-sp`,
+            geometry: {
+                type: "MultiPoint",
+                coordinates: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)) as Position[],
+            },
+            properties: null,
+        },
+    ])
 
     const geoJson: FeatureCollection = { type: "FeatureCollection", features }
     await saveJsonAsync(commonPaths.filePbZoneGJ, geoJson)
