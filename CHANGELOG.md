@@ -1,5 +1,9 @@
 
 
+## <small>1.16.2 (2024-12-20)</small>
+
+* build: root netlify.toml ([d289c7d](https://example.com/commits/d289c7d))
+
 ## <small>1.16.1 (2024-12-20)</small>
 
 * build: root netlify.toml removed ([f69d7c9](https://example.com/commits/f69d7c9))
