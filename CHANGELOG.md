@@ -1,5 +1,9 @@
 
 
+## <small>1.16.1 (2024-12-20)</small>
+
+* build: root netlify.toml removed ([f69d7c9](https://example.com/commits/f69d7c9))
+
 ## 1.16.0 (2024-12-20)
 
 * chore(deps): bump ([8d0cc8e](https://example.com/commits/8d0cc8e))
