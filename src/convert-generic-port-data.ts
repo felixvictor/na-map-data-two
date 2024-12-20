@@ -179,7 +179,6 @@ const setAndSavePBZonesTwo = async () => {
                 forts: coordinateAdjust(getForts(port.PortElementsSlotGroups)),
                 towers: coordinateAdjust(getTowers(port.PortElementsSlotGroups)),
                 joinCircle: coordinateAdjust(getJoinCircle(Number(port.Id), Number(port.Rotation))),
-                spawnPoints: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)),
             } as PbZone
         })
         .sort(sortBy(["id"]))
