@@ -2,7 +2,6 @@ build/API
 build/Modules.zip
 lib/*
 !lib/distances.json
-!lib/netlify.toml
 node_modules
 tsconfig.tsbuildinfo
 .netlify
