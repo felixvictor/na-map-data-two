@@ -64,7 +64,7 @@ const setAndSavePortData = async (): Promise<void> => {
             return {
                 id: Number(apiPort.Id),
                 name: cleanName(apiPort.Name),
-                coordinates: [x, y],
+                coordinates: coordinateAdjust([x, y]),
                 angle,
                 region: apiPort.Location,
                 countyCapitalName: cleanName(apiPort.CountyCapitalName),
@@ -81,10 +81,6 @@ const setAndSavePortData = async (): Promise<void> => {
         .sort(sortBy(["id"]))
 
     await saveJsonAsync(commonPaths.filePort, ports)
-    await saveJsonAsync(
-        commonPaths.filePortTwo,
-        ports.map((port) => ({ ...port, coordinates: coordinateAdjust(port.coordinates) })),
-    )
 }
 
 const getPBCircles = (portBattleZonePositions: PortPosition[]): PointTuple[] =>
@@ -124,50 +120,7 @@ const getJoinCircle = (id: number, rotation: number): PointTuple => {
     return [x1, y1]
 }
 
-const spawnPoints = new Set([1, 2])
-const getSpawnPoints = (portRaidSpawnPoints: PortRaidSpawnPointsEntity[]): PointTuple[] =>
-    portRaidSpawnPoints
-        .filter((_, i) => spawnPoints.has(i))
-        .map((raidPoint) => [
-            Math.trunc(convertCoordX(raidPoint.Position.x, raidPoint.Position.z)),
-            Math.trunc(convertCoordY(raidPoint.Position.x, raidPoint.Position.z)),
-        ])
-
-const getRaidCircles = (portRaidZonePositions: PortPosition[]): PointTuple[] =>
-    portRaidZonePositions.map((raidCircle) => [
-        Math.trunc(convertCoordX(raidCircle.x, raidCircle.z)),
-        Math.trunc(convertCoordY(raidCircle.x, raidCircle.z)),
-    ])
-
-const getRaidPoints = (portRaidSpawnPoints: PortRaidSpawnPointsEntity[]): PointTuple[] =>
-    portRaidSpawnPoints.map((raidPoint) => [
-        Math.trunc(convertCoordX(raidPoint.Position.x, raidPoint.Position.z)),
-        Math.trunc(convertCoordY(raidPoint.Position.x, raidPoint.Position.z)),
-    ])
-
 const setAndSavePBZones = async (): Promise<void> => {
-    const ports = apiPorts
-        .filter((port) => !port.NonCapturable)
-        .map((port) => {
-            const { x, y } = apiPortPos.get(Number(port.Id)) ?? { x: 0, y: 0 }
-            return {
-                id: Number(port.Id),
-                position: [x, y],
-                pbCircles: getPBCircles(port.PortBattleZonePositions),
-                forts: getForts(port.PortElementsSlotGroups),
-                towers: getTowers(port.PortElementsSlotGroups),
-                joinCircle: getJoinCircle(Number(port.Id), Number(port.Rotation)),
-                spawnPoints: getSpawnPoints(port.PortRaidSpawnPoints),
-                raidCircles: getRaidCircles(port.PortRaidZonePositions),
-                raidPoints: getRaidPoints(port.PortRaidSpawnPoints),
-            } as PbZone
-        })
-        .sort(sortBy(["id"]))
-
-    await saveJsonAsync(commonPaths.filePbZone, ports)
-}
-
-const setAndSavePBZonesTwo = async () => {
     const ports = apiPorts
         .filter((port) => !port.NonCapturable)
         .map((port) => {
@@ -183,7 +136,7 @@ const setAndSavePBZonesTwo = async () => {
         })
         .sort(sortBy(["id"]))
 
-    await saveJsonAsync(commonPaths.filePbZoneTwo, ports)
+    await saveJsonAsync(commonPaths.filePbZone, ports)
 }
 
 /**
@@ -338,6 +291,5 @@ export const convertGenericPortData = (): void => {
 
     void setAndSavePortData()
     void setAndSavePBZones()
-    void setAndSavePBZonesTwo()
     void setAndSaveCountyRegionData()
 }
