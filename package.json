@@ -1,6 +1,6 @@
 {
     "name": "na-map-data-two",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "type": "module",
     "scripts": {
         "gen:data": "yarn tsx src/convert-api-data.ts",

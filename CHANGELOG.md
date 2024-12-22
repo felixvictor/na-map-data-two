@@ -1,5 +1,10 @@
 
 
+## 1.1.0 (2024-12-22)
+
+* feat: na-map-data-two ([b075d08](https://example.com/commits/b075d08))
+* chore(deps): bump ([b46cb0b](https://example.com/commits/b46cb0b))
+
 ## <small>1.16.2 (2024-12-20)</small>
 
 * build: root netlify.toml ([d289c7d](https://example.com/commits/d289c7d))
