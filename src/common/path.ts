@@ -1,18 +1,4 @@
-// https://stackoverflow.com/a/46427607
-const buildPath = (...args: string[]) => {
-    return args
-        .map((part, i) => {
-            if (i === 0) {
-                return part.trim().replace(/\/*$/g, "")
-            }
-
-            return part.trim().replace(/(^\/*|\/*$)/g, "")
-        })
-        .filter((x) => x.length)
-        .join("/")
-}
-
-// https://stackoverflow.com/a/50052194
+import path from "node:path"
 
 export interface DirList {
     dirAPI: string
@@ -43,36 +29,36 @@ export interface DirList {
  * Build common paths and file names
  */
 export function getCommonPaths(appRoot = process.env.PWD ?? ""): DirList {
-    const dirBuild = buildPath(appRoot, "build")
-    const dirAPI = buildPath(dirBuild, "API")
-    const dirLib = buildPath(appRoot, "lib")
-    const dirGenServer = buildPath(dirLib, "")
-    const dirGenGeneric = buildPath(dirLib, "")
-    const dirSrc = buildPath(appRoot, "src")
+    const dirBuild = path.join(appRoot, "build")
+    const dirAPI = path.join(dirBuild, "API")
+    const dirLib = path.join(appRoot, "lib")
+    const dirGenServer = path.join(dirLib, "")
+    const dirGenGeneric = path.join(dirLib, "")
+    const dirSrc = path.join(appRoot, "src")
 
     return {
         dirAPI,
         dirGenGeneric,
         dirGenServer,
         dirLib,
-        dirModules: buildPath(dirBuild, "Modules"),
+        dirModules: path.join(dirBuild, "Modules"),
         dirSrc,
 
-        fileBuilding: buildPath(dirGenGeneric, "buildings.json"),
-        fileDistances: buildPath(dirLib, "distances.json"),
-        fileCannon: buildPath(dirGenGeneric, "cannons-two.json"),
-        fileLoot: buildPath(dirGenGeneric, "loot.json"),
-        fileModules: buildPath(dirGenGeneric, "modules.json"),
-        filePbSheet: buildPath(dirGenGeneric, "port-battle.xlsx"),
-        filePbZone: buildPath(dirGenGeneric, "pb-zones.json"),
-        filePbZoneTwo: buildPath(dirGenGeneric, "pb-zones-two.json"),
-        filePort: buildPath(dirGenGeneric, "ports.json"),
-        filePortTwo: buildPath(dirGenGeneric, "ports-two.json"),
-        filePrices: buildPath(dirGenGeneric, "prices.json"),
-        fileRecipe: buildPath(dirGenGeneric, "recipes.json"),
-        fileRepair: buildPath(dirGenGeneric, "repairs.json"),
-        fileShip: buildPath(dirGenGeneric, "ships.json"),
-        fileShipBlueprint: buildPath(dirGenGeneric, "ship-blueprints.json"),
-        fileWood: buildPath(dirGenGeneric, "woods.json"),
+        fileBuilding: path.join(dirGenGeneric, "buildings.json"),
+        fileDistances: path.join(dirLib, "distances.json"),
+        fileCannon: path.join(dirGenGeneric, "cannons-two.json"),
+        fileLoot: path.join(dirGenGeneric, "loot.json"),
+        fileModules: path.join(dirGenGeneric, "modules.json"),
+        filePbSheet: path.join(dirGenGeneric, "port-battle.xlsx"),
+        filePbZone: path.join(dirGenGeneric, "pb-zones.json"),
+        filePbZoneTwo: path.join(dirGenGeneric, "pb-zones-two.json"),
+        filePort: path.join(dirGenGeneric, "ports.json"),
+        filePortTwo: path.join(dirGenGeneric, "ports-two.json"),
+        filePrices: path.join(dirGenGeneric, "prices.json"),
+        fileRecipe: path.join(dirGenGeneric, "recipes.json"),
+        fileRepair: path.join(dirGenGeneric, "repairs.json"),
+        fileShip: path.join(dirGenGeneric, "ships.json"),
+        fileShipBlueprint: path.join(dirGenGeneric, "ship-blueprints.json"),
+        fileWood: path.join(dirGenGeneric, "woods.json"),
     }
 }
