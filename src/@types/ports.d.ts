@@ -99,26 +99,11 @@ export interface PortWithTrades extends Port {
     enemyPort: boolean
 }
 
-export interface PbZoneDefence {
-    id: number
-    forts: PointTuple[]
-    towers: PointTuple[]
-}
-export interface PbZoneBasic {
-    id: number
-    joinCircle: PointTuple
-    pbCircles: PointTuple[]
-    spawnPoints: PointTuple[]
-}
-
-export interface PbZoneRaid {
-    id: number
-    joinCircle: PointTuple
-    raidCircles: PointTuple[]
-    raidPoints: PointTuple[]
-}
-
-export interface PbZone extends PbZoneBasic, PbZoneDefence, PbZoneRaid {
+export interface PbZone {
     id: number
     position: PointTuple
+    pbCircles: PointTuple[]
+    forts: PointTuple[]
+    towers: PointTuple[]
+    joinCircle: PointTuple
 }

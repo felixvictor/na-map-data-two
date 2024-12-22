@@ -5,7 +5,6 @@ import type {
     APIPort,
     PortElementsSlotGroupsEntity,
     PortPosition,
-    PortRaidSpawnPointsEntity,
 } from "./@types/api-port.js"
 import type { Coordinate, PointTuple } from "./@types/coordinates.js"
 import type { PbZone, PortBasic } from "./@types/ports.js"
