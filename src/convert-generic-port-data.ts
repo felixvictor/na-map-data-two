@@ -1,4 +1,4 @@
-import type { Feature, FeatureCollection, Point as GJPoint, GeometryCollection, MultiPoint, Position } from "geojson"
+import type { Feature, FeatureCollection, Point as GJPoint, MultiPoint } from "geojson"
 import polylabel from "polylabel"
 
 import type {
