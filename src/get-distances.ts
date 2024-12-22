@@ -1,4 +1,4 @@
-import Deque from "collections"
+import { Queue } from "@datastructures-js/queue"
 import * as fs from "fs"
 import path from "path"
 import { default as PNG } from "pngjs"
@@ -17,6 +17,7 @@ import { currentServerStartDate as serverDate } from "./common/time.js"
 type Index = number
 type PixelDistance = number
 type SpotType = number
+type QueueValue = [Index, PixelDistance]
 
 // type (spotLand, spotWater, port id)
 type GridMap = SpotType[]
@@ -49,7 +50,7 @@ class Port {
 }
 
 class Map {
-    #mapFileName = path.resolve(commonPaths.dirSrc, "images", `frontline-map-${distanceMapSize}.png`)
+    #mapFileName = path.resolve(commonPaths.dirSrc, "map", `frontline-map-${distanceMapSize}.png`)
     #pngData!: Buffer
     #distances: Distance[] = []
     #distancesFile = commonPaths.fileDistances
@@ -135,9 +136,7 @@ class Map {
             EntrancePosition: { z: y, x },
         } of this.#port.apiPorts) {
             const [portY, portX] = this.#port.getCoordinates(y, x, this.#mapScale)
-            const index = this.getIndex(portY, portX)
-
-            this.setPortSpot(index, Number(Id))
+            this.#map[this.getIndex(portY, portX)] = Number(Id)
         }
     }
 
@@ -153,13 +152,15 @@ class Map {
 
         for (let y = minY; y <= maxY; y += maxY) {
             for (let x = minX; x <= maxX; x += 1) {
-                this.visit(this.getIndex(y, x))
+                // Visit
+                this.#map[this.getIndex(y, x)] |= this.#VISITED
             }
         }
 
         for (let y = minY; y <= maxY; y += 1) {
             for (let x = minX; x <= maxX; x += maxX) {
-                this.visit(this.getIndex(y, x))
+                // Visit
+                this.#map[this.getIndex(y, x)] |= this.#VISITED
             }
         }
     }
@@ -172,13 +173,14 @@ class Map {
 
         for (let y = minY; y <= maxY; y += 1) {
             for (let x = minX; x <= maxX; x += 1) {
-                this.resetVisit(this.getIndex(y, x))
+                // Reset visit
+                this.#map[this.getIndex(y, x)] &= ~this.#VISITED
             }
         }
     }
 
     /**
-     * Find shortest paths between start port and all other ports (breadth first search).
+     * Find the shortest paths between start port and all other ports (breadth first search).
      */
     findPaths(
         startPortId: number, // Start port id
@@ -186,24 +188,21 @@ class Map {
         startX: number, // Start port x position
     ): void {
         const foundPortIds = new Set<number>()
-
         this.resetVisitedSpots()
 
         // Add start port
         const startIndex = this.getIndex(startY, startX)
         this.#completedPorts.add(startPortId)
-        this.visit(startIndex)
+        // Visit
+        this.#map[startIndex] |= this.#VISITED
 
         // Queue holds unchecked positions ([index, distance from start port])
-        // @ts-expect-error typing error
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const queue = new Deque([[startIndex, 0]])
+        const queue = new Queue<QueueValue>([[startIndex, 0]])
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        while (foundPortIds.size + this.#completedPorts.size < this.#port.numPorts && queue.length > 0) {
-            // eslint-disable-next-line prefer-const,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
-            let [index, pixelDistance] = queue.shift() as [Index, PixelDistance]
-            const spot = this.getPortId(this.getSpot(index))
+        while (foundPortIds.size + this.#completedPorts.size < this.#port.numPorts && queue.size() > 0) {
+            // eslint-disable-next-line prefer-const
+            let [index, pixelDistance] = queue.dequeue()
+            const spot = this.#map[index] & ~this.#FLAGS
 
             // Check if port is found
             if (spot > startPortId) {
@@ -219,8 +218,8 @@ class Map {
                 const neighbourIndex: Index = index + neighbour
                 // Add not visited non-land neighbour index
                 if (this.isSpotNotVisitedNonLand(neighbourIndex)) {
-                    this.visit(neighbourIndex)
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+                    // Visit
+                    this.#map[neighbourIndex] |= this.#VISITED
                     queue.push([neighbourIndex, pixelDistance])
                 }
             }
@@ -283,28 +282,9 @@ class Map {
     }
 
     getIndex = (y: number, x: number): Index => (y << this.#offset) + x
-    getSpot(index: number): SpotType {
-        return this.#map[index]
-    }
-
-    setPortSpot(index: number, spot: SpotType): void {
-        this.#map[index] = spot
-    }
-
-    visit(index: Index): void {
-        this.#map[index] |= this.#VISITED
-    }
-
-    resetVisit(index: Index): void {
-        this.#map[index] &= ~this.#VISITED
-    }
-
-    getPortId(spot: SpotType): number {
-        return spot & ~this.#FLAGS
-    }
 
     isSpotNotVisitedNonLand(neighbourIndex: Index): boolean {
-        const spot = this.getSpot(neighbourIndex)
+        const spot = this.#map[neighbourIndex]
         return !(spot & this.#VISITED) && !(spot & this.#LAND)
     }
 }
