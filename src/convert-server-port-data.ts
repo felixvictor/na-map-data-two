@@ -4,7 +4,7 @@ import type { APIItemGeneric } from "./@types/api-item.js"
 import type { APIPort } from "./@types/api-port.js"
 import type { APIShop } from "./@types/api-shop.js"
 import type { Distance } from "./@types/coordinates.js"
-import type { InventoryEntity, PortBattlePerServer, PortInventory, PortPerServer } from "./@types/ports.js"
+import type { InventoryEntity, PortInventory, PortPerServer } from "./@types/ports.js"
 import type { Trade, TradeItem } from "./@types/trade.js"
 import { cleanItemName, cleanName } from "./common/api.js"
 import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
@@ -65,15 +65,12 @@ const getPriceTierQuantity = (id: number): number => apiItems.find((item) => ite
 const isTradeItem = (item: APIItemGeneric): boolean =>
     item.SortingGroup === "Resource.Trading" || item.Name === "American Cotton" || item.Name === "Tobacco"
 
-/**
- *
- * @param apiPort - Port data
- */
 const setPortFeaturePerServer = (apiPort: APIPort): void => {
     const portShop = getPortShop(apiPort.Id)
 
     const portFeaturesPerServer = {
         id: Number(apiPort.Id),
+        nation: findNationShortNameById(apiPort.Nation),
         portBattleStartTime: apiPort.PortBattleStartTime,
         isAvailableForAll: apiPort.AvailableForAll,
         isCapturable: !apiPort.NonCapturable,
@@ -83,9 +80,20 @@ const setPortFeaturePerServer = (apiPort: APIPort): void => {
         netIncome: apiPort.LastTax - apiPort.LastCost,
         tradingCompany: apiPort.TradingCompany,
         laborHoursDiscount: apiPort.LaborHoursDiscount,
-    } as PortPerServer
+    } as Partial<PortPerServer>
 
-    portTaxMap.set(apiPort.Id, portFeaturesPerServer.portTax)
+    if (apiPort.Capturer !== "") {
+        portFeaturesPerServer.capturer = apiPort.Capturer
+    }
+
+    if (apiPort.LastPortBattle > 0) {
+        portFeaturesPerServer.captured = getTimeFromTicks(apiPort.LastPortBattle)
+    } else if (apiPort.LastRaidStartTime > 0) {
+        portFeaturesPerServer.captured = getTimeFromTicks(apiPort.LastRaidStartTime)
+        portFeaturesPerServer.capturer = "RAIDER"
+    }
+
+    portTaxMap.set(apiPort.Id, portFeaturesPerServer.portTax ?? 0)
 
     const trades = {
         dropsTrading: [
@@ -126,7 +134,7 @@ const setPortFeaturePerServer = (apiPort: APIPort): void => {
         }
     }
 
-    portData.push(portFeaturesPerServer)
+    portData.push(portFeaturesPerServer as PortPerServer)
 }
 
 const setAndSavePortData = async (serverName: string): Promise<void> => {
@@ -165,7 +173,7 @@ const setAndSaveInventory = async (serverName: string): Promise<void> => {
         })
         .sort(sortBy(["id"]))
 
-    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-inventory.json`), inventories)
+    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-inventories.json`), inventories)
 }
 
 const setAndSaveTradeData = async (serverName: string): Promise<void> => {
@@ -243,33 +251,6 @@ const setAndSaveDroppedItems = async (serverName: string): Promise<void> => {
     await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-items.json`), items)
 }
 
-const setAndSavePortBattleData = async (serverName: string): Promise<void> => {
-    const pb = apiPorts
-        .map((port) => {
-            const portData = {
-                id: Number(port.Id),
-                name: cleanName(port.Name),
-                nation: findNationShortNameById(port.Nation),
-            } as PortBattlePerServer
-
-            if (port.Capturer !== "") {
-                portData.capturer = port.Capturer
-            }
-
-            if (port.LastPortBattle > 0) {
-                portData.captured = getTimeFromTicks(port.LastPortBattle)
-            } else if (port.LastRaidStartTime > 0) {
-                portData.captured = getTimeFromTicks(port.LastRaidStartTime)
-                portData.capturer = "RAIDER"
-            }
-
-            return portData
-        })
-        .sort(sortBy(["id"]))
-
-    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-pb.json`), pb)
-}
-
 export const convertServerPortData = async () => {
     for (const serverName of serverIds) {
         apiItems = readJson(getAPIFilename(`${serverName}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
@@ -316,6 +297,5 @@ export const convertServerPortData = async () => {
         await setAndSaveInventory(serverName)
         await setAndSaveTradeData(serverName)
         await setAndSaveDroppedItems(serverName)
-        await setAndSavePortBattleData(serverName)
     }
 }

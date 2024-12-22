@@ -1,29 +1,17 @@
 import type { PointTuple } from "./coordinates.js"
 import type { AttackerNationShortName, PortBattleNationShortName } from "./nations.js"
 
-export interface PortBattlePerServer {
-    id: number
-    name: string
-    nation: PortBattleNationShortName
-    capturer?: string
-    captured?: string
-    attackerNation?: AttackerNationShortName
-    attackerClan?: string
-    attackHostility?: number
-    portBattle?: string
-    cooldownTime?: string
-}
-
-export type ConquestMarksPension = 1 | 3
 export type TradingCompany = 0 | 1 | 2
 export type LaborHoursDiscount = 0 | 1 | 2
 export type GoodList = number[]
 export interface PortPerServer {
     id: number
+    nation: PortBattleNationShortName
+    capturer?: string
+    captured?: string
     portBattleStartTime: number
     isAvailableForAll: boolean
     isCapturable: boolean
-    conquestMarksPension: ConquestMarksPension
     portTax: number
     taxIncome: number
     netIncome: number
