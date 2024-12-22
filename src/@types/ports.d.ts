@@ -1,5 +1,5 @@
 import type { PointTuple } from "./coordinates.js"
-import type { AttackerNationShortName, PortBattleNationShortName } from "./nations.js"
+import type { PortBattleNationShortName } from "./nations.js"
 
 export type TradingCompany = 0 | 1 | 2
 export type LaborHoursDiscount = 0 | 1 | 2
@@ -52,18 +52,7 @@ export interface PortBasic {
     portBattleType: PortBattleType
 }
 
-type PortIntersection =
-    | boolean
-    | number
-    | string
-    | undefined
-    | GoodList
-    | PointTuple
-    | (string | InventoryEntity | TradeGoodProfit)[]
-// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
-export interface Port extends PortBasic, PortPerServer, PortBattlePerServer {
-    [index: string]: PortIntersection
-}
+export type Port = PortBasic & PortPerServer
 
 export interface TradeProfit {
     profit: number
@@ -74,7 +63,7 @@ export interface TradeGoodProfit {
     name: string
     profit: TradeProfit
 }
-export interface PortWithTrades extends Port {
+export interface PortTrades {
     tradePortId: number
     sailingDistanceToTradePort: number
     goodsToBuyInTradePort: TradeGoodProfit[]
