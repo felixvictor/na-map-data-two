@@ -9499,9 +9499,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"na-map-data@workspace:.":
+"na-map-data-two@workspace:.":
   version: 0.0.0-use.local
-  resolution: "na-map-data@workspace:."
+  resolution: "na-map-data-two@workspace:."
   dependencies:
     "@commitlint/cli": "npm:^19.6.1"
     "@commitlint/config-conventional": "npm:^19.6.0"
