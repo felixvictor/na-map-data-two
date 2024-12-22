@@ -7,7 +7,7 @@
         "gen:load": "yarn tsx src/load-api-data.ts",
         "clean:src:js": "find ./src/js -name \"*.ts\" -type f -regextype posix-egrep -regex \".*/(browser|common|node)/.+\" -exec bash -c 'for file in \"${1%.ts}\".js \"${1%.ts}\".js.map; do [ -e \"$file\" ] && rm -f \"$file\"; done' - '{}' ';'",
         "deploy:netlify": "./helper/deploy.sh",
-        "dev:deploy": "ssh natopo@byrtz.de './deploy-data.sh'",
+        "dev:deploy": "ssh natopo@byrtz.de './deploy-data-two.sh'",
         "git:chore": "git add package.json yarn.lock .yarn .yarnrc.yml && git commit -m 'chore(deps): bump'",
         "gen:distances": "yarn tsx --max-heap-size=10000 src/get-distances.ts",
         "build:modules": "run-s 'build:modules:**'",

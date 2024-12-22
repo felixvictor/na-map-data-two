@@ -1,3 +1,3 @@
-# na-map-data
+# na-map-data-two
 
-Data for [na-map](https://na-map.netlify.app/) which is updated daily during server maintenance.
+Data for [na-map-two](https://na-map-test.netlify.app/) which is updated daily during server maintenance.
