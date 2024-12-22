@@ -1,5 +1,11 @@
 
 
+## 1.2.0 (2024-12-22)
+
+* feat: na-map-data-two ([d663c05](https://example.com/commits/d663c05))
+* feat: simplfied port data ([6eba6c2](https://example.com/commits/6eba6c2))
+* refactor: pb zone types ([277a296](https://example.com/commits/277a296))
+
 ## 1.1.0 (2024-12-22)
 
 * feat: na-map-data-two ([b075d08](https://example.com/commits/b075d08))
