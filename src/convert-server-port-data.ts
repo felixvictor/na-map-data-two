@@ -4,7 +4,7 @@ import type { APIItemGeneric } from "./@types/api-item.js"
 import type { APIPort } from "./@types/api-port.js"
 import type { APIShop } from "./@types/api-shop.js"
 import type { Distance } from "./@types/coordinates.js"
-import type { InventoryEntity, PortBattlePerServer, PortPerServer } from "./@types/ports.js"
+import type { InventoryEntity, PortBattlePerServer, PortInventory, PortPerServer } from "./@types/ports.js"
 import type { Trade, TradeItem } from "./@types/trade.js"
 import { cleanItemName, cleanName } from "./common/api.js"
 import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
@@ -49,6 +49,11 @@ let numberPorts: number
 let portData: PortPerServer[]
 let itemNames: Map<number, Item>
 let itemWeights: Map<number, number>
+let inventories: PortInventory[] = []
+const portTaxMap = new Map<string, number>()
+
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const getPortShop = (portId: string) => apiShops.find((shop) => shop.Id === portId)!
 
 const getDistance = (fromPortId: number, toPortId: number): number =>
     fromPortId < toPortId
@@ -65,77 +70,63 @@ const isTradeItem = (item: APIItemGeneric): boolean =>
  * @param apiPort - Port data
  */
 const setPortFeaturePerServer = (apiPort: APIPort): void => {
-    const portShop = apiShops.find((shop) => shop.Id === apiPort.Id)
+    const portShop = getPortShop(apiPort.Id)
 
-    if (portShop) {
-        const portFeaturesPerServer = {
-            id: Number(apiPort.Id),
-            portBattleStartTime: apiPort.PortBattleStartTime,
-            availableForAll: apiPort.AvailableForAll,
-            capturable: !apiPort.NonCapturable,
-            conquestMarksPension: apiPort.ConquestMarksPension,
-            portTax: Math.round(apiPort.PortTax * 100) / 100,
-            taxIncome: apiPort.LastTax,
-            netIncome: apiPort.LastTax - apiPort.LastCost,
-            tradingCompany: apiPort.TradingCompany,
-            laborHoursDiscount: apiPort.LaborHoursDiscount,
-            dropsTrading: [
-                ...new Set(
-                    portShop.ResourcesAdded.filter((good) =>
-                        itemNames.get(good.Template) ? itemNames.get(good.Template)?.trading : true,
-                    ).map((good) => good.Template),
-                ),
-            ].sort(simpleNumberSort),
-            consumesTrading: [
-                ...new Set(
-                    portShop.ResourcesConsumed.filter((good) =>
-                        itemNames.get(good.Key) ? itemNames.get(good.Key)?.trading : true,
-                    ).map((good) => good.Key),
-                ),
-            ].sort(simpleNumberSort),
-            producesNonTrading: [
-                ...new Set(
-                    portShop.ResourcesProduced.filter((good) => {
-                        return itemNames.get(good.Key) ? !itemNames.get(good.Key)?.trading : false
-                    }).map((good) => good.Key),
-                ),
-            ].sort(simpleNumberSort),
-            dropsNonTrading: [
-                ...new Set(
-                    portShop.ResourcesAdded.filter((good) =>
-                        !rareWoodIds.has(good.Template) && itemNames.get(good.Template)
-                            ? !itemNames.get(good.Template)?.trading
-                            : false,
-                    ).map((good) => good.Template),
-                ),
-            ].sort(simpleNumberSort),
-            inventory: portShop.RegularItems.filter((good) => itemNames.get(good.TemplateId)?.itemType !== "Cannon")
-                .map(
-                    (good) =>
-                        ({
-                            id: good.TemplateId,
-                            buyQuantity: good.Quantity === -1 ? good.BuyContractQuantity : good.Quantity,
-                            buyPrice: Math.round(good.BuyPrice * (1 + apiPort.PortTax)),
-                            sellPrice: Math.round(good.SellPrice / (1 + apiPort.PortTax)),
-                            sellQuantity:
-                                good.SellContractQuantity === -1
-                                    ? getPriceTierQuantity(good.TemplateId)
-                                    : good.SellContractQuantity,
-                        }) as InventoryEntity,
-                )
-                .sort(sortBy(["id"])),
-        } as PortPerServer
+    const portFeaturesPerServer = {
+        id: Number(apiPort.Id),
+        portBattleStartTime: apiPort.PortBattleStartTime,
+        isAvailableForAll: apiPort.AvailableForAll,
+        isCapturable: !apiPort.NonCapturable,
+        conquestMarksPension: apiPort.ConquestMarksPension,
+        portTax: Math.round(apiPort.PortTax * 100) / 100,
+        taxIncome: apiPort.LastTax,
+        netIncome: apiPort.LastTax - apiPort.LastCost,
+        tradingCompany: apiPort.TradingCompany,
+        laborHoursDiscount: apiPort.LaborHoursDiscount,
+    } as PortPerServer
 
-        // Delete empty entries
-        for (const type of ["dropsTrading", "consumesTrading", "producesNonTrading", "dropsNonTrading"]) {
-            if ((portFeaturesPerServer[type] as string[]).length === 0) {
-                // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-                delete portFeaturesPerServer[type]
-            }
-        }
+    portTaxMap.set(apiPort.Id, portFeaturesPerServer.portTax)
 
-        portData.push(portFeaturesPerServer)
+    const trades = {
+        dropsTrading: [
+            ...new Set(
+                portShop.ResourcesAdded.filter((good) =>
+                    itemNames.get(good.Template) ? itemNames.get(good.Template)?.trading : true,
+                ).map((good) => good.Template),
+            ),
+        ].sort(simpleNumberSort),
+        consumesTrading: [
+            ...new Set(
+                portShop.ResourcesConsumed.filter((good) =>
+                    itemNames.get(good.Key) ? itemNames.get(good.Key)?.trading : true,
+                ).map((good) => good.Key),
+            ),
+        ].sort(simpleNumberSort),
+        producesNonTrading: [
+            ...new Set(
+                portShop.ResourcesProduced.filter((good) => {
+                    return itemNames.get(good.Key) ? !itemNames.get(good.Key)?.trading : false
+                }).map((good) => good.Key),
+            ),
+        ].sort(simpleNumberSort),
+        dropsNonTrading: [
+            ...new Set(
+                portShop.ResourcesAdded.filter((good) =>
+                    !rareWoodIds.has(good.Template) && itemNames.get(good.Template)
+                        ? !itemNames.get(good.Template)?.trading
+                        : false,
+                ).map((good) => good.Template),
+            ),
+        ].sort(simpleNumberSort),
     }
+
+    for (const [key, values] of Object.entries(trades)) {
+        if (values.length > 0) {
+            portFeaturesPerServer[key] = values
+        }
+    }
+
+    portData.push(portFeaturesPerServer)
 }
 
 const setAndSavePortData = async (serverName: string): Promise<void> => {
@@ -146,13 +137,47 @@ const setAndSavePortData = async (serverName: string): Promise<void> => {
     await saveJsonAsync(`${commonPaths.dirGenServer}/${serverName}-ports.json`, portData.sort(sortBy(["id"])))
 }
 
+const setAndSaveInventory = async (serverName: string): Promise<void> => {
+    inventories = apiPorts
+        .map((port) => {
+            const portShop = getPortShop(port.Id)
+
+            return {
+                id: Number(port.Id),
+                inventory: portShop.RegularItems.filter((good) => itemNames.get(good.TemplateId)?.itemType !== "Cannon")
+                    .map(
+                        (good) =>
+                            ({
+                                id: good.TemplateId,
+                                buyQuantity: good.Quantity === -1 ? good.BuyContractQuantity : good.Quantity,
+                                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                                buyPrice: Math.round(good.BuyPrice * (1 + portTaxMap.get(port.Id)!)),
+                                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                                sellPrice: Math.round(good.SellPrice / (1 + portTaxMap.get(port.Id)!)),
+                                sellQuantity:
+                                    good.SellContractQuantity === -1
+                                        ? getPriceTierQuantity(good.TemplateId)
+                                        : good.SellContractQuantity,
+                            }) as InventoryEntity,
+                    )
+                    .sort(sortBy(["id"])),
+            } as PortInventory
+        })
+        .sort(sortBy(["id"]))
+
+    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-inventory.json`), inventories)
+}
+
 const setAndSaveTradeData = async (serverName: string): Promise<void> => {
     const trades: Trade[] = []
     for (const buyPort of portData) {
-        for (const buyGood of buyPort.inventory.filter((buyGood) => buyGood.buyQuantity > 0)) {
+        //inventories
+        const buyGoods = inventories.find((inventory) => inventory.id === buyPort.id)?.inventory ?? []
+        for (const buyGood of buyGoods.filter((buyGood) => buyGood.buyQuantity > 0)) {
             const { buyPrice, buyQuantity, id: buyGoodId } = buyGood
             for (const sellPort of portData) {
-                const sellGood = sellPort.inventory.find((good) => good.id === buyGoodId)
+                const sellGoods = inventories.find((inventory) => inventory.id === sellPort.id)?.inventory ?? []
+                const sellGood = sellGoods.find((good) => good.id === buyGoodId)
                 if (sellPort.id !== buyPort.id && sellGood) {
                     const { sellPrice, sellQuantity } = sellGood
                     const quantity = Math.min(buyQuantity, sellQuantity)
@@ -288,6 +313,7 @@ export const convertServerPortData = async () => {
         )
 
         await setAndSavePortData(serverName)
+        await setAndSaveInventory(serverName)
         await setAndSaveTradeData(serverName)
         await setAndSaveDroppedItems(serverName)
         await setAndSavePortBattleData(serverName)

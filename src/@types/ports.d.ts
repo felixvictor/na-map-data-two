@@ -19,11 +19,10 @@ export type TradingCompany = 0 | 1 | 2
 export type LaborHoursDiscount = 0 | 1 | 2
 export type GoodList = number[]
 export interface PortPerServer {
-    [index: string]: PortIntersection
     id: number
     portBattleStartTime: number
-    availableForAll: boolean
-    capturable: boolean
+    isAvailableForAll: boolean
+    isCapturable: boolean
     conquestMarksPension: ConquestMarksPension
     portTax: number
     taxIncome: number
@@ -34,8 +33,13 @@ export interface PortPerServer {
     consumesTrading?: GoodList
     producesNonTrading?: GoodList
     dropsNonTrading?: GoodList
+}
+
+export interface PortInventory {
+    id: number
     inventory: InventoryEntity[]
 }
+
 export interface InventoryEntity {
     id: number
     buyQuantity: number
