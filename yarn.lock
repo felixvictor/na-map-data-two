@@ -386,13 +386,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@datastructures-js/queue@npm:^4.2.3":
-  version: 4.2.3
-  resolution: "@datastructures-js/queue@npm:4.2.3"
-  checksum: 10c0/17297b1be38562334223c14d438f54aff424a99f4fe49c3ac24d91e9ee1603ed89133d094f4ad139884cbd07132f54f32d85e8b60261b0965ab1ef04f70f9160
-  languageName: node
-  linkType: hard
-
 "@dependents/detective-less@npm:^4.1.0":
   version: 4.1.0
   resolution: "@dependents/detective-less@npm:4.1.0"
@@ -9506,7 +9499,6 @@ __metadata:
     "@commitlint/cli": "npm:^19.6.1"
     "@commitlint/config-conventional": "npm:^19.6.0"
     "@commitlint/types": "npm:^19.5.0"
-    "@datastructures-js/queue": "npm:^4.2.3"
     "@eslint/eslintrc": "npm:^3.2.0"
     "@eslint/js": "npm:^9.17.0"
     "@release-it/conventional-changelog": "npm:^9.0.3"

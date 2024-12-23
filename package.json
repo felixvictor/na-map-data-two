@@ -40,7 +40,6 @@
         "@commitlint/cli": "^19.6.1",
         "@commitlint/config-conventional": "^19.6.0",
         "@commitlint/types": "^19.5.0",
-        "@datastructures-js/queue": "^4.2.3",
         "@eslint/eslintrc": "^3.2.0",
         "@eslint/js": "^9.17.0",
         "@release-it/conventional-changelog": "^9.0.3",
