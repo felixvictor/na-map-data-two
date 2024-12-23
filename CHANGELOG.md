@@ -1,5 +1,12 @@
 
 
+## 1.3.0 (2024-12-23)
+
+* feat: 8192 distances ([fc29f27](https://example.com/commits/fc29f27))
+* feat: simplfied port data ([7f2bc8e](https://example.com/commits/7f2bc8e))
+* perf: get distances ([36dd893](https://example.com/commits/36dd893))
+* refactor: lint ([bc4fb48](https://example.com/commits/bc4fb48))
+
 ## 1.2.0 (2024-12-22)
 
 * feat: na-map-data-two ([d663c05](https://example.com/commits/d663c05))
