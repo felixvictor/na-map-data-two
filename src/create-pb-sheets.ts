@@ -1,6 +1,5 @@
 import { range } from "d3-array"
 import Excel from "exceljs"
-
 /**
  * Set default font
  * {@link https://github.com/exceljs/exceljs/issues/572#issuecomment-631788521}

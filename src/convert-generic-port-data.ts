@@ -1,11 +1,7 @@
 import type { Feature, FeatureCollection, Point as GJPoint, MultiPoint } from "geojson"
 import polylabel from "polylabel"
 
-import type {
-    APIPort,
-    PortElementsSlotGroupsEntity,
-    PortPosition,
-} from "./@types/api-port.js"
+import type { APIPort, PortElementsSlotGroupsEntity, PortPosition } from "./@types/api-port.js"
 import type { Coordinate, PointTuple } from "./@types/coordinates.js"
 import type { PbZone, PortBasic } from "./@types/ports.js"
 import { cleanName } from "./common/api.js"
