@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.4.2 (2024-12-26)</small>
+
+* refactor: lint ([d7b10bd](https://example.com/commits/d7b10bd))
+
 ## <small>1.4.1 (2024-12-26)</small>
 
 * refactor: lint ([8260f38](https://example.com/commits/8260f38))
