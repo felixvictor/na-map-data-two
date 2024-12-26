@@ -330,29 +330,10 @@ export const convertServerPortData = async () => {
             ]),
         )
 
-        let t0 = performance.now()
         await setAndSavePortData(serverName)
-        let t1 = performance.now()
-        console.log(`Call to setAndSavePortData took ${t1 - t0} milliseconds.`)
-
-        t0 = performance.now()
         await setAndSaveInventory(serverName)
-        t1 = performance.now()
-        console.log(`Call to setAndSaveInventory took ${t1 - t0} milliseconds.`)
-
-        t0 = performance.now()
         await setAndSaveTradeData(serverName)
-        t1 = performance.now()
-        console.log(`Call to setAndSaveTradeData took ${t1 - t0} milliseconds.`)
-
-        t0 = performance.now()
         await setAndSaveDroppedItems(serverName)
-        t1 = performance.now()
-        console.log(`Call to setAndSaveDroppedItems took ${t1 - t0} milliseconds.`)
-
-        t0 = performance.now()
         await setAndSaveTaxIncome(serverName)
-        t1 = performance.now()
-        console.log(`Call to setAndSaveTaxIncome took ${t1 - t0} milliseconds.`)
     }
 }
