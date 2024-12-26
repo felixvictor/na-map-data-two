@@ -21,8 +21,8 @@ export const cleanName = (name: string): string => {
     }
 
     return name
-        .replace(/u([\da-f]{4})/gi, (match) => String.fromCodePoint(Number.parseInt(match.replace(/u/g, ""), 16)))
-        .replace(/'/g, "’")
+        .replaceAll(/u([\da-f]{4})/gi, (match) => String.fromCodePoint(Number.parseInt(match.replaceAll("u", ""), 16)))
+        .replaceAll("'", "’")
         .replace(" oak", " Oak")
         .replace(" (S)", "\u202F(S)")
         .trim()

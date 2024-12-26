@@ -75,7 +75,7 @@ export const rotationAngleInRadians = (centerPt: PointTuple, targetPt: PointTupl
  * @returns Distance between centerPt and targetPt
  */
 export const distancePoints = (centerPt: Coordinate, targetPt: Coordinate): number =>
-    Math.sqrt((centerPt.x - targetPt.x) ** 2 + (centerPt.y - targetPt.y) ** 2)
+    Math.hypot(centerPt.x - targetPt.x, centerPt.y - targetPt.y)
 
 /**
  * Convert correctionValueDegrees to radians
@@ -183,16 +183,14 @@ export const nearestPow2 = (aSize: number): number => 2 ** Math.floor(Math.log(a
  */
 export const coordinateAdjust = (x: number | PointTuple | PointTuple[], y?: number): PointTuple | PointTuple[] => {
     if (Array.isArray(x)) {
-        if (Array.isArray(x[0])) {
-            return (x as PointTuple[]).map((element: PointTuple) => [element[0], mapSize - element[1]] as PointTuple)
-        } else {
-            return [(x as PointTuple)[0], mapSize - (x as PointTuple)[1]]
-        }
+        return Array.isArray(x[0])
+            ? (x as PointTuple[]).map((element: PointTuple) => [element[0], mapSize - element[1]] as PointTuple)
+            : [(x as PointTuple)[0], mapSize - (x as PointTuple)[1]]
     }
 
-    if (y != null) {
+    if (y != undefined) {
         return [x, mapSize - y]
     }
 
-    throw Error(`Wrong parameters x: ${x}, y: ${y}`)
+    throw new Error(`Wrong parameters x: ${x}, y: ${y}`)
 }

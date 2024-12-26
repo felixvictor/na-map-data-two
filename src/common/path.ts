@@ -1,12 +1,12 @@
 import path from "node:path"
 
-export interface DirList {
-    dirAPI: string
-    dirGenGeneric: string
-    dirGenServer: string
-    dirLib: string
-    dirModules: string
-    dirSrc: string
+export interface DirectoryList {
+    directoryAPI: string
+    directoryGenGeneric: string
+    directoryGenServer: string
+    directoryLib: string
+    directoryModules: string
+    directorySrc: string
     fileBuilding: string
     fileDistances: string
     fileCannon: string
@@ -26,35 +26,35 @@ export interface DirList {
 /**
  * Build common paths and file names
  */
-export function getCommonPaths(appRoot = process.env.PWD ?? ""): DirList {
-    const dirBuild = path.join(appRoot, "build")
-    const dirAPI = path.join(dirBuild, "API")
-    const dirLib = path.join(appRoot, "lib")
-    const dirGenServer = path.join(dirLib, "")
-    const dirGenGeneric = path.join(dirLib, "")
-    const dirSrc = path.join(appRoot, "src")
+export function getCommonPaths(appRoot = process.env.PWD ?? ""): DirectoryList {
+    const directoryBuild = path.join(appRoot, "build")
+    const directoryAPI = path.join(directoryBuild, "API")
+    const directoryLibrary = path.join(appRoot, "lib")
+    const directoryGenServer = path.join(directoryLibrary, "")
+    const directoryGenGeneric = path.join(directoryLibrary, "")
+    const directorySource = path.join(appRoot, "src")
 
     return {
-        dirAPI,
-        dirGenGeneric,
-        dirGenServer,
-        dirLib,
-        dirModules: path.join(dirBuild, "Modules"),
-        dirSrc,
+        directoryAPI: directoryAPI,
+        directoryGenGeneric,
+        directoryGenServer,
+        directoryLib: directoryLibrary,
+        directoryModules: path.join(directoryBuild, "Modules"),
+        directorySrc: directorySource,
 
-        fileBuilding: path.join(dirGenGeneric, "buildings.json"),
-        fileDistances: path.join(dirLib, "distances.json"),
-        fileCannon: path.join(dirGenGeneric, "cannons.json"),
-        fileLoot: path.join(dirGenGeneric, "loot.json"),
-        fileModules: path.join(dirGenGeneric, "modules.json"),
-        filePbSheet: path.join(dirGenGeneric, "port-battle.xlsx"),
-        filePbZone: path.join(dirGenGeneric, "pb-zones.json"),
-        filePort: path.join(dirGenGeneric, "ports.json"),
-        filePrices: path.join(dirGenGeneric, "prices.json"),
-        fileRecipe: path.join(dirGenGeneric, "recipes.json"),
-        fileRepair: path.join(dirGenGeneric, "repairs.json"),
-        fileShip: path.join(dirGenGeneric, "ships.json"),
-        fileShipBlueprint: path.join(dirGenGeneric, "ship-blueprints.json"),
-        fileWood: path.join(dirGenGeneric, "woods.json"),
+        fileBuilding: path.join(directoryGenGeneric, "buildings.json"),
+        fileDistances: path.join(directoryLibrary, "distances.json"),
+        fileCannon: path.join(directoryGenGeneric, "cannons.json"),
+        fileLoot: path.join(directoryGenGeneric, "loot.json"),
+        fileModules: path.join(directoryGenGeneric, "modules.json"),
+        filePbSheet: path.join(directoryGenGeneric, "port-battle.xlsx"),
+        filePbZone: path.join(directoryGenGeneric, "pb-zones.json"),
+        filePort: path.join(directoryGenGeneric, "ports.json"),
+        filePrices: path.join(directoryGenGeneric, "prices.json"),
+        fileRecipe: path.join(directoryGenGeneric, "recipes.json"),
+        fileRepair: path.join(directoryGenGeneric, "repairs.json"),
+        fileShip: path.join(directoryGenGeneric, "ships.json"),
+        fileShipBlueprint: path.join(directoryGenGeneric, "ship-blueprints.json"),
+        fileWood: path.join(directoryGenGeneric, "woods.json"),
     }
 }

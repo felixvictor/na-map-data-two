@@ -3,7 +3,7 @@ import path from "node:path"
 import { linearRegression } from "simple-statistics"
 
 import type { APIItemGeneric, APIShip } from "../src/@types/api-item.js"
-import { compressExt, unCompressSync } from "../src/common/compress.js"
+import { compressExtension, unCompressSync } from "../src/common/compress.js"
 import { baseAPIFilename, readJson, removeFileSync } from "../src/common/file.js"
 import { serverIds } from "../src/common/servers.js"
 import { currentServerStartDate as serverDate } from "../src/common/time.js"
@@ -15,7 +15,7 @@ interface InGameSpeed {
 }
 
 const fileNameAPIItems = path.resolve(baseAPIFilename, `${serverIds[0]}-ItemTemplates-${serverDate}.json`)
-unCompressSync(`${fileNameAPIItems}.${compressExt}`)
+unCompressSync(`${fileNameAPIItems}.${compressExtension}`)
 const apiItems = readJson(fileNameAPIItems) as APIItemGeneric[]
 removeFileSync(fileNameAPIItems)
 

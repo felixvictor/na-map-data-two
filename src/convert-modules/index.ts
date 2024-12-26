@@ -31,7 +31,7 @@ export const convertModulesAndWoodData = (): void => {
             usageType: apiModule.UsageType,
             APImodifiers: apiModule.Modifiers,
             sortingGroup: apiModule.SortingGroup.replace("module:", ""),
-            permanentType: apiModule.PermanentType.replace(/_/g, " "),
+            permanentType: apiModule.PermanentType.replaceAll("_", " "),
             // isStackable: !!apiModule.bCanBeSetWithSameType,
             // minResourcesAmount: APImodule.MinResourcesAmount,
             // maxResourcesAmount: APImodule.MaxResourcesAmount,

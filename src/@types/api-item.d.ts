@@ -359,7 +359,7 @@ export interface APIBuilding {
     ItemType: "Building"
     MongoID: string
     LootTable: number
-    ProduceResource: number
+    ProduceResource?: number
     RequiredPortResource: number
     BaseProduction: number
     Levels: LevelsEntity[]

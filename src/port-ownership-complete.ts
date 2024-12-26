@@ -46,7 +46,7 @@ export class PortOwnershipComplete extends PortOwnership {
     }
 
     async #getFilenames() {
-        const files = await readdir(commonPaths.dirAPI, { recursive: true, withFileTypes: true })
+        const files = await readdir(commonPaths.directoryAPI, { recursive: true, withFileTypes: true })
         this.#fileNames = files
             .filter((file) => file.isFile() && file.name.match(this.fileBaseNameRegex))
             .map((file) => `${file.parentPath}/${file.name}`)

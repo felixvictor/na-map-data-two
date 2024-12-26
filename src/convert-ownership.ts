@@ -10,7 +10,7 @@ const commonPaths = getCommonPaths()
 
 export const convertOwnershipData = async () => {
     for (const serverId of serverIds) {
-        const filename = path.resolve(commonPaths.dirGenServer, `${serverId}-ownership.json`)
+        const filename = path.resolve(commonPaths.directoryGenServer, `${serverId}-ownership.json`)
         if ((await fileExistsAsync(filename)) && !fileEmpty(filename)) {
             new PortOwnershipIncrement(serverId)
         } else {

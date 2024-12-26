@@ -1,12 +1,12 @@
 /**
  * Sort by a list of properties (in left-to-right order)
  */
-type sortArg<T> = keyof T | `-${string & keyof T}`
+type sortArgument<T> = keyof T | `-${string & keyof T}`
 export const sortBy =
-    <T extends object>(propertyNames: sortArg<T>[]) =>
+    <T extends object>(propertyNames: sortArgument<T>[]) =>
     (a: T, b: T): number => {
         let r = 0
-        propertyNames.some((propertyName: sortArg<T>) => {
+        propertyNames.some((propertyName: sortArgument<T>) => {
             let key = propertyName as keyof T
             let sign = 1
 
@@ -16,11 +16,10 @@ export const sortBy =
                 key = String(key).slice(1) as keyof T
             }
 
-            if (Number.isNaN(Number(a[key])) && Number.isNaN(Number(b[key]))) {
-                r = simpleStringSort(String(a[key]), String(b[key])) * sign
-            } else {
-                r = simpleNumberSort(Number(a[key]), Number(b[key])) * sign
-            }
+            r =
+                Number.isNaN(Number(a[key])) && Number.isNaN(Number(b[key]))
+                    ? simpleStringSort(String(a[key]), String(b[key])) * sign
+                    : simpleNumberSort(Number(a[key]), Number(b[key])) * sign
 
             return r !== 0
         })

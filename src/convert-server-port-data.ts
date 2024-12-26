@@ -150,7 +150,7 @@ const setAndSavePortData = async (serverName: string): Promise<void> => {
         setPortFeaturePerServer(apiPort)
     }
 
-    await saveJsonAsync(`${commonPaths.dirGenServer}/${serverName}-ports.json`, portData.sort(sortBy(["id"])))
+    await saveJsonAsync(`${commonPaths.directoryGenServer}/${serverName}-ports.json`, portData.sort(sortBy(["id"])))
 }
 
 const setAndSaveInventory = async (serverName: string): Promise<void> => {
@@ -181,7 +181,7 @@ const setAndSaveInventory = async (serverName: string): Promise<void> => {
         })
         .sort(sortBy(["id"]))
 
-    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-inventories.json`), inventories)
+    await saveJsonAsync(path.resolve(commonPaths.directoryGenServer, `${serverName}-inventories.json`), inventories)
 }
 
 const setAndSaveTradeData = async (serverName: string): Promise<void> => {
@@ -219,7 +219,7 @@ const setAndSaveTradeData = async (serverName: string): Promise<void> => {
 
     trades.sort(sortBy(["profitTotal"]))
 
-    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-trades.json`), trades)
+    await saveJsonAsync(path.resolve(commonPaths.directoryGenServer, `${serverName}-trades.json`), trades)
 }
 
 const setAndSaveDroppedItems = async (serverName: string): Promise<void> => {
@@ -256,7 +256,7 @@ const setAndSaveDroppedItems = async (serverName: string): Promise<void> => {
             return tradeItem
         })
 
-    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-items.json`), items)
+    await saveJsonAsync(path.resolve(commonPaths.directoryGenServer, `${serverName}-items.json`), items)
 }
 
 const setAndSaveTaxIncome = async (serverName: string): Promise<void> => {
@@ -278,7 +278,7 @@ const setAndSaveTaxIncome = async (serverName: string): Promise<void> => {
             features.push(feature)
         })
     const geoJson: FeatureCollection = { type: "FeatureCollection", features }
-    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-income.geojson`), geoJson)
+    await saveJsonAsync(path.resolve(commonPaths.directoryGenServer, `${serverName}-income.geojson`), geoJson)
 }
 
 export const convertServerPortData = async () => {

@@ -101,13 +101,9 @@ const getBuildings = (): Building[] => {
         const building: Building = {
             id: Number(apiBuilding.Id),
             name: cleanName(apiBuilding.Name),
-            result: buildingResources.has(
-                apiBuilding.ProduceResource ? apiBuilding.ProduceResource : apiBuilding.RequiredPortResource,
-            )
+            result: buildingResources.has(apiBuilding.ProduceResource ?? apiBuilding.RequiredPortResource)
                 ? ([
-                      buildingResources.get(
-                          apiBuilding.ProduceResource ? apiBuilding.ProduceResource : apiBuilding.RequiredPortResource,
-                      ),
+                      buildingResources.get(apiBuilding.ProduceResource ?? apiBuilding.RequiredPortResource),
                   ] as BuildingResult[])
                 : undefined,
 
@@ -130,26 +126,31 @@ const getBuildings = (): Building[] => {
         // Ignore double entries
         if (!buildings.has(building.name)) {
             switch (building.name) {
-                case "Shipyard":
+                case "Shipyard": {
                     building.result = [{ id: 0, name: "Ships", price: 0 }]
                     building.byproduct = []
                     break
-                case "Academy":
+                }
+                case "Academy": {
                     building.result = getItemsCraftedByAcademy()
                     building.byproduct = []
                     break
-                case "Forge":
+                }
+                case "Forge": {
                     building.result = [{ id: 0, name: "Cannons", price: 0 }]
                     building.byproduct = []
                     break
-                case "Workshop":
+                }
+                case "Workshop": {
                     building.result = getItemsCraftedByWorkshop()
                     building.byproduct = []
                     break
-                case "Seasoning Shed":
+                }
+                case "Seasoning Shed": {
                     building.result = getItemsCraftedBySeasoningShed()
                     building.byproduct = []
                     break
+                }
             }
 
             buildings.set(building.name, building)
@@ -163,7 +164,7 @@ const getAPISeasonedItem = (name: string): APIRecipeResource =>
     apiItems.find(
         (item) =>
             item.ItemType === "Recipe" &&
-            item.Name.replace(" Log", "") === name.replace(/\s/g, " ").replace("White Oak", "White oak"),
+            item.Name.replace(" Log", "") === name.replaceAll(/\s/g, " ").replace("White Oak", "White oak"),
     ) as unknown as APIRecipeResource
 
 const getPrices = (buildings: Building[]): Price => {

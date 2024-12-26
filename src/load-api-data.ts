@@ -3,13 +3,13 @@ import path from "node:path"
 import type { APIItemGeneric } from "./@types/api-item.d.ts"
 import type { APIPort } from "./@types/api-port.d.ts"
 import type { APIShop } from "./@types/api-shop.d.ts"
-import { compressAsync, compressExt } from "./common/compress.js"
+import { compressAsync, compressExtension } from "./common/compress.js"
 import {
     serverBaseName,
-    sourceBaseDir,
+    sourceBaseDirectory,
     sourceBaseUrl,
     testServerBaseName,
-    testSourceBaseDir,
+    testSourceBaseDirectory,
 } from "./common/constants.js"
 import { apiBaseFiles, baseAPIFilename, removeFileASync, saveJsonAsync } from "./common/file.js"
 import { serverIds, testServerIds } from "./common/servers.js"
@@ -24,12 +24,13 @@ type APIType = APIItemGeneric | APIPort | APIShop
  */
 const deleteAPIFiles = async (fileName: string): Promise<void> => {
     await removeFileASync(fileName)
-    await removeFileASync(`${fileName}.${compressExt}`)
+    await removeFileASync(`${fileName}.${compressExtension}`)
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
-const fetchWithRetry = async (url: URL, { tries } = { tries: 3 }): Promise<string> => {
+const fetchWithRetry = async (url: URL, options?: { tries: number }): Promise<string> => {
+    const { tries } = { tries: 3, ...options }
     let attempt = 0
     const fib = [3, 5]
     const controller = new AbortController()
@@ -59,7 +60,7 @@ const fetchWithRetry = async (url: URL, { tries } = { tries: 3 }): Promise<strin
                 attempt++
 
                 // Generate the next Fibonacci number
-                fib.push(fib[fib.length - 1] + fib[fib.length - 2])
+                fib.push((fib.at(-1) ?? 0) + (fib.at(-2) ?? 0))
             }
         }
     }
@@ -73,7 +74,8 @@ const fetchWithRetry = async (url: URL, { tries } = { tries: 3 }): Promise<strin
  * {@link https://dev.to/thanhphuchuynh/efficient-retries-implementing-fibonacci-backoff-in-javascript-fetch-requests-2h4p}
  */
 const readNAJson = async (url: URL): Promise<APIType[]> => {
-    const text = (await fetchWithRetry(url)).replace(/^var .+ = /, "").replace(/;$/, "")
+    const data = await fetchWithRetry(url)
+    const text = data.replace(/^var .+ = /, "").replace(/;$/, "")
     return JSON.parse(text) as APIType[]
 }
 
@@ -87,8 +89,11 @@ const getAPIDataAndSave = async (
     test = false,
 ): Promise<boolean> => {
     const url = test
-        ? new URL(path.join(testSourceBaseDir, `${apiBaseFile}_${testServerBaseName}${serverName}.json`), sourceBaseUrl)
-        : new URL(path.join(sourceBaseDir, `${apiBaseFile}_${serverBaseName}${serverName}.json`), sourceBaseUrl)
+        ? new URL(
+              path.join(testSourceBaseDirectory, `${apiBaseFile}_${testServerBaseName}${serverName}.json`),
+              sourceBaseUrl,
+          )
+        : new URL(path.join(sourceBaseDirectory, `${apiBaseFile}_${serverBaseName}${serverName}.json`), sourceBaseUrl)
     const data = await readNAJson(url)
 
     data.sort(sortBy(["Id"]))

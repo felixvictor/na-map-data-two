@@ -19,13 +19,13 @@ const reCompressFile = async (fileName: string) => {
 }
 
 try {
-    const files = await readdir(commonPaths.dirAPI, { recursive: true, withFileTypes: true })
+    const files = await readdir(commonPaths.directoryAPI, { recursive: true, withFileTypes: true })
     for (const file of files) {
         console.log("loop", file.name)
         if (file.isFile() && path.parse(file.name).ext === ".xz") {
             await reCompressFile(`${file.parentPath}/${file.name}`)
         }
     }
-} catch (err) {
-    console.error(err)
+} catch (error) {
+    console.error(error)
 }

@@ -7,7 +7,7 @@ import { currentServerStartDate } from "./time.js"
 
 const commandCompress = "brotli --rm"
 const commandUnCompress = "brotli --decompress"
-export const compressExt = "br"
+export const compressExtension = "br"
 
 const getFileNameWithoutFirstExtension = (fileName: string) => {
     const parsedFileName = path.parse(fileName)
@@ -52,7 +52,7 @@ const loopApiFiles = (toCompress = true, toRemove = false): void => {
             } else if (toCompress) {
                 compressSync(fileName)
             } else {
-                unCompressSync(`${fileName}.${compressExt}`)
+                unCompressSync(`${fileName}.${compressExtension}`)
             }
         }
     }

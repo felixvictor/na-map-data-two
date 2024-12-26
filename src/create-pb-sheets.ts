@@ -21,12 +21,12 @@ interface PortBR {
 
 const commonPaths = getCommonPaths()
 
-const maxNumPlayers = 25
+const maxNumberPlayers = 25
 const columnWidth = 20
 const rowHeight = 24
-const numRowsHeader = 4
+const numberRowsHeader = 4
 
-const numberNumFmt = "#"
+const numberNumberFmt = "#"
 const numberAlign: Partial<Excel.Alignment> = {
     horizontal: "right",
     indent: 1,
@@ -34,10 +34,10 @@ const numberAlign: Partial<Excel.Alignment> = {
 }
 const numberStyle: Partial<Excel.Style> = {
     alignment: numberAlign,
-    numFmt: numberNumFmt,
+    numFmt: numberNumberFmt,
 }
 
-const textNumFmt = "@"
+const textNumberFmt = "@"
 const textAlign: Partial<Excel.Alignment> = {
     horizontal: "left",
     indent: 1,
@@ -45,7 +45,7 @@ const textAlign: Partial<Excel.Alignment> = {
 }
 const textStyle: Partial<Excel.Style> = {
     alignment: textAlign,
-    numFmt: textNumFmt,
+    numFmt: textNumberFmt,
 }
 
 const columnsHeader = [
@@ -56,8 +56,8 @@ const columnsHeader = [
     { name: "Total battle rating", width: 12, style: numberStyle },
 ]
 
-const numColumnsHeader = columnsHeader.length
-const numColumnsTotal = numColumnsHeader + maxNumPlayers
+const numberColumnsHeader = columnsHeader.length
+const numberColumnsTotal = numberColumnsHeader + maxNumberPlayers
 
 const isAIShip = (name: string): boolean => ["Basic", "Rooki", "Trade", "Tutor"].includes(name.slice(0, 5))
 
@@ -106,8 +106,8 @@ const wsOptions: Partial<Excel.AddWorksheetOptions> = {
             activeCell: "A1",
             showGridLines: false,
             state: "frozen",
-            xSplit: numColumnsHeader,
-            ySplit: numRowsHeader,
+            xSplit: numberColumnsHeader,
+            ySplit: numberRowsHeader,
         },
     ],
     properties: {
@@ -190,14 +190,14 @@ const brTooHigh: Partial<Excel.Style> = {
  * @param colNum - Column number that is to be transalated
  * @returns The Excel alpha representation of the column number
  */
-const getExcelAlpha = (colNum: number): string => {
-    let remaining = colNum
+const getExcelAlpha = (colNumber: number): string => {
+    let remaining = colNumber
     const aCharCode = 65
     let columnName = ""
     while (remaining > 0) {
-        const mod = (remaining - 1) % 26
-        columnName = String.fromCodePoint(aCharCode + mod) + columnName
-        remaining = (remaining - 1 - mod) / 26
+        const module_ = (remaining - 1) % 26
+        columnName = String.fromCodePoint(aCharCode + module_) + columnName
+        remaining = (remaining - 1 - module_) / 26
     }
 
     return columnName
@@ -215,21 +215,21 @@ const formula = (formula: string): Excel.CellFormulaValue => ({
  * @param ports - port data
  */
 function fillSheet(sheet: Excel.Worksheet, ships: ShipData[], ports: PortBR[]): void {
-    const numRowsTotal = numRowsHeader + ships.length
+    const numberRowsTotal = numberRowsHeader + ships.length
     let row: Excel.Row
     let cell: Excel.Cell
 
     const setColumns = (): void => {
         // Format first columns
         for (const column of columnsHeader) {
-            const i = columnsHeader.indexOf(column)
-            const col = sheet.getColumn(i + 1)
+            const index = columnsHeader.indexOf(column)
+            const col = sheet.getColumn(index + 1)
             col.width = column.width
             col.style = column.style
         }
 
         // Player names
-        for (const column of range(numColumnsHeader + 1, numColumnsHeader + maxNumPlayers)) {
+        for (const column of range(numberColumnsHeader + 1, numberColumnsHeader + maxNumberPlayers)) {
             const col = sheet.getColumn(column)
             col.width = columnWidth
             col.style = textStyle
@@ -244,7 +244,7 @@ function fillSheet(sheet: Excel.Worksheet, ships: ShipData[], ports: PortBR[]): 
     let currentRowNumber = 1
     row = sheet.getRow(currentRowNumber)
     row.alignment = textAlign
-    row.numFmt = textNumFmt
+    row.numFmt = textNumberFmt
 
     sheet.mergeCells(currentRowNumber, 1, currentRowNumber, 3)
     sheet.getCell(currentRowNumber, 1).value = "Port battle calculator by Felix Victor"
@@ -258,20 +258,20 @@ function fillSheet(sheet: Excel.Worksheet, ships: ShipData[], ports: PortBR[]): 
     currentRowNumber += 1
     row = sheet.getRow(currentRowNumber)
     row.alignment = textAlign
-    row.numFmt = textNumFmt
+    row.numFmt = textNumberFmt
     row.fill = fillPattern(colourContrastNearWhite)
 
     sheet.getCell(currentRowNumber, 1).value = "Port"
     sheet.getCell(currentRowNumber, 2).value = "1. Select port"
     sheet.getCell(currentRowNumber, 2).style.font = fontColourBold(colourHighlight)
-    sheet.getCell(currentRowNumber, numColumnsHeader - 1).value = "Max BR"
-    sheet.getCell(currentRowNumber, numColumnsHeader).numFmt = numberNumFmt
+    sheet.getCell(currentRowNumber, numberColumnsHeader - 1).value = "Max BR"
+    sheet.getCell(currentRowNumber, numberColumnsHeader).numFmt = numberNumberFmt
 
     // Column description row
     currentRowNumber += 1
     row = sheet.getRow(currentRowNumber)
     row.alignment = textAlign
-    row.numFmt = textNumFmt
+    row.numFmt = textNumberFmt
 
     row.fill = fillPattern(colourContrastMiddle)
     row.font = fontColourBold(colourContrastNearWhite)
@@ -282,39 +282,39 @@ function fillSheet(sheet: Excel.Worksheet, ships: ShipData[], ports: PortBR[]): 
     sheet.getCell(currentRowNumber, 4).value = "# Players"
     sheet.getCell(currentRowNumber, 5).value = "BR total"
 
-    sheet.mergeCells(currentRowNumber, numColumnsHeader + 1, currentRowNumber, numColumnsHeader + 2)
-    sheet.getCell(currentRowNumber, numColumnsHeader + 1).value = "Player names"
+    sheet.mergeCells(currentRowNumber, numberColumnsHeader + 1, currentRowNumber, numberColumnsHeader + 2)
+    sheet.getCell(currentRowNumber, numberColumnsHeader + 1).value = "Player names"
 
     // Total row
     currentRowNumber += 1
     row = sheet.getRow(currentRowNumber)
     row.fill = fillPattern(colourContrastMiddle)
 
-    cell = sheet.getCell(currentRowNumber, numColumnsHeader - 1)
+    cell = sheet.getCell(currentRowNumber, numberColumnsHeader - 1)
     cell.value = formula(
-        `SUM(${getExcelAlpha(numColumnsHeader - 1)}${numRowsHeader + 1}:${getExcelAlpha(
-            numColumnsHeader - 1,
-        )}${numRowsTotal})`,
+        `SUM(${getExcelAlpha(numberColumnsHeader - 1)}${numberRowsHeader + 1}:${getExcelAlpha(
+            numberColumnsHeader - 1,
+        )}${numberRowsTotal})`,
     )
     cell.alignment = numberAlign
-    cell.numFmt = numberNumFmt
+    cell.numFmt = numberNumberFmt
     cell.font = fontColourBold(colourText)
     cell.fill = fillPattern(colourContrastLight)
 
-    cell = sheet.getCell(currentRowNumber, numColumnsHeader)
+    cell = sheet.getCell(currentRowNumber, numberColumnsHeader)
     cell.value = formula(
-        `SUM(${getExcelAlpha(numColumnsHeader)}${numRowsHeader + 1}:${getExcelAlpha(numColumnsHeader)}${numRowsTotal})`,
+        `SUM(${getExcelAlpha(numberColumnsHeader)}${numberRowsHeader + 1}:${getExcelAlpha(numberColumnsHeader)}${numberRowsTotal})`,
     )
     cell.alignment = numberAlign
-    cell.numFmt = numberNumFmt
+    cell.numFmt = numberNumberFmt
     cell.font = fontColourBold(colourText)
     cell.fill = fillPattern(colourContrastLight)
 
-    sheet.mergeCells(currentRowNumber, numColumnsHeader + 1, currentRowNumber, numColumnsTotal)
-    cell = sheet.getCell(currentRowNumber, numColumnsHeader + 1)
+    sheet.mergeCells(currentRowNumber, numberColumnsHeader + 1, currentRowNumber, numberColumnsTotal)
+    cell = sheet.getCell(currentRowNumber, numberColumnsHeader + 1)
     cell.value = "2. Enter player names"
     cell.alignment = textAlign
-    cell.numFmt = textNumFmt
+    cell.numFmt = textNumberFmt
     cell.fill = fillPattern(colourContrastMiddle)
     cell.font = fontColourBold(colourHighlight)
 
@@ -328,51 +328,51 @@ function fillSheet(sheet: Excel.Worksheet, ships: ShipData[], ports: PortBR[]): 
         cell = sheet.getCell(currentRowNumber, 1)
         cell.value = ship.class
         cell.alignment = numberAlign
-        cell.numFmt = numberNumFmt
+        cell.numFmt = numberNumberFmt
         cell.border = border
         cell.fill = fillPattern(fgColourShip[ship.class % 2])
 
         cell = sheet.getCell(currentRowNumber, 2)
         cell.value = ship.name
         cell.alignment = textAlign
-        cell.numFmt = textNumFmt
+        cell.numFmt = textNumberFmt
         cell.border = border
         cell.fill = fillPattern(fgColourShip[ship.class % 2])
 
         cell = sheet.getCell(currentRowNumber, 3)
         cell.value = ship.battleRating
         cell.alignment = numberAlign
-        cell.numFmt = numberNumFmt
+        cell.numFmt = numberNumberFmt
         cell.border = border
         cell.fill = fillPattern(fgColourShip[ship.class % 2])
 
-        cell = sheet.getCell(currentRowNumber, numColumnsHeader - 1)
+        cell = sheet.getCell(currentRowNumber, numberColumnsHeader - 1)
         cell.value = formula(
-            `COUNTA(${getExcelAlpha(numColumnsHeader + 1)}${currentRowNumber}:${getExcelAlpha(
-                numColumnsTotal,
+            `COUNTA(${getExcelAlpha(numberColumnsHeader + 1)}${currentRowNumber}:${getExcelAlpha(
+                numberColumnsTotal,
             )}${currentRowNumber})`,
         )
 
         cell.alignment = numberAlign
-        cell.numFmt = numberNumFmt
+        cell.numFmt = numberNumberFmt
         cell.border = border
         cell.fill = fillPattern(fgColourShip[ship.class % 2])
 
-        cell = sheet.getCell(currentRowNumber, numColumnsHeader)
+        cell = sheet.getCell(currentRowNumber, numberColumnsHeader)
         cell.value = formula(
-            `${getExcelAlpha(numColumnsHeader - 2)}${currentRowNumber}*${getExcelAlpha(
-                numColumnsHeader - 1,
+            `${getExcelAlpha(numberColumnsHeader - 2)}${currentRowNumber}*${getExcelAlpha(
+                numberColumnsHeader - 1,
             )}${currentRowNumber}`,
         )
         cell.alignment = numberAlign
-        cell.numFmt = numberNumFmt
+        cell.numFmt = numberNumberFmt
         cell.border = border
         cell.fill = fillPattern(fgColourShip[ship.class % 2])
 
-        for (let playerCell = numColumnsHeader + 1; playerCell <= numColumnsTotal; playerCell++) {
+        for (let playerCell = numberColumnsHeader + 1; playerCell <= numberColumnsTotal; playerCell++) {
             cell = sheet.getCell(currentRowNumber, playerCell)
             cell.alignment = textAlign
-            cell.numFmt = textNumFmt
+            cell.numFmt = textNumberFmt
             cell.border = border
             cell.fill = fillPattern(fgColourPlayer[ship.class % 2])
         }
@@ -380,15 +380,15 @@ function fillSheet(sheet: Excel.Worksheet, ships: ShipData[], ports: PortBR[]): 
 
     // BR too high colour
     sheet.addConditionalFormatting({
-        ref: `${getExcelAlpha(numColumnsHeader)}${numRowsHeader}`,
+        ref: `${getExcelAlpha(numberColumnsHeader)}${numberRowsHeader}`,
         rules: [
             {
                 type: "expression",
                 priority: 1,
                 formulae: [
-                    `AND(NOT(ISBLANK(${getExcelAlpha(numColumnsHeader)}${numRowsHeader - 2})),
-                ${getExcelAlpha(numColumnsHeader)}${numRowsHeader} >
-                ${getExcelAlpha(numColumnsHeader)}${numRowsHeader - 2})`,
+                    `AND(NOT(ISBLANK(${getExcelAlpha(numberColumnsHeader)}${numberRowsHeader - 2})),
+                ${getExcelAlpha(numberColumnsHeader)}${numberRowsHeader} >
+                ${getExcelAlpha(numberColumnsHeader)}${numberRowsHeader - 2})`,
                 ], // formula that returns nonzero or 0
                 style: brTooHigh,
             },
@@ -397,9 +397,9 @@ function fillSheet(sheet: Excel.Worksheet, ships: ShipData[], ports: PortBR[]): 
 
     // Port select dropdown
     for (const port of ports) {
-        const i = ports.indexOf(port)
-        sheet.getCell(i + 1, numColumnsTotal + 1).value = port.name
-        sheet.getCell(i + 1, numColumnsTotal + 2).value = port.br
+        const index = ports.indexOf(port)
+        sheet.getCell(index + 1, numberColumnsTotal + 1).value = port.name
+        sheet.getCell(index + 1, numberColumnsTotal + 2).value = port.br
     }
 
     sheet.getCell("B2").dataValidation = {
@@ -407,20 +407,22 @@ function fillSheet(sheet: Excel.Worksheet, ships: ShipData[], ports: PortBR[]): 
         allowBlank: true,
         prompt: "Select port from dropdown",
         error: "Invalid choice",
-        formulae: [`=${getExcelAlpha(numColumnsTotal + 1)}1:${getExcelAlpha(numColumnsTotal + 1)}${ports.length}`],
+        formulae: [
+            `=${getExcelAlpha(numberColumnsTotal + 1)}1:${getExcelAlpha(numberColumnsTotal + 1)}${ports.length}`,
+        ],
     }
 
-    sheet.getCell(2, numColumnsHeader).value = formula(
-        `VLOOKUP(B2,${getExcelAlpha(numColumnsTotal + 1)}1:${getExcelAlpha(numColumnsTotal + 2)}${ports.length},2,0)`,
+    sheet.getCell(2, numberColumnsHeader).value = formula(
+        `VLOOKUP(B2,${getExcelAlpha(numberColumnsTotal + 1)}1:${getExcelAlpha(numberColumnsTotal + 2)}${ports.length},2,0)`,
     )
 
     // Sample values
-    sheet.getCell(numRowsHeader + 1, numColumnsHeader + 1).value = "Fritz"
-    sheet.getCell(numRowsHeader + 1, numColumnsHeader + 2).value = "Franz"
-    sheet.getCell(numRowsHeader + 1, numColumnsHeader + 3).value = "Klaus"
-    sheet.getCell(numRowsHeader + 2, numColumnsHeader + 1).value = "x"
-    sheet.getCell(numRowsHeader + 2, numColumnsHeader + 2).value = "X"
-    sheet.getCell(numRowsHeader + 2, numColumnsHeader + 3).value = "x"
+    sheet.getCell(numberRowsHeader + 1, numberColumnsHeader + 1).value = "Fritz"
+    sheet.getCell(numberRowsHeader + 1, numberColumnsHeader + 2).value = "Franz"
+    sheet.getCell(numberRowsHeader + 1, numberColumnsHeader + 3).value = "Klaus"
+    sheet.getCell(numberRowsHeader + 2, numberColumnsHeader + 1).value = "x"
+    sheet.getCell(numberRowsHeader + 2, numberColumnsHeader + 2).value = "X"
+    sheet.getCell(numberRowsHeader + 2, numberColumnsHeader + 3).value = "x"
 }
 
 /**

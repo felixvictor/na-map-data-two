@@ -9,7 +9,7 @@ interface RecipeGroup {
 interface RecipeEntity {
     id: number
     name: string
-    module: string
+    module?: string
     goldPrice: number
     itemRequirements: RecipeItemRequirement[]
     result: RecipeResult

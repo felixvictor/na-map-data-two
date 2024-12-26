@@ -31,7 +31,7 @@ const countDecimals = (value: number | undefined): number => {
  * @returns File content in json format
  */
 const getFileData = (baseFileName: string): XmlGeneric => {
-    const fileName = path.resolve(commonPaths.dirModules, baseFileName)
+    const fileName = path.resolve(commonPaths.directoryModules, baseFileName)
     const fileXmlData = readTextFile(fileName)
 
     return (convert.xml2js(fileXmlData, { compact: true }) as ElementCompact).ModuleTemplate as XmlGeneric
@@ -106,7 +106,7 @@ for (const type of cannonType) {
 }
 
 const defenseFamily = new Set(["fort", "tower"])
-const familyIgnored = ["standard", "unicorn", "useless"]
+const familyIgnored = new Set(["standard", "unicorn", "useless"])
 
 const getFamily = (name: string): string => {
     const regex = /\s+\(?(\w+)\)?/
@@ -158,9 +158,9 @@ const addData = (fileData: XmlGeneric): void => {
             .replace("0.5 E", "E")
             .replace("Blomfield", "Blomefield")
             .replace(" Gun", "")
-            .replace(/^(\d+) - (\w+)$/g, "$1 ($2)")
-            .replace(/^(\d+) (\w+)$/g, "$1 ($2)")
-            .replace(/^Tower (\d+)$/g, "$1 (Tower)")
+            .replaceAll(/^(\d+) - (\w+)$/g, "$1 ($2)")
+            .replaceAll(/^(\d+) (\w+)$/g, "$1 ($2)")
+            .replaceAll(/^Tower (\d+)$/g, "$1 (Tower)")
             // Edinorog are 18lb now
             .replace("24 (Edinorog)", "18 (Edinorog)")
             .replace(" (Medium)", "")
@@ -188,10 +188,14 @@ const addData = (fileData: XmlGeneric): void => {
         ).map((penetration) => [Number(penetration.Time._text) * 1000, Number(penetration.Value._text)]),
     )
 
-    const interpolate = (lowerDist: number, higherDist: number, targetDist: number): number => {
-        const lowerPene = penetrations.get(lowerDist) ?? 1
-        const higherPene = penetrations.get(higherDist) ?? 1
-        return lowerPene + ((targetDist - lowerDist) * (higherPene - lowerPene)) / (higherDist - lowerDist)
+    const interpolate = (lowerDistribution: number, higherDistribution: number, targetDistribution: number): number => {
+        const lowerPene = penetrations.get(lowerDistribution) ?? 1
+        const higherPene = penetrations.get(higherDistribution) ?? 1
+        return (
+            lowerPene +
+            ((targetDistribution - lowerDistribution) * (higherPene - lowerPene)) /
+                (higherDistribution - lowerDistribution)
+        )
     }
 
     if (type === "long") {
@@ -223,7 +227,7 @@ const addData = (fileData: XmlGeneric): void => {
     cannon.name = getName()
     cannon.family = getFamily(cannon.name)
     if (
-        !familyIgnored.includes(cannon.family) &&
+        !familyIgnored.has(cannon.family) &&
         !(cannon.family === "defense" && cannon.name === "24 (Fort)") &&
         !(cannon.family === "defense" && cannon.name === "24 (Tower)")
     ) {
@@ -235,7 +239,7 @@ const addData = (fileData: XmlGeneric): void => {
  * Retrieve cannon data from game files and store it
  */
 export const convertCannons = async (): Promise<void> => {
-    getBaseFileNames(commonPaths.dirModules)
+    getBaseFileNames(commonPaths.directoryModules)
 
     // Get all files without a master
     for (const baseFileName of fileNames) {

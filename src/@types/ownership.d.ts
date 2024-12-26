@@ -15,6 +15,7 @@ export interface Segment {
 
 export type TS = Date | number
 
+// eslint-disable-next-line unicorn/prevent-abbreviations
 export type Val = number | string
 
 export interface Ownership {

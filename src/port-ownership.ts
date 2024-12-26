@@ -16,7 +16,7 @@ import type {
 import type { PowerMapList } from "./@types/power-map.js"
 import type { ServerId } from "./@types/server.js"
 import { cleanName } from "./common/api.js"
-import { compressExt } from "./common/compress.js"
+import { compressExtension } from "./common/compress.js"
 import { capitalToCounty } from "./common/constants.js"
 import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
 import { findNationShortNameById, nationShortNamesPerServer } from "./common/nation.js"
@@ -35,7 +35,7 @@ export class PortOwnership {
     readonly commonPaths = getCommonPaths()
     readonly #nationsCurrentServer = [] as NationShortName[]
     readonly serverId = "" as ServerId
-    readonly fileExtension = `.json.${compressExt}`
+    readonly fileExtension = `.json.${compressExtension}`
 
     constructor(serverId: ServerId) {
         this.serverId = serverId
@@ -44,8 +44,8 @@ export class PortOwnership {
         this.#getRegionData()
     }
 
-    set numPortsPerNationPerDates(numPortsPerNationPerDates: OwnershipNation<number>[]) {
-        this.#numPortsPerNationPerDates = numPortsPerNationPerDates
+    set numPortsPerNationPerDates(numberPortsPerNationPerDates: OwnershipNation<number>[]) {
+        this.#numPortsPerNationPerDates = numberPortsPerNationPerDates
     }
 
     set portOwnershipPerDate(portOwnershipPerDate: PowerMapList) {
@@ -114,8 +114,8 @@ export class PortOwnership {
     #setNewEndDate(): void {
         const portData = this.#ports.get(this.#currentPort.Id)
 
-        if (portData) {
-            portData.data[portData.data.length - 1].timeRange[1] = this.#getUnixTimestamp(this.currentDate)
+        if (portData?.data.at(-1) !== undefined) {
+            portData.data.at(-1).timeRange[1] = this.#getUnixTimestamp(this.currentDate)
             this.#ports.set(this.#currentPort.Id, portData)
         }
     }
@@ -138,27 +138,27 @@ export class PortOwnership {
      */
     parseData(apiPorts: APIPort[]) {
         const nationPerPorts = [] as number[]
-        const numPortsPerNation = {} as NationList<number>
+        const numberPortsPerNation = {} as NationList<number>
         for (const nationShortname of this.#nationsCurrentServer) {
-            numPortsPerNation[nationShortname] = 0
+            numberPortsPerNation[nationShortname] = 0
         }
 
         // Loop all ports excluding free towns
         for (this.#currentPort of apiPorts.filter((apiPort) => apiPort.Nation !== 9)) {
             const currentNation = findNationShortNameById(this.#currentPort.Nation)
-            numPortsPerNation[currentNation] = Number(numPortsPerNation[currentNation]) + 1
+            numberPortsPerNation[currentNation] = Number(numberPortsPerNation[currentNation]) + 1
             nationPerPorts.push(this.#currentPort.Nation)
             this.#setTimeline(currentNation)
         }
         this.#portOwnershipPerDate.push([this.currentDate, nationPerPorts])
 
-        const numPortsDate = {} as OwnershipNation<number>
-        numPortsDate.date = this.currentDate
+        const numberPortsDate = {} as OwnershipNation<number>
+        numberPortsDate.date = this.currentDate
         for (const nationShortname of this.#nationsCurrentServer) {
-            numPortsDate[nationShortname] = numPortsPerNation[nationShortname]
+            numberPortsDate[nationShortname] = numberPortsPerNation[nationShortname]
         }
 
-        this.#numPortsPerNationPerDates.push(numPortsDate)
+        this.#numPortsPerNationPerDates.push(numberPortsDate)
     }
 
     #getTimelineGroup() {
@@ -200,15 +200,15 @@ export class PortOwnership {
 
     async writeResult() {
         await saveJsonAsync(
-            path.resolve(this.commonPaths.dirGenServer, `${this.serverId}-ownership.json`),
+            path.resolve(this.commonPaths.directoryGenServer, `${this.serverId}-ownership.json`),
             this.#getTimelineGroup(),
         )
         await saveJsonAsync(
-            path.resolve(this.commonPaths.dirGenServer, `${this.serverId}-nation.json`),
+            path.resolve(this.commonPaths.directoryGenServer, `${this.serverId}-nation.json`),
             this.#numPortsPerNationPerDates,
         )
         await saveJsonAsync(
-            path.resolve(this.commonPaths.dirGenServer, `${this.serverId}-power.json`),
+            path.resolve(this.commonPaths.directoryGenServer, `${this.serverId}-power.json`),
             this.#portOwnershipPerDate,
         )
     }

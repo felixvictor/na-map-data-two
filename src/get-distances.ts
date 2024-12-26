@@ -1,10 +1,11 @@
-import * as fs from "fs"
-import path from "path"
+import * as fs from "node:fs"
+import path from "node:path"
+
 import { default as PNG } from "pngjs"
 
 import type { APIPort } from "./@types/api-port.js"
 import type { Distance, PointTuple } from "./@types/coordinates.js"
-import { compressExt, unCompressSync } from "./common/compress.js"
+import { compressExtension, unCompressSync } from "./common/compress.js"
 import { distanceMapSize, mapSize } from "./common/constants.js"
 import { convertCoordX, convertCoordY } from "./common/coordinates.js"
 import { getAPIFilename, readJson, removeFileSync, saveJsonAsync } from "./common/file.js"
@@ -40,7 +41,7 @@ class Port {
     getAPIPorts() {
         const fileName = getAPIFilename(`${serverIds[0]}-Ports-${serverDate}.json`)
 
-        unCompressSync(`${fileName}.${compressExt}`)
+        unCompressSync(`${fileName}.${compressExtension}`)
         const ports = readJson(fileName) as APIPort[]
         removeFileSync(fileName)
         return ports
@@ -55,7 +56,7 @@ const commonPaths = getCommonPaths()
 const completedPorts: number[] = []
 const distances: Distance[] = []
 const distancesFile = commonPaths.fileDistances
-const mapFileName = path.resolve(commonPaths.dirSrc, "map", `frontline-map-${distanceMapSize}.png`)
+const mapFileName = path.resolve(commonPaths.directorySrc, "map", `frontline-map-${distanceMapSize}.png`)
 const port = new Port()
 let map: GridMap = [] as GridMap
 let mapHeight = 0

@@ -34,9 +34,9 @@ export const fileExistsAsync = async (fileName: string): Promise<boolean> =>
 /**
  * Make directories (recursive)
  */
-export const makeDirAsync = async (dir: string) => {
+export const makeDirectoryAsync = async (directory: string) => {
     try {
-        await fsPromises.mkdir(dir, { recursive: true })
+        await fsPromises.mkdir(directory, { recursive: true })
     } catch (error: unknown) {
         putError(error as string)
     }
@@ -55,7 +55,7 @@ export const saveTextFileSync = (fileName: string, data: string): void => {
 }
 
 export const saveJsonAsync = async (fileName: string, data: object): Promise<void> => {
-    await makeDirAsync(path.dirname(fileName))
+    await makeDirectoryAsync(path.dirname(fileName))
     await saveTextFileAsync(fileName, JSON.stringify(data))
 }
 
@@ -78,7 +78,7 @@ export const readJson = (fileName: string): unknown => {
     try {
         return JSON.parse(readTextFile(fileName))
     } catch (error: unknown) {
-        throw Error(`Cannot parse ${fileName}\nError: ${error as string}`)
+        throw new Error(`Cannot parse ${fileName}\nError: ${error as string}`)
     }
 }
 
@@ -99,5 +99,9 @@ export const putError = (error: string): void => {
     console.error("Request failed -->", error)
 }
 
-export const baseAPIFilename = path.resolve(getCommonPaths().dirAPI, currentServerDateYear, currentServerDateMonth)
+export const baseAPIFilename = path.resolve(
+    getCommonPaths().directoryAPI,
+    currentServerDateYear,
+    currentServerDateMonth,
+)
 export const getAPIFilename = (jsonFilename: string) => path.resolve(baseAPIFilename, jsonFilename)

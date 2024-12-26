@@ -11,21 +11,18 @@ const commonPaths = getCommonPaths()
 
 /**
  * Change string from snake case to camelCase
- *
- * @param str - Input snake case string
- * @returns Output camel case string
  */
-function toCamelCase(str: string): string {
-    str = str.replace(/[\s-_]+(.)?/g, (_match, ch: string) => (ch ? ch.toUpperCase() : ""))
+function toCamelCase(string_: string): string {
+    string_ = string_.replaceAll(/[\s-_]+(.)?/g, (_match, ch: string) => (ch ? ch.toUpperCase() : ""))
 
     // Ensure first char is always lowercase
-    return str.slice(0, 1).toLowerCase() + str.slice(1)
+    return string_.slice(0, 1).toLowerCase() + string_.slice(1)
 }
 
 const baseFileNames = ["armor repair", "sail repair", "crew repair"]
 
-const getFileData = (baseFileName: string, ext: string): XmlRepair => {
-    const fileName = path.resolve(commonPaths.dirModules, `${baseFileName} ${ext}.xml`)
+const getFileData = (baseFileName: string, extension: string): XmlRepair => {
+    const fileName = path.resolve(commonPaths.directoryModules, `${baseFileName} ${extension}.xml`)
     const fileXmlData = readTextFile(fileName)
 
     return (convert.xml2js(fileXmlData, { compact: true }) as ElementCompact).ModuleTemplate as XmlRepair

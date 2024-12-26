@@ -1,6 +1,6 @@
+import * as fs from "node:fs"
 import path from "node:path"
 
-import * as fs from "fs"
 import convert, { type ElementCompact } from "xml-js"
 
 import type { APIItemGeneric, APIShip, APIShipBlueprint, Limit, Specs } from "./@types/api-item.js"
@@ -293,8 +293,8 @@ const getSpeedDegrees = (specs: Specs): { maxSpeed: number; speedDegrees: number
     const { length } = specs.SpeedToWind
 
     // Mirror speed degrees
-    for (let i = 1; i < (length - 1) * 2; i += 2) {
-        speedDegrees.unshift(speedDegrees[i])
+    for (let index = 1; index < (length - 1) * 2; index += 2) {
+        speedDegrees.unshift(speedDegrees[index])
     }
 
     // Delete last element
@@ -348,7 +348,9 @@ const convertGenericShipData = (): ShipData[] => {
 
         const addDeck = (deckLimit: Limit, index: number) => {
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (deckLimit != null) {
+            if (deckLimit == undefined) {
+                guns.gunsPerDeck.push(emptyDeck)
+            } else {
                 const gunsPerDeck = apiShip.GunsPerDeck[index]
                 const currentDeck = {
                     amount: gunsPerDeck,
@@ -376,8 +378,6 @@ const convertGenericShipData = (): ShipData[] => {
                     guns.weight.carronades += cannonWeight
                     totalCarroCrew += cannonCrew
                 }
-            } else {
-                guns.gunsPerDeck.push(emptyDeck)
             }
         }
 
@@ -418,6 +418,7 @@ const convertGenericShipData = (): ShipData[] => {
             },
             speedDegrees,
             speed: {
+                // eslint-disable-next-line unicorn/no-array-reduce
                 min: speedDegrees.reduce((a, b) => Math.min(a, b)),
                 max: roundToThousands(maxSpeed),
             },
@@ -451,22 +452,22 @@ const baseFileNames = new Set<string>()
 
 /**
  * Gets all files from directory <dir> and stores valid ship names in <fileNames>
- * @param dir - Directory
+ * @param directory - Directory
  */
-const getBaseFileNames = (dir: string): void => {
-    for (const fileName of fs.readdirSync(dir)) {
+const getBaseFileNames = (directory: string): void => {
+    for (const fileName of fs.readdirSync(directory)) {
         /**
          * First part of the file name containing the ship name
          */
-        let str = fileName.slice(0, fileName.indexOf(" "))
-        if (str === "rookie" || str === "trader" || str === "tutorial") {
+        let string_ = fileName.slice(0, fileName.indexOf(" "))
+        if (string_ === "rookie" || string_ === "trader" || string_ === "tutorial") {
             const shortenedFileName = fileName.replace("rookie ", "").replace("trader ", "").replace("tutorial ", "")
-            const str2 = shortenedFileName.slice(0, shortenedFileName.indexOf(" "))
-            str += ` ${str2}`
+            const string2 = shortenedFileName.slice(0, shortenedFileName.indexOf(" "))
+            string_ += ` ${string2}`
         }
 
-        if (shipNames.has(str)) {
-            baseFileNames.add(str)
+        if (shipNames.has(string_)) {
+            baseFileNames.add(string_)
         }
     }
 
@@ -543,8 +544,8 @@ const addAdditionalData = (addData: ShipData, id: number): void => {
     }
 }
 
-const getFileData = (baseFileName: string, ext: string): XmlGeneric => {
-    const fileName = path.resolve(commonPaths.dirModules, `${baseFileName} ${ext}.xml`)
+const getFileData = (baseFileName: string, extension: string): XmlGeneric => {
+    const fileName = path.resolve(commonPaths.directoryModules, `${baseFileName} ${extension}.xml`)
     let data = {} as XmlGeneric
     if (fileExists(fileName)) {
         const fileXmlData = readTextFile(fileName)
@@ -569,7 +570,7 @@ const getAndAddAdditionalData = (fileName: string, shipId: number): void => {
  * @returns Ship data
  */
 const convertAddShipData = (ships: ShipData[]): ShipData[] => {
-    getBaseFileNames(commonPaths.dirModules)
+    getBaseFileNames(commonPaths.directoryModules)
 
     for (const baseFileName of baseFileNames) {
         const shipId = getShipId(baseFileName)
