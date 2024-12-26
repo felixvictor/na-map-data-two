@@ -183,15 +183,15 @@ const setAndSaveInventory = async (serverName: string): Promise<void> => {
 
 const setAndSaveTradeData = async (serverName: string): Promise<void> => {
     const trades: Trade[] = []
-    for (const buyPort of portData) {
-        //inventories
-        const buyGoods = inventories.find((inventory) => inventory.id === buyPort.id)?.inventory ?? []
+
+    for (const buyPortInventory of inventories) {
+        const { id: buyPortId, inventory: buyGoods } = buyPortInventory
         for (const buyGood of buyGoods.filter((buyGood) => buyGood.buyQuantity > 0)) {
             const { buyPrice, buyQuantity, id: buyGoodId } = buyGood
-            for (const sellPort of portData) {
-                const sellGoods = inventories.find((inventory) => inventory.id === sellPort.id)?.inventory ?? []
+            for (const sellPortInventory of inventories.filter((inventory) => inventory.id !== buyPortId)) {
+                const { id: sellPortId, inventory: sellGoods } = sellPortInventory
                 const sellGood = sellGoods.find((good) => good.id === buyGoodId)
-                if (sellPort.id !== buyPort.id && sellGood) {
+                if (sellGood) {
                     const { sellPrice, sellQuantity } = sellGood
                     const quantity = Math.min(buyQuantity, sellQuantity)
                     const profitPerItem = sellPrice - buyPrice
@@ -200,9 +200,9 @@ const setAndSaveTradeData = async (serverName: string): Promise<void> => {
                     if (profitTotal >= minProfit) {
                         const trade = {
                             good: buyGoodId,
-                            source: { id: Number(buyPort.id), grossPrice: buyPrice },
-                            target: { id: Number(sellPort.id), grossPrice: sellPrice },
-                            distance: getDistance(buyPort.id, sellPort.id),
+                            source: { id: buyPortId, grossPrice: buyPrice },
+                            target: { id: sellPortId, grossPrice: sellPrice },
+                            distance: getDistance(buyPortId, sellPortId),
                             profitTotal,
                             quantity,
                             weightPerItem: itemWeights.get(buyGoodId) ?? 0,
@@ -330,10 +330,29 @@ export const convertServerPortData = async () => {
             ]),
         )
 
+        let t0 = performance.now()
         await setAndSavePortData(serverName)
+        let t1 = performance.now()
+        console.log(`Call to setAndSavePortData took ${t1 - t0} milliseconds.`)
+
+        t0 = performance.now()
         await setAndSaveInventory(serverName)
+        t1 = performance.now()
+        console.log(`Call to setAndSaveInventory took ${t1 - t0} milliseconds.`)
+
+        t0 = performance.now()
         await setAndSaveTradeData(serverName)
+        t1 = performance.now()
+        console.log(`Call to setAndSaveTradeData took ${t1 - t0} milliseconds.`)
+
+        t0 = performance.now()
         await setAndSaveDroppedItems(serverName)
+        t1 = performance.now()
+        console.log(`Call to setAndSaveDroppedItems took ${t1 - t0} milliseconds.`)
+
+        t0 = performance.now()
         await setAndSaveTaxIncome(serverName)
+        t1 = performance.now()
+        console.log(`Call to setAndSaveTaxIncome took ${t1 - t0} milliseconds.`)
     }
 }
