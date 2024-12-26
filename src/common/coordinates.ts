@@ -1,5 +1,12 @@
 import type { Coordinate, PointTuple } from "../@types/coordinates.js"
-import { degreesFullCircle, degreesHalfCircle, degreesQuarterCircle, speedFactor, timeFactor } from "./constants.js"
+import {
+    degreesFullCircle,
+    degreesHalfCircle,
+    degreesQuarterCircle,
+    mapSize,
+    speedFactor,
+    timeFactor,
+} from "./constants.js"
 
 const transformMatrix = {
     A: -0.004_998_667_793_638_28,
@@ -170,3 +177,22 @@ export const between = (value: number, a: number, b: number, inclusive: boolean)
  * @returns Closest power of 2 of aSize
  */
 export const nearestPow2 = (aSize: number): number => 2 ** Math.floor(Math.log(aSize) / Math.log(2))
+
+/**
+ * Adjust for openlayers (top left is not [0,0] but [0,mapSize])
+ */
+export const coordinateAdjust = (x: number | PointTuple | PointTuple[], y?: number): PointTuple | PointTuple[] => {
+    if (Array.isArray(x)) {
+        if (Array.isArray(x[0])) {
+            return (x as PointTuple[]).map((element: PointTuple) => [element[0], mapSize - element[1]] as PointTuple)
+        } else {
+            return [(x as PointTuple)[0], mapSize - (x as PointTuple)[1]]
+        }
+    }
+
+    if (y != null) {
+        return [x, mapSize - y]
+    }
+
+    throw Error(`Wrong parameters x: ${x}, y: ${y}`)
+}

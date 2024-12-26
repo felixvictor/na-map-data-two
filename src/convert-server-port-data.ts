@@ -1,5 +1,7 @@
 import path from "node:path"
 
+import type { Feature, FeatureCollection, Point, Position } from "geojson"
+
 import type { APIItemGeneric } from "./@types/api-item.js"
 import type { APIPort } from "./@types/api-port.js"
 import type { APIShop } from "./@types/api-shop.js"
@@ -7,6 +9,7 @@ import type { Distance } from "./@types/coordinates.js"
 import type { InventoryEntity, PortInventory, PortPerServer } from "./@types/ports.js"
 import type { Trade, TradeItem } from "./@types/trade.js"
 import { cleanItemName, cleanName } from "./common/api.js"
+import { coordinateAdjust } from "./common/coordinates.js"
 import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
 import { findNationShortNameById } from "./common/nation.js"
 import { getCommonPaths } from "./common/path.js"
@@ -35,10 +38,11 @@ const rareWoodIds = new Set([
 ])
 
 const minProfit = 30_000
+const minTaxIncomeToShow = 100_000
 
-let apiItems: APIItemGeneric[]
-let apiPorts: APIPort[]
-let apiShops: APIShop[]
+let apiItems: APIItemGeneric[] = []
+let apiPorts: APIPort[] = []
+let apiShops: APIShop[] = []
 
 const commonPaths = getCommonPaths()
 const distancesFile = commonPaths.fileDistances
@@ -51,6 +55,10 @@ let itemNames: Map<number, Item>
 let itemWeights: Map<number, number>
 let inventories: PortInventory[] = []
 const portTaxMap = new Map<string, number>()
+
+const coordinatesMap = new Map(
+    apiPorts.map((port) => [Number(port.Id), coordinateAdjust([port.Position.x, port.Position.y]) as Position]),
+)
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const getPortShop = (portId: string) => apiShops.find((shop) => shop.Id === portId)!
@@ -251,6 +259,28 @@ const setAndSaveDroppedItems = async (serverName: string): Promise<void> => {
     await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-items.json`), items)
 }
 
+const setAndSaveTaxIncome = async (serverName: string): Promise<void> => {
+    const features: Feature[] = []
+    portData
+        .filter((port) => port.taxIncome > minTaxIncomeToShow)
+        .map((port) => {
+            const feature: Feature<Point> = {
+                type: "Feature",
+                id: port.id,
+                geometry: {
+                    type: "Point",
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    coordinates: coordinatesMap.get(port.id)!,
+                },
+                properties: { taxIncome: port.taxIncome },
+            }
+
+            features.push(feature)
+        })
+    const geoJson: FeatureCollection = { type: "FeatureCollection", features }
+    await saveJsonAsync(path.resolve(commonPaths.dirGenServer, `${serverName}-income.geojson`), geoJson)
+}
+
 export const convertServerPortData = async () => {
     for (const serverName of serverIds) {
         apiItems = readJson(getAPIFilename(`${serverName}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
@@ -297,5 +327,6 @@ export const convertServerPortData = async () => {
         await setAndSaveInventory(serverName)
         await setAndSaveTradeData(serverName)
         await setAndSaveDroppedItems(serverName)
+        await setAndSaveTaxIncome(serverName)
     }
 }

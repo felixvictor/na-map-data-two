@@ -5,8 +5,8 @@ import type { APIPort, PortElementsSlotGroupsEntity, PortPosition } from "./@typ
 import type { Coordinate, PointTuple } from "./@types/coordinates.js"
 import type { PbZone, PortBasic } from "./@types/ports.js"
 import { cleanName } from "./common/api.js"
-import { capitalToCounty, degreesHalfCircle, mapSize } from "./common/constants.js"
-import { convertCoordX, convertCoordY, rotationAngleInDegrees } from "./common/coordinates.js"
+import { capitalToCounty, degreesHalfCircle } from "./common/constants.js"
+import { convertCoordX, convertCoordY, coordinateAdjust, rotationAngleInDegrees } from "./common/coordinates.js"
 import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
 import { getCommonPaths } from "./common/path.js"
 import { serverIds } from "./common/servers.js"
@@ -22,23 +22,6 @@ const counties = new Set<string>()
 const regions = new Set<string>()
 const geoJsonRegions: FeatureCollection<MultiPoint> = { type: "FeatureCollection", features: [] }
 const geoJsonCounties: FeatureCollection<MultiPoint> = { type: "FeatureCollection", features: [] }
-
-// Adjust for openlayers (top left is not [0,0] but [0,mapSize])
-const coordinateAdjust = (x: number | PointTuple | PointTuple[], y?: number): PointTuple | PointTuple[] => {
-    if (Array.isArray(x)) {
-        if (Array.isArray(x[0])) {
-            return (x as PointTuple[]).map((element: PointTuple) => [element[0], mapSize - element[1]] as PointTuple)
-        } else {
-            return [(x as PointTuple)[0], mapSize - (x as PointTuple)[1]]
-        }
-    }
-
-    if (y != null) {
-        return [x, mapSize - y]
-    }
-
-    throw Error(`Wrong parameters x: ${x}, y: ${y}`)
-}
 
 const setAndSavePortData = async (): Promise<void> => {
     /**
