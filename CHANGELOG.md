@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.4.3 (2024-12-26)</small>
+
+* chore(deps): bump ([7123389](https://example.com/commits/7123389))
+* perf: check for trades ([9986a97](https://example.com/commits/9986a97))
+
 ## <small>1.4.2 (2024-12-26)</small>
 
 * refactor: lint ([d7b10bd](https://example.com/commits/d7b10bd))
