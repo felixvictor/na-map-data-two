@@ -9,7 +9,7 @@ import type { Distance } from "./@types/coordinates.js"
 import type { InventoryEntity, PortInventory, PortPerServer } from "./@types/ports.js"
 import type { Trade, TradeItem } from "./@types/trade.js"
 import { cleanItemName, cleanName } from "./common/api.js"
-import { coordinateAdjust } from "./common/coordinates.js"
+import { convertCoordX, convertCoordY, coordinateAdjust } from "./common/coordinates.js"
 import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
 import { findNationShortNameById } from "./common/nation.js"
 import { getCommonPaths } from "./common/path.js"
@@ -49,16 +49,13 @@ const distancesFile = commonPaths.fileDistances
 const distancesOrig = readJson(distancesFile) as Distance[]
 let distances: Map<number, number>
 let numberPorts: number
+let coordinatesMap: Map<number, Position>
 
 let portData: PortPerServer[]
 let itemNames: Map<number, Item>
 let itemWeights: Map<number, number>
 let inventories: PortInventory[] = []
 const portTaxMap = new Map<string, number>()
-
-const coordinatesMap = new Map(
-    apiPorts.map((port) => [Number(port.Id), coordinateAdjust([port.Position.x, port.Position.y]) as Position]),
-)
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const getPortShop = (portId: string) => apiShops.find((shop) => shop.Id === portId)!
@@ -261,6 +258,7 @@ const setAndSaveDroppedItems = async (serverName: string): Promise<void> => {
 
 const setAndSaveTaxIncome = async (serverName: string): Promise<void> => {
     const features: Feature[] = []
+
     portData
         .filter((port) => port.taxIncome > minTaxIncomeToShow)
         .map((port) => {
@@ -321,6 +319,15 @@ export const convertServerPortData = async () => {
         numberPorts = apiPorts.length
         distances = new Map(
             distancesOrig.map(([fromPortId, toPortId, distance]) => [fromPortId * numberPorts + toPortId, distance]),
+        )
+        coordinatesMap = new Map<number, Position>(
+            apiPorts.map((port) => [
+                Number(port.Id),
+                coordinateAdjust([
+                    Math.trunc(convertCoordX(port.Position.x, port.Position.z)),
+                    Math.trunc(convertCoordY(port.Position.x, port.Position.z)),
+                ]) as Position,
+            ]),
         )
 
         await setAndSavePortData(serverName)
