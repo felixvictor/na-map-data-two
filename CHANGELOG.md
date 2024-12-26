@@ -1,4 +1,11 @@
+# Changelog
 
+## 1.4.0 (2024-12-26)
+
+* refactor: lint ([c011f60](https://example.com/commits/c011f60))
+* feat: eslint unicorn plugin ([30ca689](https://example.com/commits/30ca689))
+* feat: tax income as geojson ([13c037c](https://example.com/commits/13c037c))
+* chore(deps): bump ([a62ba9a](https://example.com/commits/a62ba9a))
 
 ## 1.3.0 (2024-12-23)
 
@@ -298,7 +305,7 @@
 
 ## [1.2.8](///compare/v1.2.7...v1.2.8) (2023-08-01)
 
-# Changelog
+
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
