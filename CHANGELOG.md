@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>1.4.1 (2024-12-26)</small>
+
+* refactor: lint ([8260f38](https://example.com/commits/8260f38))
+* refactor: lint ([db1fd2a](https://example.com/commits/db1fd2a))
+* fix(tax income as geojson) ([f213fb7](https://example.com/commits/f213fb7))
+
 ## 1.4.0 (2024-12-26)
 
 * refactor: lint ([c011f60](https://example.com/commits/c011f60))
