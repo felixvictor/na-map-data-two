@@ -183,8 +183,8 @@ const setAndSaveCountyRegionData = async (): Promise<void> => {
         setRegionFeature(apiPort.Location, [x, y])
     }
 
-    await saveJsonAsync(`${commonPaths.dirGenGeneric}/regions.json`, geoJsonRegions)
-    await saveJsonAsync(`${commonPaths.dirGenGeneric}/counties.json`, geoJsonCounties)
+    await saveJsonAsync(`${commonPaths.directoryGenGeneric}/regions.json`, geoJsonRegions)
+    await saveJsonAsync(`${commonPaths.directoryGenGeneric}/counties.json`, geoJsonCounties)
 
     const regionLabels: Feature<GJPoint>[] = []
     for (const region of geoJsonRegions.features) {
@@ -201,7 +201,7 @@ const setAndSaveCountyRegionData = async (): Promise<void> => {
         })
     }
 
-    await saveJsonAsync(`${commonPaths.dirGenGeneric}/region-labels.json`, regionLabels)
+    await saveJsonAsync(`${commonPaths.directoryGenGeneric}/region-labels.json`, regionLabels)
 
     const countyLabels: Feature<GJPoint>[] = []
     for (const county of geoJsonCounties.features) {
@@ -219,7 +219,7 @@ const setAndSaveCountyRegionData = async (): Promise<void> => {
         })
     }
 
-    await saveJsonAsync(`${commonPaths.dirGenGeneric}/county-labels.json`, countyLabels)
+    await saveJsonAsync(`${commonPaths.directoryGenGeneric}/county-labels.json`, countyLabels)
 }
 
 // const getPortName = (portId: number): string => apiPorts.find(({ Id }) => Number(Id) === portId)?.Name ?? "n/a"
