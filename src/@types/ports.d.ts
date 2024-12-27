@@ -13,7 +13,6 @@ export interface PortPerServer {
     isCapturable: boolean
     portTax: number
     taxIncome: number
-    laborHoursDiscount: LaborHoursDiscount
     dropsTrading?: GoodList
     consumesTrading?: GoodList
     producesNonTrading?: GoodList
