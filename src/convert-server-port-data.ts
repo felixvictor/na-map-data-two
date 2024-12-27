@@ -82,8 +82,6 @@ const setPortFeaturePerServer = (apiPort: APIPort): void => {
         conquestMarksPension: apiPort.ConquestMarksPension,
         portTax: Math.round(apiPort.PortTax * 100) / 100,
         taxIncome: apiPort.LastTax,
-        netIncome: apiPort.LastTax - apiPort.LastCost,
-        tradingCompany: apiPort.TradingCompany,
         laborHoursDiscount: apiPort.LaborHoursDiscount,
     } as Partial<PortPerServer>
 

@@ -1,7 +1,6 @@
 import type { PointTuple } from "./coordinates.js"
 import type { PortBattleNationShortName } from "./nations.js"
 
-export type TradingCompany = 0 | 1 | 2
 export type LaborHoursDiscount = 0 | 1 | 2
 export type GoodList = number[]
 export interface PortPerServer {
@@ -14,8 +13,6 @@ export interface PortPerServer {
     isCapturable: boolean
     portTax: number
     taxIncome: number
-    netIncome: number
-    tradingCompany: TradingCompany
     laborHoursDiscount: LaborHoursDiscount
     dropsTrading?: GoodList
     consumesTrading?: GoodList
