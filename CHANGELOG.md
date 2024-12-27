@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>1.4.4 (2024-12-27)</small>
+
+* fix(port data): labour hours discount not used anymore ([19f446d](https://example.com/commits/19f446d))
+* fix(port data): net income and trading company not used anymore ([3a6db7b](https://example.com/commits/3a6db7b))
+* perf: check for trades ([e87b981](https://example.com/commits/e87b981))
+
 ## <small>1.4.3 (2024-12-26)</small>
 
 * chore(deps): bump ([7123389](https://example.com/commits/7123389))
