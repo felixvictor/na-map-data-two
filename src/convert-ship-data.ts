@@ -1,28 +1,32 @@
-import * as fs from "node:fs"
+import fs from "node:fs"
 import path from "node:path"
 
+import { merge } from "ts-deepmerge"
 import convert, { type ElementCompact } from "xml-js"
 
 import type { APIItemGeneric, APIShip, APIShipBlueprint, Limit, Specs } from "./@types/api-item.js"
 import type { Cannon, CannonEntity } from "./@types/cannons.js"
-import type { ShipBlueprint, ShipData, ShipGunDeck, ShipGuns } from "./@types/ships.js"
+import type {
+    ShipBlueprint,
+    ShipData,
+    ShipDataFromAPI,
+    ShipDataFromXML,
+    ShipGunDeck,
+    ShipGuns,
+} from "./@types/ships.js"
 import type { TextEntity, XmlGeneric } from "./@types/xml.js"
 import { cleanName } from "./common/api.js"
 import { speedConstB, speedConstM } from "./common/constants.js"
 import { fileExists, getAPIFilename, readJson, readTextFile, saveJsonAsync } from "./common/file.js"
 import { round, roundToThousands } from "./common/format.js"
+import { type ElementMap, groupOfFiles } from "./common/group-of-xml-files.mjs"
 import { getCommonPaths } from "./common/path.js"
 import { serverIds } from "./common/servers.js"
+import { getShipId, getShipMaster, shipNames } from "./common/ship-names.mjs"
 import { sortBy } from "./common/sort.js"
 import { currentServerStartDate as serverDate } from "./common/time.js"
 
 const commonPaths = getCommonPaths()
-
-type ElementMap = Map<string, { [key: string]: string; group: string; element: string }>
-interface SubFileStructure {
-    ext: string // file name extension (base file name is a ship name)
-    elements: ElementMap
-}
 
 interface GunData {
     damage: number
@@ -91,187 +95,9 @@ const blueprintsNotUsed = new Set([
     2895, // Rotterdam (i)
 ])
 
-// noinspection SpellCheckingInspection
-/**
- * Maps the ship name (lower case for the file name) to the ship id
- */
-const shipNames = new Map<string, { id: number; master: string[] }>([
-    ["agamemnon", { id: 694, master: [] }],
-    ["basiccutter", { id: 413, master: ["cutter"] }],
-    ["basiclynx", { id: 275, master: ["lynx"] }],
-    ["bellepoule", { id: 264, master: [] }],
-    ["bellona", { id: 265, master: [] }],
-    ["bellona74", { id: 359, master: [] }],
-    ["brig", { id: 266, master: [] }],
-    ["brigmr", { id: 267, master: [] }],
-    ["bucentaure", { id: 268, master: [] }],
-    ["cerberus", { id: 269, master: [] }],
-    ["christian", { id: 1664, master: [] }],
-    ["christian2", { id: 2487, master: [] }],
-    ["constitution", { id: 270, master: [] }],
-    ["constitution2", { id: 1674, master: [] }],
-    ["cutter", { id: 271, master: [] }],
-    ["de_ruyter", { id: 2318, master: [] }],
-    ["diana", { id: 1665, master: [] }],
-    ["endymion", { id: 768, master: [] }],
-    ["essex", { id: 272, master: [] }],
-    ["frigate", { id: 273, master: [] }],
-    ["grosventre", { id: 396, master: [] }],
-    ["grosventrepirate", { id: 1561, master: [] }],
-    ["gunboat", { id: 695, master: [] }],
-    ["hamburg", { id: 970, master: [] }],
-    ["hercules", { id: 1675, master: [] }],
-    ["hermione", { id: 592, master: [] }],
-    ["implacable", { id: 2235, master: [] }],
-    ["indefatiable", { id: 787, master: [] }],
-    ["indiaman", { id: 425, master: [] }],
-    ["ingermanland", { id: 395, master: [] }],
-    ["leopard", { id: 2078, master: [] }],
-    ["lhermione", { id: 986, master: [] }],
-    ["lynx", { id: 274, master: [] }],
-    ["mercury", { id: 276, master: [] }],
-    ["navybrig", { id: 277, master: [] }],
-    ["niagara", { id: 278, master: [] }],
-    ["ocean", { id: 650, master: [] }],
-    ["pandora", { id: 1020, master: [] }],
-    ["pavel", { id: 279, master: [] }],
-    ["pickle", { id: 280, master: [] }],
-    ["piratefrigate", { id: 281, master: [] }],
-    ["princedeneufchatel", { id: 1125, master: [] }],
-    ["privateer", { id: 282, master: [] }],
-    ["rattlesnake", { id: 283, master: [] }],
-    ["rattlesnakeheavy", { id: 284, master: [] }],
-    ["renommee", { id: 285, master: [] }],
-    ["requin", { id: 1676, master: [] }],
-    ["rotterdam", { id: 2895, master: [] }],
-    ["santa_ana", { id: 2892, master: [] }],
-    ["santisima", { id: 286, master: [] }],
-    ["snow", { id: 287, master: [] }],
-    ["surprise", { id: 288, master: [] }],
-    ["temeraire", { id: 2229, master: [] }],
-    ["trader brig", { id: 289, master: ["brig"] }],
-    ["trader cutter", { id: 290, master: ["cutter"] }],
-    ["trader lynx", { id: 291, master: ["lynx"] }],
-    ["trader snow", { id: 292, master: ["snow"] }],
-    ["trincomalee", { id: 293, master: [] }],
-    ["victory", { id: 294, master: [] }],
-    ["victory1765", { id: 2350, master: [] }],
-    ["wasa", { id: 1021, master: [] }],
-    ["wasa_prototype", { id: 1938, master: [] }],
-    ["yacht", { id: 295, master: [] }],
-    ["yachtsilver", { id: 393, master: [] }],
-])
-
-const getShipId = (baseFileName: string): number => shipNames.get(baseFileName)?.id ?? 0
-
-const getShipMaster = (baseFileName: string): string[] => shipNames.get(baseFileName)?.master ?? []
-
-// noinspection SpellCheckingInspection
-/**
- * Data structure for content of the individual files.
- */
-const subFileStructure: SubFileStructure[] = [
-    {
-        ext: "b armor",
-        elements: new Map([
-            // ["ARMOR_REAR_HP", { group: "stern", element: "armour" }], // removed patch 30
-            ["ARMOR_THICKNESS", { group: "stern", element: "thickness" }],
-            ["REPAIR_MODULE_TIME", { group: "repairTime", element: "stern" }],
-        ]),
-    },
-    {
-        ext: "crew",
-        elements: new Map([
-            ["SHIP_BOARDING_PREPARATION_BONUS", { group: "boarding", element: "prepInitial" }],
-            ["PREPARATION_BONUS_PER_ROUND", { group: "boarding", element: "prepPerRound" }],
-            ["HANDBOOK_MORALE_BONUS", { group: "boarding", element: "morale" }],
-        ]),
-    },
-    {
-        ext: "f armor",
-        elements: new Map([
-            // ["ARMOR_FRONT_HP", { group: "bow", element: "armour" }], // removed patch 30
-            ["ARMOR_THICKNESS", { group: "bow", element: "thickness" }],
-            ["REPAIR_MODULE_TIME", { group: "repairTime", element: "bow" }],
-        ]),
-    },
-    {
-        ext: "l armor",
-        elements: new Map([
-            // ["ARMOR_LEFT_HP", { group: "sides", element: "armour" }], // removed patch 30
-            ["ARMOR_THICKNESS", { group: "sides", element: "thickness" }],
-            ["REPAIR_MODULE_TIME", { group: "repairTime", element: "sides" }],
-        ]),
-    },
-    {
-        ext: "hull",
-        elements: new Map([
-            // ["FIRE_INCREASE_RATE", "FIRE_INCREASE_RATE"],
-            // ["FIREZONE_HORIZONTAL_ROTATION_SPEED", "FIREZONE_HORIZONTAL_ROTATION_SPEED"],
-            ["FIREZONE_HORIZONTAL_WIDTH", { group: "ship", element: "firezoneHorizontalWidth" }],
-            // ["FIREZONE_MAX_HORIZONTAL_ANGLE", "FIREZONE_MAX_HORIZONTAL_ANGLE"],
-            // ["HIT_PROBABILITY", "HIT_PROBABILITY"],
-            ["SHIP_PHYSICS_ACC_COEF", { group: "ship", element: "acceleration" }],
-            ["SHIP_PHYSICS_DEC_COEF", { group: "ship", element: "deceleration" }],
-            ["SHIP_MAX_ROLL_ANGLE", { group: "ship", element: "rollAngle" }],
-            // ["SHIP_RHEAS_DRIFT", "SHIP_RHEAS_DRIFT"],
-            // ["SHIP_SPEED_DRIFT_MODIFIER", { group: "ship", element: "speedDriftModifier" }],
-            // ["SHIP_SPEED_YARD_POWER_MODIFIER", "SHIP_SPEED_YARD_POWER_MODIFIER"],
-            // ["SHIP_STAYSAILS_DRIFT", { group: "ship", element: "staySailsDrift" }],
-            ["SHIP_STRUCTURE_LEAKS_PER_SECOND", { group: "ship", element: "structureLeaks" }],
-            ["SHIP_TURNING_ACCELERATION_TIME", { group: "ship", element: "turnAcceleration" }],
-            ["SHIP_TURNING_ACCELERATION_TIME_RHEAS", { group: "ship", element: "yardTurningAcceleration" }],
-            ["SHIP_WATERLINE_HEIGHT", { group: "ship", element: "waterlineHeight" }],
-        ]),
-    },
-    {
-        ext: "mast",
-        elements: new Map([
-            // ["HIT_PROBABILITY", "HIT_PROBABILITY"],
-            ["MAST_BOTTOM_SECTION_HP", { group: "mast", element: "bottomArmour" }],
-            ["MAST_MIDDLE_SECTION_HP", { group: "mast", element: "middleArmour" }],
-            ["MAST_TOP_SECTION_HP", { group: "mast", element: "topArmour" }],
-        ]),
-    },
-    {
-        ext: "rudder",
-        elements: new Map([
-            ["ARMOR_THICKNESS", { group: "rudder", element: "thickness" }],
-            // ["HIT_PROBABILITY", "HIT_PROBABILITY"],
-            // ["MODULE_BASE_HP", { group: "rudder", element: "armour" }], // removed patch 30
-            ["REPAIR_MODULE_TIME", { group: "repairTime", element: "rudder" }],
-            ["RUDDER_HALFTURN_TIME", { group: "rudder", element: "halfturnTime" }],
-            ["SHIP_TURNING_SPEED", { group: "ship", element: "turnSpeed" }],
-        ]),
-    },
-    {
-        ext: "sail",
-        elements: new Map([
-            // ["EXPLOSION_DAMAGE_ABSORB_MULTIPLIER", "EXPLOSION_DAMAGE_ABSORB_MULTIPLIER"],
-            // ["HIT_PROBABILITY", "HIT_PROBABILITY"],
-            // ["MAST_CRIT_PROBABILITY", "MAST_CRIT_PROBABILITY"],
-            ["MAST_THICKNESS", { group: "mast", element: "bottomThickness" }],
-            // ["MODULE_BASE_HP", { group: "sails", element: "armour" }], // removed patch 30
-            ["REPAIR_MODULE_TIME", { group: "repairTime", element: "sails" }],
-            // ["RHEA_TURN_SPEED", "RHEA_TURN_SPEED"],
-            ["SAIL_RISING_SPEED", { group: "sails", element: "risingSpeed" }],
-            ["SAILING_CREW_REQUIRED", { group: "crew", element: "sailing" }],
-            // ["SHIP_MAX_SPEED", { group: "ship", element: "maxSpeed" }],
-            // ["SPANKER_TURN_SPEED", { group: "sails", element: "spankerTurnSpeed" }]
-        ]),
-    },
-    {
-        ext: "structure",
-        elements: new Map([
-            // ["EXPLOSION_DAMAGE_ABSORB_MULTIPLIER", "EXPLOSION_DAMAGE_ABSORB_MULTIPLIER"],
-            // ["MODULE_BASE_HP", { group: "structure", element: "armour" }], // removed patch 30
-            ["REPAIR_MODULE_TIME", { group: "repairTime", element: "structure" }],
-        ]),
-    },
-]
-
 let apiItems: APIItemGeneric[]
-let ships: ShipData[]
+const shipDataFromAPI = new Map<number, ShipDataFromAPI>()
+const shipDataFromXML = new Map<number, ShipDataFromXML>()
 let cannons: Cannon
 
 /**
@@ -313,7 +139,7 @@ const getGunData = (cannon: CannonEntity): [number, GunData] => [
     },
 ]
 
-const convertGenericShipData = (): ShipData[] => {
+const convertShipDataFromAPI = () => {
     const cannonLb = [0, 42, 32, 24, 18, 12, 9, 0, 6, 4, 3, 2]
     const carroLb = [0, 0, 68, 42, 32, 24, 0, 18, 12]
     const sideDeckMaxIndex = 3
@@ -329,11 +155,9 @@ const convertGenericShipData = (): ShipData[] => {
         cannons.carronade.filter((cannon) => isNumber(cannon.name)).map((cannon) => getGunData(cannon)),
     )
 
-    return (
-        apiItems.filter(
-            (item) => item.ItemType === "Ship" && !item.NotUsed && !shipsNotUsed.has(item.Id),
-        ) as unknown as APIShip[]
-    ).map((apiShip: APIShip): ShipData => {
+    for (const apiShip of apiItems.filter(
+        (item) => item.ItemType === "Ship" && !item.NotUsed && !shipsNotUsed.has(item.Id),
+    ) as unknown as APIShip[]) {
         const guns = {
             total: 0,
             decks: apiShip.Decks,
@@ -435,14 +259,14 @@ const convertGenericShipData = (): ShipData[] => {
             premium: apiShip.Premium,
             tradeShip: apiShip.ShipType === 1,
             // hostilityScore: ship.HostilityScore
-        } as ShipData
+        } as ShipDataFromAPI
 
         if (ship.id === 1535) {
             ship.name = "Rookie Brig"
         }
 
-        return ship
-    })
+        shipDataFromAPI.set(ship.id, ship)
+    }
 }
 
 /**
@@ -478,114 +302,94 @@ const getBaseFileNames = (directory: string): void => {
     baseFileNames.add("tutorial trader")
 }
 
-const getAdditionalData = (elements: ElementMap, fileData: XmlGeneric): ShipData => {
-    /**
-     * Ship data to be added per file
-     */
-    const addData = {} as ShipData
+const readXMLFile = (baseFileName: string, extension: string): XmlGeneric => {
+    const fileName = path.resolve(commonPaths.directoryModules, `${baseFileName} ${extension}.xml`)
+    let xml = {} as XmlGeneric
+    if (fileExists(fileName)) {
+        const fileXmlData = readTextFile(fileName)
+        xml = (convert.xml2js(fileXmlData, { compact: true }) as ElementCompact).ModuleTemplate as XmlGeneric
+    }
+
+    return xml
+}
+
+/**
+ * Ship data per xml file
+ */
+const convertXML = (elements: ElementMap, fileData: XmlGeneric): ShipDataFromXML => {
+    const ship = {} as ShipDataFromXML
 
     // Retrieve additional data per attribute pair
     for (const pair of fileData.Attributes.Pair) {
         const key = pair.Key._text
         // Check if pair is considered additional data
-        if (elements.has(key)) {
-            const value = Number((pair.Value.Value as TextEntity)._text)
-            const { group, element } = elements.get(key) as { [p: string]: string; group: string; element: string }
-            if (!addData[group]) {
-                addData[group] = {}
-            }
+        if (!elements.has(key)) {
+            continue
+        }
 
+        const value = Number((pair.Value.Value as TextEntity)._text)
+        const { group, element } = elements.get(key) as { [p: string]: string; group: string; element: string }
+        if (!ship[group]) {
+            ship[group] = {}
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        ship[group][element] = value
+
+        // Add calculated mast thickness
+        if (key === "MAST_THICKNESS") {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            addData[group][element] = value
+            ship[group].middleThickness = value * middleMastThicknessRatio
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            ship[group].topThickness = value * topMastThicknessRatio
+        }
 
-            // Add calculated mast thickness
-            if (key === "MAST_THICKNESS") {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                addData[group].middleThickness = value * middleMastThicknessRatio
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                addData[group].topThickness = value * topMastThicknessRatio
-            }
+        // Set default value for preparation per round
+        if (key === "PREPARATION_BONUS_PER_ROUND") {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-plus-operands
+            ship[group][element] += 18
+        }
 
-            // Set default value for preparation per round
-            if (key === "PREPARATION_BONUS_PER_ROUND") {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-plus-operands
-                addData[group][element] += 18
-            }
-
-            // Set default value for morale
-            if (key === "HANDBOOK_MORALE_BONUS") {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-plus-operands
-                addData[group][element] += 100
-            }
+        // Set default value for morale
+        if (key === "HANDBOOK_MORALE_BONUS") {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-plus-operands
+            ship[group][element] += 100
         }
     }
 
-    return addData
+    return ship
 }
 
-// Add additional data to the existing data
-const addAdditionalData = (addData: ShipData, id: number): void => {
-    // Find current ship
-    for (const ship of ships.filter((ship) => ship.id === id)) {
-        // Get all data for each group
-        for (const [group, values] of Object.entries(addData)) {
-            if (!ship[group]) {
-                ship[group] = {}
-            }
-
-            // Get all elements per group
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            for (const [element, value] of Object.entries(values)) {
-                // add value
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                ship[group][element] = value
-            }
+const getDataFromXMLGroupOfFiles = (fileName: string, shipId: number) => {
+    let dataFromXMLGroupOfFiles: Partial<ShipDataFromXML> = { id: shipId }
+    for (const file of groupOfFiles) {
+        const xml = readXMLFile(fileName, file.ext)
+        if (Object.keys(xml).length === 0) {
+            continue
         }
+        const dataFromXMLFile = convertXML(file.elements, xml)
+        dataFromXMLGroupOfFiles = merge(dataFromXMLGroupOfFiles, dataFromXMLFile)
     }
-}
-
-const getFileData = (baseFileName: string, extension: string): XmlGeneric => {
-    const fileName = path.resolve(commonPaths.directoryModules, `${baseFileName} ${extension}.xml`)
-    let data = {} as XmlGeneric
-    if (fileExists(fileName)) {
-        const fileXmlData = readTextFile(fileName)
-        data = (convert.xml2js(fileXmlData, { compact: true }) as ElementCompact).ModuleTemplate as XmlGeneric
-    }
-
-    return data
-}
-
-const getAndAddAdditionalData = (fileName: string, shipId: number): void => {
-    for (const file of subFileStructure) {
-        const fileData = getFileData(fileName, file.ext)
-        if (Object.keys(fileData).length > 0) {
-            const additionalData = getAdditionalData(file.elements, fileData)
-            addAdditionalData(additionalData, shipId)
-        }
-    }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    shipDataFromXML.set(shipId, merge(shipDataFromXML.get(shipId)!, dataFromXMLGroupOfFiles) as ShipDataFromXML)
 }
 
 /**
- * Retrieve additional ship data from game files and add it to existing ship data
- * @returns Ship data
+ * Retrieve additional ship data from game files
  */
-const convertAddShipData = (ships: ShipData[]): ShipData[] => {
+const convertShipDataFromXML = () => {
     getBaseFileNames(commonPaths.directoryModules)
 
     for (const baseFileName of baseFileNames) {
         const shipId = getShipId(baseFileName)
         const masterBaseFileName = getShipMaster(baseFileName)
-
-        if (masterBaseFileName.length > 0) {
-            for (const master of masterBaseFileName) {
-                getAndAddAdditionalData(master, shipId)
-            }
+        shipDataFromXML.set(shipId, {} as ShipDataFromXML)
+        if (masterBaseFileName !== "") {
+            getDataFromXMLGroupOfFiles(masterBaseFileName, shipId)
         }
 
-        getAndAddAdditionalData(baseFileName, shipId)
+        getDataFromXMLGroupOfFiles(baseFileName, shipId)
     }
-
-    return ships
 }
 
 /**
@@ -678,11 +482,17 @@ resourceRatios.forEach((value, key) => {
 */
 
 const convertShips = async (): Promise<void> => {
-    ships = convertGenericShipData()
-    ships = convertAddShipData(ships)
-    ships.sort(sortBy(["id"]))
+    convertShipDataFromAPI()
+    convertShipDataFromXML()
+    const shipData = [...shipDataFromAPI]
+        .map(
+            ([shipId, shipFromAPI]) =>
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                merge(shipFromAPI, shipDataFromXML.get(shipId)!) as ShipData,
+        )
+        .sort(sortBy(["id"]))
 
-    await saveJsonAsync(commonPaths.fileShip, ships)
+    await saveJsonAsync(commonPaths.fileShip, shipData)
 }
 
 export const convertShipData = async (): Promise<void> => {

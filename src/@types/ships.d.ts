@@ -1,27 +1,17 @@
-import type { ObjectIndexer } from "./index.js"
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface ShipData extends ObjectIndexer<any> {
+export interface ShipDataFromAPI {
     battleRating: number
-    boarding: ShipBoarding
     bow: ShipHealth
     class: number
     crew: ShipCrew
-    gunnery?: ShipGunnery
     guns: ShipGuns
     holdSize: number
     id: number
-    mast: ShipMast
     maxWeight: number
     name: string
     premium: boolean
     pump: ShipStructureOrPump
-    repairTime: ShipRepairTime
-    repairAmount?: ShipRepairAmount
-    resistance?: ShipResistance
     rudder: ShipRudder
     sails: ShipSails
-    ship: ShipShip
     shipMass: number
     sides: ShipHealth
     speed: ShipSpeed
@@ -30,6 +20,19 @@ export interface ShipData extends ObjectIndexer<any> {
     structure: ShipStructureOrPump
     tradeShip: boolean
     upgradeXP: number
+}
+export interface ShipDataFromXML {
+    boarding: ShipBoarding
+    id: number
+    mast: ShipMast
+    repairTime: ShipRepairTime
+    ship: ShipShip
+}
+export type ShipData = ShipDataFromAPI & ShipDataFromXML
+export interface ShipDataUpdated extends ShipData {
+    gunnery: ShipGunnery
+    repairAmount: ShipRepairAmount
+    resistance: ShipResistance
 }
 interface ShipBoarding {
     prepInitial: number
