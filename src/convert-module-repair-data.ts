@@ -56,7 +56,8 @@ export const convertRepairData = async (): Promise<void> => {
             }
         }
 
-        repairs[toCamelCase(baseFileName)] = data
+        const group = toCamelCase(baseFileName).replace("armorRepair", "armourRepair")
+        repairs[group] = data
     }
 
     await saveJsonAsync(commonPaths.fileRepair, repairs)
