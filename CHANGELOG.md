@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>1.4.5 (2025-01-01)</small>
+
+* fix(repairs): armorRepair -> armourRepair ([4880f55](https://example.com/commits/4880f55))
+* refactor: convert ship data with separate types (API and XML) ([967c51a](https://example.com/commits/967c51a))
+* refactor: lint ([89efe8d](https://example.com/commits/89efe8d))
+
 ## <small>1.4.4 (2024-12-27)</small>
 
 * fix(port data): labour hours discount not used anymore ([19f446d](https://example.com/commits/19f446d))
