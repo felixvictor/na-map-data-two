@@ -113,10 +113,11 @@ export class PortOwnership {
 
     #setNewEndDate(): void {
         const portData = this.#ports.get(this.#currentPort.Id)
-
-        if (portData?.data.at(-1) !== undefined) {
-            portData.data.at(-1).timeRange[1] = this.#getUnixTimestamp(this.currentDate)
-            this.#ports.set(this.#currentPort.Id, portData)
+        const data = portData?.data.at(-1)
+        if (data !== undefined) {
+            data.timeRange[1] = this.#getUnixTimestamp(this.currentDate)
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.#ports.set(this.#currentPort.Id, portData!)
         }
     }
 
