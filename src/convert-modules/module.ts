@@ -1,8 +1,3 @@
-import * as console from "node:console"
-
-import { flatGroup, group } from "d3-array"
-import { stratify } from "d3-hierarchy"
-
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import type { APIModifierName, ModuleConvertEntity, ModuleEntity, ModulePropertiesEntity } from "../@types/modules.d.ts"
 import { cCircleWhite, cDashEn, cSpaceNarrowNoBreaking } from "../common/constants.js"
