@@ -1,5 +1,3 @@
-import * as console from "node:console"
-
 import type { APIBuilding, APIItemGeneric, APIRecipeResource, LevelsEntity, TemplateEntity } from "./@types/api-item.js"
 import type {
     Building,
