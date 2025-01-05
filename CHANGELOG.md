@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.5.1 (2025-01-05)</small>
+
+* fix(modules.json): hierarchy path ([8009995](https://example.com/commits/8009995))
+
 ## 1.5.0 (2025-01-05)
 
 * feat: modules.json with hierarchy type -> sortingGroup -> permamenttype ([202bb2e](https://example.com/commits/202bb2e))
