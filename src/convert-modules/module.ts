@@ -1,4 +1,4 @@
-import { group as d3Group } from "d3-array"
+import { InternMap, group } from "d3-array"
 
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import type { APIModifierName, ModuleConvertEntity, ModuleEntity, ModulePropertiesEntity } from "../@types/modules.d.ts"
@@ -18,13 +18,13 @@ const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
 /**
  * Get module type as a combined string
  * @param module - Module data
- * @returns Module type
+ * @returns Module object
  */
-const getModuleTypeString = (module: ModuleConvertEntity): string => {
+const getModuleType = (module: ModuleConvertEntity) => {
     let type: string
-    let { permanentType, sortingGroup } = module
+    const { permanentType, sortingGroup } = module
     const { moduleLevel, moduleType, name, usageType } = module
-
+    let sortingGroupString = ""
     if (usageType === "All" && sortingGroup && moduleLevel === "U" && moduleType === "Hidden") {
         type = "Ship trim"
     } else if (moduleType === "Permanent" && !name.endsWith(" Bonus")) {
@@ -39,24 +39,31 @@ const getModuleTypeString = (module: ModuleConvertEntity): string => {
 
     // Correct sorting group
     if (name.endsWith("French Rig Refit") || name === "Bridgetown Frame Refit") {
-        sortingGroup = "survival"
+        sortingGroupString = "survival"
     }
 
     if (type === "Ship trim") {
         const result = bonusRegex.exec(name)
-        sortingGroup = result ? `${cSpaceNarrowNoBreaking}${cDashEn}${cSpaceNarrowNoBreaking}${result[1]}` : ""
+        sortingGroupString = result ? `${cSpaceNarrowNoBreaking}${cDashEn}${cSpaceNarrowNoBreaking}${result[1]}` : ""
     } else {
-        sortingGroup = sortingGroup
+        sortingGroupString = sortingGroup
             ? `${cSpaceNarrowNoBreaking}${cDashEn}${cSpaceNarrowNoBreaking}${capitalizeFirstLetter(sortingGroup).replace("_", "/")}`
             : ""
     }
 
-    permanentType =
+    const permanentTypeString =
         permanentType === "Default"
             ? ""
             : `${cSpaceNarrowNoBreaking}${cCircleWhite}${cSpaceNarrowNoBreaking}${permanentType}`
 
-    return `${type}${sortingGroup}${permanentType}`
+    console.log({ type }, { sortingGroup }, { permanentType }, `${type}${sortingGroupString}${permanentTypeString}`)
+
+    return {
+        type,
+        sortingGroup: sortingGroup === "" ? "default" : sortingGroup,
+        permanentType: permanentType === "Default" ? "default" : permanentType,
+        typeString: `${type}${sortingGroupString}${permanentTypeString}`,
+    }
 }
 
 /**
@@ -134,7 +141,8 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
     let dontSave = false
 
     module.properties = getModuleProperties(module.ApiModifiers)
-    module.typeString = getModuleTypeString(module)
+    const typeObject = getModuleType(module)
+    module = { ...module, ...typeObject }
 
     for (const rate of moduleRate) {
         for (const name of rate.names) {
@@ -185,10 +193,19 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { ApiModifiers, moduleType, sortingGroup, permanentType, ...cleanedModule } = module
+    const { ApiModifiers, moduleType, ...cleanedModule } = module
     modules.set(cleanedModule.name + cleanedModule.moduleLevel, dontSave ? ({} as ModuleEntity) : cleanedModule)
 
     return !dontSave
+}
+
+// @{link: https://www.geeksforgeeks.org/how-to-convert-a-map-to-json-string-in-javascript/}
+const mapToJson = (map: InternMap) => {
+    const object = {}
+    for (const [key, value] of map) {
+        object[key] = value instanceof InternMap ? mapToJson(value) : value
+    }
+    return object
 }
 
 export const saveModules = async () => {
@@ -198,6 +215,12 @@ export const saveModules = async () => {
         .sort(sortBy(["typeString", "id"]))
 
     // Group by type
-    const modulesGrouped = d3Group(result, (module: ModuleEntity): string => module.typeString)
-    await saveJsonAsync(commonPaths.fileModules, [...modulesGrouped])
+    const modulesGrouped = group(
+        result,
+        (module: ModuleEntity) => module.type,
+        (module: ModuleEntity) => module.sortingGroup,
+        (module: ModuleEntity) => module.permanentType,
+    )
+
+    await saveJsonAsync(commonPaths.fileModules, mapToJson(modulesGrouped))
 }

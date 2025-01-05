@@ -2342,6 +2342,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/d3-hierarchy@npm:^3":
+  version: 3.1.7
+  resolution: "@types/d3-hierarchy@npm:3.1.7"
+  checksum: 10c0/873711737d6b8e7b6f1dda0bcd21294a48f75024909ae510c5d2c21fad2e72032e0958def4d9f68319d3aaac298ad09c49807f8bfc87a145a82693b5208613c7
+  languageName: node
+  linkType: hard
+
 "@types/eslint@npm:^9.6.1":
   version: 9.6.1
   resolution: "@types/eslint@npm:9.6.1"
@@ -9636,6 +9643,7 @@ __metadata:
     "@trivago/prettier-plugin-sort-imports": "npm:^5.2.1"
     "@tsconfig/node22": "npm:^22.0.0"
     "@types/d3-array": "npm:^3.2.1"
+    "@types/d3-hierarchy": "npm:^3"
     "@types/eslint": "npm:^9.6.1"
     "@types/geojson": "npm:^7946.0.15"
     "@types/node": "npm:^22.10.5"

@@ -11,6 +11,9 @@ export interface ModuleEntity {
     moduleLevel: string
     properties?: ModulePropertiesEntity[]
     typeString: string
+    type: string
+    sortingGroup: string
+    permanentType: string
     hasSamePropertiesAsPrevious?: boolean
 }
 
