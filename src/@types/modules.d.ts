@@ -9,12 +9,13 @@ export interface ModuleEntity {
     name: string
     usageType: string
     moduleLevel: string
-    properties: ModulePropertiesEntity[] | undefined
-    type: string
+    properties?: ModulePropertiesEntity[]
+    typeString: string
     hasSamePropertiesAsPrevious?: boolean
 }
+
 export interface ModuleConvertEntity extends ModuleEntity {
-    APImodifiers: ModifiersEntity[]
+    ApiModifiers: ModifiersEntity[]
     sortingGroup: string
     permanentType: string
     moduleType: string
@@ -31,7 +32,7 @@ export interface CleanedModule {
     name: string
     usageType: string
     moduleLevel: string
-    properties: ModulePropertiesEntity[] | undefined
-    type: string
-    hasSamePropertiesAsPrevious?: boolean | undefined
+    properties?: ModulePropertiesEntity[]
+    typeString: string
+    hasSamePropertiesAsPrevious?: boolean
 }

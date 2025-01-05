@@ -8,6 +8,7 @@ import type {
     ModuleEntity,
     ModulePropertiesEntity,
 } from "../@types/modules.d.ts"
+import { cCircleWhite, cDashEn, cSpaceNarrowNoBreaking } from "../common/constants.js"
 import { saveJsonAsync } from "../common/file.js"
 import { capitalizeFirstLetter } from "../common/format.js"
 import { getCommonPaths } from "../common/path.js"
@@ -49,12 +50,17 @@ const getModuleType = (module: ModuleConvertEntity): string => {
 
     if (type === "Ship trim") {
         const result = bonusRegex.exec(name)
-        sortingGroup = result ? `\u202F\u2013\u202F${result[1]}` : ""
+        sortingGroup = result ? `${cSpaceNarrowNoBreaking}${cDashEn}${cSpaceNarrowNoBreaking}${result[1]}` : ""
     } else {
-        sortingGroup = sortingGroup ? `\u202F\u2013\u202F${capitalizeFirstLetter(sortingGroup).replace("_", "/")}` : ""
+        sortingGroup = sortingGroup
+            ? `${cSpaceNarrowNoBreaking}${cDashEn}${cSpaceNarrowNoBreaking}${capitalizeFirstLetter(sortingGroup).replace("_", "/")}`
+            : ""
     }
 
-    permanentType = permanentType === "Default" ? "" : `\u202F\u25CB\u202F${permanentType}`
+    permanentType =
+        permanentType === "Default"
+            ? ""
+            : `${cSpaceNarrowNoBreaking}${cCircleWhite}${cSpaceNarrowNoBreaking}${permanentType}`
 
     return `${type}${sortingGroup}${permanentType}`
 }
@@ -133,8 +139,8 @@ const getModuleProperties = (APImodifiers: ModifiersEntity[]): ModulePropertiesE
 export const setModule = (module: ModuleConvertEntity): boolean => {
     let dontSave = false
 
-    module.properties = getModuleProperties(module.APImodifiers)
-    module.type = getModuleType(module)
+    module.properties = getModuleProperties(module.ApiModifiers)
+    module.typeString = getModuleType(module)
 
     for (const rate of moduleRate) {
         for (const name of rate.names) {
@@ -177,15 +183,16 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
     if (
         nameExceptions.has(module.name) ||
         (module.name === "Optimized Rudder" && module.moduleLevel !== "U") ||
+        module.typeString.startsWith("Not used") ||
+        module.name.startsWith("TEST") ||
         module.name.endsWith(" - OLD") ||
-        module.name.endsWith("TEST") ||
-        module.type.startsWith("Not used")
+        module.name.endsWith("TEST")
     ) {
         dontSave = true
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { APImodifiers, moduleType, sortingGroup, permanentType, ...cleanedModule } = module
+    const { ApiModifiers, moduleType, sortingGroup, permanentType, ...cleanedModule } = module
     modules.set(cleanedModule.name + cleanedModule.moduleLevel, dontSave ? ({} as CleanedModule) : cleanedModule)
 
     return !dontSave
@@ -194,7 +201,10 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
 export const saveModules = async () => {
     // Get the non-empty setModules and sort
     const result = [...modules.values()].filter((module) => Object.keys(module).length > 0).sort(sortBy(["type", "id"]))
+    console.log("result", result)
     // Group by type
-    const modulesGrouped = d3Group(result, (module: ModuleEntity): string => module.type)
+    const modulesGrouped = d3Group(result, (module: ModuleEntity): string => module.typeString)
+    console.log("modulesGrouped", modulesGrouped)
+
     await saveJsonAsync(commonPaths.fileModules, [...modulesGrouped])
 }

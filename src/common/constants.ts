@@ -15,6 +15,18 @@ export const speedConstM = 0.071_392_870_783_205_84
 export const speedFactor = 390
 export const timeFactor = 2.63
 
+export const cCircleWhite = "\u25CB"
+export const cDashEn = "\u2013"
+export const cDashFigure = "\u2012"
+export const cMinus = "\u2212"
+export const cPlusSmall = "\uFE62" // not "\u002B"
+export const cSpaceFigure = "\u2007"
+export const cSpaceNarrowNoBreaking = "\u202F"
+export const cSpaceNoBreak = "\u00A0"
+export const cSpacePunctuation = "\u2008"
+export const cSpaceThin = "\u2009"
+export const cSpaceZeroWidthBreaking = "\uFEFF"
+
 // noinspection SpellCheckingInspection
 export const capitalToCounty = new Map([
     ["Arenas", "Cayos del Golfo"],

@@ -29,7 +29,7 @@ export const convertModulesAndWoodData = (): void => {
             id: apiModule.Id,
             name: cleanName(apiModule.Name),
             usageType: apiModule.UsageType,
-            APImodifiers: apiModule.Modifiers,
+            ApiModifiers: apiModule.Modifiers,
             sortingGroup: apiModule.SortingGroup.replace("module:", ""),
             permanentType: apiModule.PermanentType.replaceAll("_", " "),
             // isStackable: !!apiModule.bCanBeSetWithSameType,
