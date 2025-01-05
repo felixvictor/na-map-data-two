@@ -1,5 +1,3 @@
-import { InternMap, group } from "d3-array"
-
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import type { APIModifierName, ModuleConvertEntity, ModuleEntity, ModulePropertiesEntity } from "../@types/modules.d.ts"
 import { cCircleWhite, cDashEn, cSpaceNarrowNoBreaking } from "../common/constants.js"
@@ -56,12 +54,10 @@ const getModuleType = (module: ModuleConvertEntity) => {
             ? ""
             : `${cSpaceNarrowNoBreaking}${cCircleWhite}${cSpaceNarrowNoBreaking}${permanentType}`
 
-    console.log({ type }, { sortingGroup }, { permanentType }, `${type}${sortingGroupString}${permanentTypeString}`)
-
     return {
         type,
-        sortingGroup: sortingGroup === "" ? "default" : sortingGroup,
-        permanentType: permanentType === "Default" ? "default" : permanentType,
+        sortingGroup: sortingGroup === "" ? undefined : sortingGroup,
+        permanentType: permanentType === "Default" ? undefined : permanentType,
         typeString: `${type}${sortingGroupString}${permanentTypeString}`,
     }
 }
@@ -199,28 +195,11 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
     return !dontSave
 }
 
-// @{link: https://www.geeksforgeeks.org/how-to-convert-a-map-to-json-string-in-javascript/}
-const mapToJson = (map: InternMap) => {
-    const object = {}
-    for (const [key, value] of map) {
-        object[key] = value instanceof InternMap ? mapToJson(value) : value
-    }
-    return object
-}
-
 export const saveModules = async () => {
     // Get the non-empty setModules and sort
     const result = [...modules.values()]
         .filter((module) => Object.keys(module).length > 0)
         .sort(sortBy(["typeString", "id"]))
 
-    // Group by type
-    const modulesGrouped = group(
-        result,
-        (module: ModuleEntity) => module.type,
-        (module: ModuleEntity) => module.sortingGroup,
-        (module: ModuleEntity) => module.permanentType,
-    )
-
-    await saveJsonAsync(commonPaths.fileModules, mapToJson(modulesGrouped))
+    await saveJsonAsync(commonPaths.fileModules, result)
 }
