@@ -1,13 +1,7 @@
 import { group as d3Group } from "d3-array"
 
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
-import type {
-    APIModifierName,
-    CleanedModule,
-    ModuleConvertEntity,
-    ModuleEntity,
-    ModulePropertiesEntity,
-} from "../@types/modules.d.ts"
+import type { APIModifierName, ModuleConvertEntity, ModuleEntity, ModulePropertiesEntity } from "../@types/modules.d.ts"
 import { cCircleWhite, cDashEn, cSpaceNarrowNoBreaking } from "../common/constants.js"
 import { saveJsonAsync } from "../common/file.js"
 import { capitalizeFirstLetter } from "../common/format.js"
@@ -15,18 +9,18 @@ import { getCommonPaths } from "../common/path.js"
 import { sortBy } from "../common/sort.js"
 import { bonusRegex, flipAmountForModule, modifiers, moduleRate, notPercentage } from "./common.js"
 
-const modules = new Map<string, CleanedModule>()
+const modules = new Map<string, ModuleEntity>()
 const commonPaths = getCommonPaths()
 
 const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
     `${modifier.Slot} ${modifier.MappingIds.join(",")}`
 
 /**
- * Get module type
+ * Get module type as a combined string
  * @param module - Module data
  * @returns Module type
  */
-const getModuleType = (module: ModuleConvertEntity): string => {
+const getModuleTypeString = (module: ModuleConvertEntity): string => {
     let type: string
     let { permanentType, sortingGroup } = module
     const { moduleLevel, moduleType, name, usageType } = module
@@ -140,7 +134,7 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
     let dontSave = false
 
     module.properties = getModuleProperties(module.ApiModifiers)
-    module.typeString = getModuleType(module)
+    module.typeString = getModuleTypeString(module)
 
     for (const rate of moduleRate) {
         for (const name of rate.names) {
@@ -177,7 +171,6 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
         "Lineship Master",
         "Press Gang",
         "Signaling",
-        "TEST MODULE SPEED IN OW",
         "Thrifty",
     ])
     if (
@@ -193,18 +186,18 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { ApiModifiers, moduleType, sortingGroup, permanentType, ...cleanedModule } = module
-    modules.set(cleanedModule.name + cleanedModule.moduleLevel, dontSave ? ({} as CleanedModule) : cleanedModule)
+    modules.set(cleanedModule.name + cleanedModule.moduleLevel, dontSave ? ({} as ModuleEntity) : cleanedModule)
 
     return !dontSave
 }
 
 export const saveModules = async () => {
     // Get the non-empty setModules and sort
-    const result = [...modules.values()].filter((module) => Object.keys(module).length > 0).sort(sortBy(["type", "id"]))
-    console.log("result", result)
+    const result = [...modules.values()]
+        .filter((module) => Object.keys(module).length > 0)
+        .sort(sortBy(["typeString", "id"]))
+
     // Group by type
     const modulesGrouped = d3Group(result, (module: ModuleEntity): string => module.typeString)
-    console.log("modulesGrouped", modulesGrouped)
-
     await saveJsonAsync(commonPaths.fileModules, [...modulesGrouped])
 }

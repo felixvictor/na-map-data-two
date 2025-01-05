@@ -26,13 +26,3 @@ export interface ModulePropertiesEntity {
     amount: number
     isPercentage: boolean
 }
-
-export interface CleanedModule {
-    id: number
-    name: string
-    usageType: string
-    moduleLevel: string
-    properties?: ModulePropertiesEntity[]
-    typeString: string
-    hasSamePropertiesAsPrevious?: boolean
-}
