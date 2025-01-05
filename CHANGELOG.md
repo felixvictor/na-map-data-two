@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.5.2 (2025-01-05)</small>
+
+* fix(modules.json): import ([abcde1f](https://example.com/commits/abcde1f))
+
 ## <small>1.5.1 (2025-01-05)</small>
 
 * fix(modules.json): hierarchy path ([8009995](https://example.com/commits/8009995))
