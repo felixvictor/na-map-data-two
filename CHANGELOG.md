@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.0 (2025-01-05)
+
+* feat: modules.json with hierarchy type -> sortingGroup -> permamenttype ([202bb2e](https://example.com/commits/202bb2e))
+* feat: modules.json without hierarchy ([79b7822](https://example.com/commits/79b7822))
+* refactor: - typing ([df8eeb5](https://example.com/commits/df8eeb5))
+* refactor: - typing - unicode characters as constants ([2599b3a](https://example.com/commits/2599b3a))
+* refactor: - typing - unicode characters as constants ([8ea2f1d](https://example.com/commits/8ea2f1d))
+* chore(deps): bump ([6458f2e](https://example.com/commits/6458f2e))
+
 ## <small>1.4.5 (2025-01-01)</small>
 
 * fix(repairs): armorRepair -> armourRepair ([4880f55](https://example.com/commits/4880f55))
