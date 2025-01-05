@@ -54,18 +54,10 @@ const getModuleType = (module: ModuleConvertEntity) => {
             ? ""
             : `${cSpaceNarrowNoBreaking}${cCircleWhite}${cSpaceNarrowNoBreaking}${permanentType}`
 
-    let typePath = type
-    if (sortingGroup !== "") {
-        typePath += `/${sortingGroup}`
-    }
-    if (permanentType !== "Default") {
-        typePath += `/${permanentType}`
-    }
     return {
         type,
-        sortingGroup: sortingGroup === "" ? undefined : sortingGroup,
-        permanentType: permanentType === "Default" ? undefined : permanentType,
-        typePath,
+        sortingGroup: sortingGroup === "" ? "default" : sortingGroup,
+        permanentType: permanentType === "Default" ? "default" : permanentType,
         typeString: `${type}${sortingGroupString}${permanentTypeString}`,
     }
 }
