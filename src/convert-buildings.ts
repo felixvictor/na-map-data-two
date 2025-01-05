@@ -1,3 +1,5 @@
+import * as console from "node:console"
+
 import type { APIBuilding, APIItemGeneric, APIRecipeResource, LevelsEntity, TemplateEntity } from "./@types/api-item.js"
 import type {
     Building,
@@ -164,13 +166,13 @@ const getAPISeasonedItem = (name: string): APIRecipeResource =>
     apiItems.find(
         (item) =>
             item.ItemType === "Recipe" &&
-            item.Name.replace(" Log", "") === name.replaceAll(/\s/g, " ").replace("White Oak", "White oak"),
+            item.Name.replace(" Log", "") === name.replaceAll(/\p{Zs}/gu, " ").replace("White Oak", "White oak"),
     ) as unknown as APIRecipeResource
 
 const getPrices = (buildings: Building[]): Price => {
     const prices: Price = { standard: [], seasoned: [] }
     const getStandardPrices = (name: string): number | undefined =>
-        prices.standard.find((standardItem) => standardItem.name === name.replace(" (S)", ""))?.reales
+        prices.standard.find((standardItem) => standardItem.name === name.replace("\u202F(S)", ""))?.reales
 
     const standardPrices = (
         buildings.filter((building: Building) => building.result?.[0].price) as BuildingWithResult[]
