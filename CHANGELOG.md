@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.5.3 (2025-01-05)</small>
+
+* fix(modules.json): hierarchy path removed ([43ae392](https://example.com/commits/43ae392))
+* test: debug off ([cfc1353](https://example.com/commits/cfc1353))
+
 ## <small>1.5.2 (2025-01-05)</small>
 
 * fix(modules.json): import ([abcde1f](https://example.com/commits/abcde1f))

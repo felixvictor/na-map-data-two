@@ -1,6 +1,6 @@
 {
     "name": "na-map-data-two",
-    "version": "1.5.2",
+    "version": "1.5.3",
     "type": "module",
     "scripts": {
         "build:modules": "run-s 'build:modules:**'",
