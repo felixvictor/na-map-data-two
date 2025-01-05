@@ -10,17 +10,17 @@ export interface ModuleEntity {
     usageType: string
     moduleLevel: string
     properties?: ModulePropertiesEntity[]
-    typeString: string
     type: string
-    sortingGroup: string
-    permanentType: string
+    sortingGroup?: string
+    permanentType?: string
+    typePath: string
+    typeString: string
     hasSamePropertiesAsPrevious?: boolean
 }
 
 export interface ModuleConvertEntity extends ModuleEntity {
     ApiModifiers: ModifiersEntity[]
-    sortingGroup: string
-    permanentType: string
+
     moduleType: string
 }
 

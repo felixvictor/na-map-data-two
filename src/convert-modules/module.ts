@@ -1,3 +1,8 @@
+import * as console from "node:console"
+
+import { flatGroup, group } from "d3-array"
+import { stratify } from "d3-hierarchy"
+
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import type { APIModifierName, ModuleConvertEntity, ModuleEntity, ModulePropertiesEntity } from "../@types/modules.d.ts"
 import { cCircleWhite, cDashEn, cSpaceNarrowNoBreaking } from "../common/constants.js"
@@ -54,10 +59,18 @@ const getModuleType = (module: ModuleConvertEntity) => {
             ? ""
             : `${cSpaceNarrowNoBreaking}${cCircleWhite}${cSpaceNarrowNoBreaking}${permanentType}`
 
+    let typePath = type
+    if (sortingGroup !== "") {
+        typePath += `/${sortingGroup}`
+    }
+    if (permanentType !== "Default") {
+        typePath += `/${permanentType}`
+    }
     return {
         type,
         sortingGroup: sortingGroup === "" ? undefined : sortingGroup,
         permanentType: permanentType === "Default" ? undefined : permanentType,
+        typePath,
         typeString: `${type}${sortingGroupString}${permanentTypeString}`,
     }
 }
