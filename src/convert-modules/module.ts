@@ -1,3 +1,5 @@
+import * as console from "node:console"
+
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import type {
     APIModifierName,
@@ -13,7 +15,7 @@ import { getCommonPaths } from "../common/path.js"
 import { sortBy } from "../common/sort.js"
 import { bonusRegex, flipAmountForModule, modifiers, moduleRate, notPercentage } from "./common.js"
 
-const modules = new Map<string, ModuleEntity>()
+const modulesMap = new Map<string, ModuleEntity>()
 const commonPaths = getCommonPaths()
 
 const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
@@ -28,7 +30,7 @@ const getModuleType = (module: ModuleConvertEntity): ModuleEntityHierarchy => {
     let type: string
     const { permanentType, sortingGroup } = module
     const { moduleLevel, moduleType, name, usageType } = module
-    let sortingGroupString = ""
+
     if (usageType === "All" && sortingGroup && moduleLevel === "U" && moduleType === "Hidden") {
         type = "Ship trim"
     } else if (moduleType === "Permanent" && !name.endsWith(" Bonus")) {
@@ -42,6 +44,7 @@ const getModuleType = (module: ModuleConvertEntity): ModuleEntityHierarchy => {
     }
 
     // Correct sorting group
+    let sortingGroupString = sortingGroup
     if (name.endsWith("French Rig Refit") || name === "Bridgetown Frame Refit") {
         sortingGroupString = "survival"
     }
@@ -70,6 +73,8 @@ const getModuleType = (module: ModuleConvertEntity): ModuleEntityHierarchy => {
     if (permanentType !== "Default") {
         returnVariable.permanentType = permanentType
     }
+
+    console.log(returnVariable, sortingGroup, permanentType)
     return returnVariable
 }
 
@@ -149,7 +154,12 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
 
     module.properties = getModuleProperties(module.ApiModifiers)
     const typeObject = getModuleType(module)
-    module = { ...module, ...typeObject }
+    console.log("before", module, typeObject)
+    // Remove sortingGroup and permanentType first
+    const { sortingGroup, permanentType, ...m } = module
+    // Add type and typeString and potentially re-add sortingGroup and permanentType
+    module = { ...m, ...typeObject }
+    console.log("after", module)
 
     for (const rate of moduleRate) {
         for (const name of rate.names) {
@@ -201,14 +211,14 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { ApiModifiers, moduleType, ...cleanedModule } = module
-    modules.set(cleanedModule.name + cleanedModule.moduleLevel, dontSave ? ({} as ModuleEntity) : cleanedModule)
+    modulesMap.set(cleanedModule.name + cleanedModule.moduleLevel, dontSave ? ({} as ModuleEntity) : cleanedModule)
 
     return !dontSave
 }
 
 export const saveModules = async () => {
-    // Get the non-empty setModules and sort
-    const result = [...modules.values()]
+    // Get the non-empty modules and sort
+    const result = [...modulesMap.values()]
         .filter((module) => Object.keys(module).length > 0)
         .sort(sortBy(["typeString", "id"]))
 
