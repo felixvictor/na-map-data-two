@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.5.5 (2025-01-06)</small>
+
+* fix(modules.json): hierarchy path removed ([26353d9](https://example.com/commits/26353d9))
+
 ## <small>1.5.4 (2025-01-06)</small>
 
 * fix(modules.json): hierarchy path removed ([065057d](https://example.com/commits/065057d))
