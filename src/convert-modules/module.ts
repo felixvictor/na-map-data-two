@@ -1,5 +1,3 @@
-import * as console from "node:console"
-
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import type {
     APIModifierName,
@@ -26,7 +24,7 @@ const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
  * @param module - Module data
  * @returns Module object
  */
-const getModuleType = (module: ModuleConvertEntity): ModuleEntityHierarchy => {
+const getModuleTypeHierarchy = (module: ModuleConvertEntity): ModuleEntityHierarchy => {
     let type: string
     const { permanentType, sortingGroup } = module
     const { moduleLevel, moduleType, name, usageType } = module
@@ -67,14 +65,13 @@ const getModuleType = (module: ModuleConvertEntity): ModuleEntityHierarchy => {
         type,
         typeString: `${type}${sortingGroupString}${permanentTypeString}`,
     }
-    if (sortingGroup !== "") {
-        returnVariable.sortingGroup = sortingGroup
+    if (sortingGroup && sortingGroup !== "") {
+        returnVariable.sortingGroup = capitalizeFirstLetter(sortingGroup)
     }
     if (permanentType !== "Default") {
         returnVariable.permanentType = permanentType
     }
 
-    console.log(returnVariable, sortingGroup, permanentType)
     return returnVariable
 }
 
@@ -153,13 +150,13 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
     let dontSave = false
 
     module.properties = getModuleProperties(module.ApiModifiers)
-    const typeObject = getModuleType(module)
-    console.log("before", module, typeObject)
+
+    const typeHierarchy = getModuleTypeHierarchy(module)
     // Remove sortingGroup and permanentType first
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { sortingGroup, permanentType, ...m } = module
     // Add type and typeString and potentially re-add sortingGroup and permanentType
-    module = { ...m, ...typeObject }
-    console.log("after", module)
+    module = { ...m, ...typeHierarchy }
 
     for (const rate of moduleRate) {
         for (const name of rate.names) {
