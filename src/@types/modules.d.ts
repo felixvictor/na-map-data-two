@@ -4,16 +4,18 @@ export type APIModifierName = string
 export type ModifierName = string
 
 export type Module = [ModifierName, ModuleEntity[]]
-export interface ModuleEntity {
+export interface ModuleEntityHierarchy {
+    type: string
+    sortingGroup?: string
+    permanentType?: string
+    typeString: string
+}
+export interface ModuleEntity extends ModuleEntityHierarchy {
     id: number
     name: string
     usageType: string
     moduleLevel: string
     properties?: ModulePropertiesEntity[]
-    type: string
-    sortingGroup: string
-    permanentType: string
-    typeString: string
     hasSamePropertiesAsPrevious?: boolean
 }
 

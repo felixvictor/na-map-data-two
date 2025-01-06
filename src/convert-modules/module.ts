@@ -1,5 +1,11 @@
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
-import type { APIModifierName, ModuleConvertEntity, ModuleEntity, ModulePropertiesEntity } from "../@types/modules.d.ts"
+import type {
+    APIModifierName,
+    ModuleConvertEntity,
+    ModuleEntity,
+    ModuleEntityHierarchy,
+    ModulePropertiesEntity,
+} from "../@types/modules.d.ts"
 import { cCircleWhite, cDashEn, cSpaceNarrowNoBreaking } from "../common/constants.js"
 import { saveJsonAsync } from "../common/file.js"
 import { capitalizeFirstLetter } from "../common/format.js"
@@ -18,7 +24,7 @@ const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
  * @param module - Module data
  * @returns Module object
  */
-const getModuleType = (module: ModuleConvertEntity) => {
+const getModuleType = (module: ModuleConvertEntity): ModuleEntityHierarchy => {
     let type: string
     const { permanentType, sortingGroup } = module
     const { moduleLevel, moduleType, name, usageType } = module
@@ -54,12 +60,17 @@ const getModuleType = (module: ModuleConvertEntity) => {
             ? ""
             : `${cSpaceNarrowNoBreaking}${cCircleWhite}${cSpaceNarrowNoBreaking}${permanentType}`
 
-    return {
+    const returnVariable: ModuleEntityHierarchy = {
         type,
-        sortingGroup: sortingGroup === "" ? "default" : sortingGroup,
-        permanentType: permanentType === "Default" ? "default" : permanentType,
         typeString: `${type}${sortingGroupString}${permanentTypeString}`,
     }
+    if (sortingGroup !== "") {
+        returnVariable.sortingGroup = sortingGroup
+    }
+    if (permanentType !== "Default") {
+        returnVariable.permanentType = permanentType
+    }
+    return returnVariable
 }
 
 /**
