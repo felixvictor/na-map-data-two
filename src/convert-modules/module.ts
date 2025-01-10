@@ -63,7 +63,7 @@ const getModuleTypeHierarchy = (module: ModuleConvertEntity): ModuleEntityHierar
 
     const returnVariable: ModuleEntityHierarchy = {
         type,
-        typeParent: null,
+        typeParent: "root",
         typeString: `${type}${sortingGroupString}${permanentTypeString}`,
     }
     if (sortingGroup && sortingGroup !== "") {
@@ -218,6 +218,7 @@ export const saveModules = async () => {
     const result = [...modulesMap.values()]
         .filter((module) => Object.keys(module).length > 0)
         .sort(sortBy(["typeString", "id"]))
+    result.push({ id: 0, name: "root", type: "", typeParent: undefined })
 
     await saveJsonAsync(commonPaths.fileModules, result)
 }
