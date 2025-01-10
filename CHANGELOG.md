@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.5.8 (2025-01-10)</small>
+
+* fix(modules.json): hierarchy with typeParent ([b1ad3e5](https://example.com/commits/b1ad3e5))
+
 ## <small>1.5.7 (2025-01-10)</small>
 
 * fix(modules.json): hierarchy with typeParent ([6aeaea0](https://example.com/commits/6aeaea0))
