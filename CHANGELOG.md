@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.5.7 (2025-01-10)</small>
+
+* fix(modules.json): hierarchy with typeParent ([6aeaea0](https://example.com/commits/6aeaea0))
+* build: eslint config ([3b3d6b1](https://example.com/commits/3b3d6b1))
+
 ## <small>1.5.6 (2025-01-06)</small>
 
 * fix(modules.json): hierarchy path removed ([ebb86c5](https://example.com/commits/ebb86c5))
