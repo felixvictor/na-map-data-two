@@ -63,12 +63,15 @@ const getModuleTypeHierarchy = (module: ModuleConvertEntity): ModuleEntityHierar
 
     const returnVariable: ModuleEntityHierarchy = {
         type,
+        typeParent: null,
         typeString: `${type}${sortingGroupString}${permanentTypeString}`,
     }
     if (sortingGroup && sortingGroup !== "") {
+        returnVariable.typeParent = type
         returnVariable.sortingGroup = capitalizeFirstLetter(sortingGroup)
     }
     if (permanentType !== "Default") {
+        returnVariable.typeParent = sortingGroupString
         returnVariable.permanentType = permanentType
     }
 
@@ -146,41 +149,7 @@ const getModuleProperties = (APImodifiers: ModifiersEntity[]): ModulePropertiesE
         .sort(sortBy(["modifier"]))
 }
 
-export const setModule = (module: ModuleConvertEntity): boolean => {
-    let dontSave = false
-
-    module.properties = getModuleProperties(module.ApiModifiers)
-
-    const typeHierarchy = getModuleTypeHierarchy(module)
-    // Remove sortingGroup and permanentType first
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { sortingGroup, permanentType, ...m } = module
-    // Add type and typeString and potentially re-add sortingGroup and permanentType
-    module = { ...m, ...typeHierarchy }
-
-    for (const rate of moduleRate) {
-        for (const name of rate.names) {
-            if (module.name.endsWith(name)) {
-                module.name = module.name.replace(name, "")
-                module.moduleLevel = rate.level
-            }
-        }
-    }
-
-    const rateExceptions = new Set([
-        "Apprentice Carpenters",
-        "Journeyman Carpenters",
-        "Navy Carpenters",
-        "Northern Carpenters",
-        "Northern Master Carpenters",
-        "Navy Mast Bands",
-        "Navy Orlop Refit",
-    ])
-
-    if (rateExceptions.has(module.name)) {
-        module.moduleLevel = "U"
-    }
-
+const shouldSaveTest = (module: ModuleEntity) => {
     const nameExceptions = new Set([
         "Cannon nation module - France",
         "Coward",
@@ -195,22 +164,53 @@ export const setModule = (module: ModuleConvertEntity): boolean => {
         "Signaling",
         "Thrifty",
     ])
-    if (
+    return !(
         nameExceptions.has(module.name) ||
         (module.name === "Optimized Rudder" && module.moduleLevel !== "U") ||
         module.typeString.startsWith("Not used") ||
         module.name.startsWith("TEST") ||
         module.name.endsWith(" - OLD") ||
         module.name.endsWith("TEST")
-    ) {
-        dontSave = true
+    )
+}
+
+const rateExceptions = new Set([
+    "Apprentice Carpenters",
+    "Journeyman Carpenters",
+    "Navy Carpenters",
+    "Northern Carpenters",
+    "Northern Master Carpenters",
+    "Navy Mast Bands",
+    "Navy Orlop Refit",
+])
+
+export const setModule = (module: ModuleConvertEntity): boolean => {
+    for (const rate of moduleRate) {
+        for (const name of rate.names) {
+            if (module.name.endsWith(name)) {
+                module.name = module.name.replace(name, "")
+                module.moduleLevel = rate.level
+            }
+        }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { ApiModifiers, moduleType, ...cleanedModule } = module
-    modulesMap.set(cleanedModule.name + cleanedModule.moduleLevel, dontSave ? ({} as ModuleEntity) : cleanedModule)
+    if (rateExceptions.has(module.name)) {
+        module.moduleLevel = "U"
+    }
 
-    return !dontSave
+    module.properties = getModuleProperties(module.ApiModifiers)
+
+    const typeHierarchy = getModuleTypeHierarchy(module)
+    // Remove sortingGroup and permanentType first
+    const { sortingGroup, permanentType, ...m } = module
+    // Add type and typeString and potentially re-add sortingGroup and permanentType from typeHierarchy
+    module = { ...m, ...typeHierarchy }
+
+    const { ApiModifiers, moduleType, ...cleanedModule } = module
+    const shouldSave = shouldSaveTest(module)
+    modulesMap.set(cleanedModule.name + cleanedModule.moduleLevel, shouldSave ? cleanedModule : ({} as ModuleEntity))
+
+    return shouldSave
 }
 
 export const saveModules = async () => {
