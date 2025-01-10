@@ -218,7 +218,7 @@ export const saveModules = async () => {
     const result = [...modulesMap.values()]
         .filter((module) => Object.keys(module).length > 0)
         .sort(sortBy(["typeString", "id"]))
-    result.push({ id: 0, name: "root", type: "", typeParent: undefined })
+    result.push({ id: 0, name: "root", type: "", typeParent: null })
 
     await saveJsonAsync(commonPaths.fileModules, result)
 }
