@@ -85,7 +85,7 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
 
     moduleEntityFlatHierarchy.set(typeString, { name: typeString, parentType: "root" })
 
-    if (isUsed(moduleName, parentType, moduleLevel)) {
+    if (isUsed(moduleName, typeString, moduleLevel)) {
         const { ApiModifiers, moduleType, sortingGroup, permanentType, ...data } = module
         moduleEntityFlatHierarchy.set(moduleName, {
             name: moduleName,
@@ -170,7 +170,7 @@ const getModuleProperties = (APImodifiers: ModifiersEntity[]): ModuleEntityPrope
         .sort(sortBy(["modifier"]))
 }
 
-const isUsed = (name: string, parentType: string, moduleLevel: string) => {
+const isUsed = (name: string, typeString: string, moduleLevel: string) => {
     const nameExceptions = new Set([
         "Cannon nation module - France",
         "Coward",
@@ -190,7 +190,7 @@ const isUsed = (name: string, parentType: string, moduleLevel: string) => {
     return !(
         nameExceptions.has(name) ||
         (name === "Optimized Rudder" && moduleLevel !== "U") ||
-        parentType.startsWith("Not used") ||
+        typeString.startsWith("Not used") ||
         name.startsWith("TEST") ||
         name.endsWith(" - OLD") ||
         name.endsWith("TEST") ||
@@ -227,8 +227,9 @@ export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
 }
 
 export const saveModules = async () => {
-    moduleEntityFlatHierarchy.set("root", {
-        name: "root",
+    moduleEntityFlatHierarchy.delete("Not used")
+    moduleEntityFlatHierarchy.set("Modules", {
+        name: "Modules",
         typeHierarchyString: "",
     })
 
