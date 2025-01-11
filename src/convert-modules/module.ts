@@ -2,9 +2,8 @@ import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import type {
     APIModifierName,
     ModuleConvertEntity,
-    ModuleEntity,
-    ModuleEntityHierarchy,
-    ModulePropertiesEntity,
+    ModuleEntityFlatHierarchy,
+    ModuleEntityProperties,
 } from "../@types/modules.d.ts"
 import { cCircleWhite, cDashEn, cSpaceNarrowNoBreaking } from "../common/constants.js"
 import { saveJsonAsync } from "../common/file.js"
@@ -13,7 +12,7 @@ import { getCommonPaths } from "../common/path.js"
 import { sortBy } from "../common/sort.js"
 import { bonusRegex, flipAmountForModule, modifiers, moduleRate, notPercentage } from "./common.js"
 
-const modulesMap = new Map<string, ModuleEntity>()
+const moduleEntityFlatHierarchy = new Map<string, ModuleEntityFlatHierarchy>()
 const commonPaths = getCommonPaths()
 
 const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
@@ -24,58 +23,80 @@ const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
  * @param module - Module data
  * @returns Module object
  */
-const getModuleTypeHierarchy = (module: ModuleConvertEntity): ModuleEntityHierarchy => {
-    let type: string
+const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
+    let typeString: string
     const { permanentType, sortingGroup } = module
-    const { moduleLevel, moduleType, name, usageType } = module
+    const { moduleLevel, moduleType, name: moduleName, usageType } = module
 
     if (usageType === "All" && sortingGroup && moduleLevel === "U" && moduleType === "Hidden") {
-        type = "Ship trim"
-    } else if (moduleType === "Permanent" && !name.endsWith(" Bonus")) {
-        type = "Permanent"
+        typeString = "Ship trim"
+    } else if (moduleType === "Permanent" && !moduleName.endsWith(" Bonus")) {
+        typeString = "Permanent"
     } else if (usageType === "All" && !sortingGroup && moduleLevel === "U" && moduleType === "Hidden") {
-        type = "Perk"
+        typeString = "Perk"
     } else if (moduleType === "Regular") {
-        type = "Ship knowledge"
+        typeString = "Ship knowledge"
     } else {
-        type = "Not used"
+        typeString = "Not used"
     }
 
     // Correct sorting group
     let sortingGroupString = sortingGroup
-    if (name.endsWith("French Rig Refit") || name === "Bridgetown Frame Refit") {
-        sortingGroupString = "survival"
+    if (moduleName.endsWith("French Rig Refit") || moduleName === "Bridgetown Frame Refit") {
+        sortingGroupString = "Survival"
     }
 
-    if (type === "Ship trim") {
-        const result = bonusRegex.exec(name)
-        sortingGroupString = result ? `${cSpaceNarrowNoBreaking}${cDashEn}${cSpaceNarrowNoBreaking}${result[1]}` : ""
+    if (typeString === "Ship trim") {
+        const result = bonusRegex.exec(moduleName)
+        sortingGroupString = result ? result[1] : ""
     } else {
-        sortingGroupString = sortingGroup
-            ? `${cSpaceNarrowNoBreaking}${cDashEn}${cSpaceNarrowNoBreaking}${capitalizeFirstLetter(sortingGroup).replace("_", "/")}`
-            : ""
+        sortingGroupString = sortingGroup ? capitalizeFirstLetter(sortingGroup).replace("_", "/") : ""
     }
 
-    const permanentTypeString =
-        permanentType === "Default"
-            ? ""
-            : `${cSpaceNarrowNoBreaking}${cCircleWhite}${cSpaceNarrowNoBreaking}${permanentType}`
+    const permanentTypeString = permanentType === "Default" ? "" : (permanentType ?? "")
 
-    const returnVariable: ModuleEntityHierarchy = {
-        type,
-        typeParent: "root",
-        typeString: `${type}${sortingGroupString}${permanentTypeString}`,
+    let typeHierarchyString = typeString
+    if (sortingGroupString !== "") {
+        typeHierarchyString = `${typeHierarchyString}${cSpaceNarrowNoBreaking}${cDashEn}${cSpaceNarrowNoBreaking}${sortingGroupString}`
     }
-    if (sortingGroup && sortingGroup !== "") {
-        returnVariable.typeParent = type
-        returnVariable.sortingGroup = capitalizeFirstLetter(sortingGroup)
-    }
-    if (permanentType !== "Default") {
-        returnVariable.typeParent = sortingGroupString
-        returnVariable.permanentType = permanentType
+    if (permanentTypeString !== "") {
+        typeHierarchyString = `${typeHierarchyString}${cSpaceNarrowNoBreaking}${cCircleWhite}${cSpaceNarrowNoBreaking}${permanentTypeString}`
     }
 
-    return returnVariable
+    let parentType = typeString
+    if (permanentTypeString !== "") {
+        parentType = permanentTypeString
+        moduleEntityFlatHierarchy.set(permanentTypeString, {
+            name: permanentTypeString,
+            parentType: sortingGroupString,
+        })
+        moduleEntityFlatHierarchy.set(sortingGroupString, {
+            name: sortingGroupString,
+            parentType: typeString,
+        })
+    }
+    if (sortingGroupString !== "") {
+        parentType = sortingGroupString
+        moduleEntityFlatHierarchy.set(sortingGroupString, {
+            name: sortingGroupString,
+            parentType: typeString,
+        })
+    }
+
+    moduleEntityFlatHierarchy.set(typeString, { name: typeString, parentType: "root" })
+
+    if (isUsed(moduleName, parentType, moduleLevel)) {
+        const { ApiModifiers, moduleType, sortingGroup, permanentType, ...data } = module
+        moduleEntityFlatHierarchy.set(moduleName, {
+            name: moduleName,
+            typeHierarchyString,
+            parentType,
+            data,
+        })
+        return true
+    }
+
+    return false
 }
 
 /**
@@ -83,7 +104,7 @@ const getModuleTypeHierarchy = (module: ModuleConvertEntity): ModuleEntityHierar
  * @param APImodifiers - Module modifier data
  * @returns Module modifier properties
  */
-const getModuleProperties = (APImodifiers: ModifiersEntity[]): ModulePropertiesEntity[] | undefined => {
+const getModuleProperties = (APImodifiers: ModifiersEntity[]): ModuleEntityProperties[] | undefined => {
     return APImodifiers.filter((modifier) => {
         const apiModifierName = getModifierName(modifier)
         if (!modifiers.has(apiModifierName)) {
@@ -149,7 +170,7 @@ const getModuleProperties = (APImodifiers: ModifiersEntity[]): ModulePropertiesE
         .sort(sortBy(["modifier"]))
 }
 
-const shouldSaveTest = (module: ModuleEntity) => {
+const isUsed = (name: string, parentType: string, moduleLevel: string) => {
     const nameExceptions = new Set([
         "Cannon nation module - France",
         "Coward",
@@ -162,15 +183,18 @@ const shouldSaveTest = (module: ModuleEntity) => {
         "Lineship Master",
         "Press Gang",
         "Signaling",
+        "TEST MODULE SPEED IN OW",
         "Thrifty",
     ])
+
     return !(
-        nameExceptions.has(module.name) ||
-        (module.name === "Optimized Rudder" && module.moduleLevel !== "U") ||
-        module.typeString.startsWith("Not used") ||
-        module.name.startsWith("TEST") ||
-        module.name.endsWith(" - OLD") ||
-        module.name.endsWith("TEST")
+        nameExceptions.has(name) ||
+        (name === "Optimized Rudder" && moduleLevel !== "U") ||
+        parentType.startsWith("Not used") ||
+        name.startsWith("TEST") ||
+        name.endsWith(" - OLD") ||
+        name.endsWith("TEST") ||
+        name.startsWith("Not used")
     )
 }
 
@@ -184,41 +208,29 @@ const rateExceptions = new Set([
     "Navy Orlop Refit",
 ])
 
-export const setModule = (module: ModuleConvertEntity): boolean => {
+export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
     for (const rate of moduleRate) {
         for (const name of rate.names) {
-            if (module.name.endsWith(name)) {
-                module.name = module.name.replace(name, "")
-                module.moduleLevel = rate.level
+            if (moduleConvertEntity.name.endsWith(name)) {
+                moduleConvertEntity.name = moduleConvertEntity.name.replace(name, "")
+                moduleConvertEntity.moduleLevel = rate.level
             }
         }
     }
 
-    if (rateExceptions.has(module.name)) {
-        module.moduleLevel = "U"
+    if (rateExceptions.has(moduleConvertEntity.name)) {
+        moduleConvertEntity.moduleLevel = "U"
     }
 
-    module.properties = getModuleProperties(module.ApiModifiers)
-
-    const typeHierarchy = getModuleTypeHierarchy(module)
-    // Remove sortingGroup and permanentType first
-    const { sortingGroup, permanentType, ...m } = module
-    // Add type and typeString and potentially re-add sortingGroup and permanentType from typeHierarchy
-    module = { ...m, ...typeHierarchy }
-
-    const { ApiModifiers, moduleType, ...cleanedModule } = module
-    const shouldSave = shouldSaveTest(module)
-    modulesMap.set(cleanedModule.name + cleanedModule.moduleLevel, shouldSave ? cleanedModule : ({} as ModuleEntity))
-
-    return shouldSave
+    moduleConvertEntity.properties = getModuleProperties(moduleConvertEntity.ApiModifiers)
+    return setModuleTypeHierarchy(moduleConvertEntity)
 }
 
 export const saveModules = async () => {
-    // Get the non-empty modules and sort
-    const result = [...modulesMap.values()]
-        .filter((module) => Object.keys(module).length > 0)
-        .sort(sortBy(["typeString", "id"]))
-    result.push({ id: 0, name: "root", type: "", typeParent: null })
+    moduleEntityFlatHierarchy.set("root", {
+        name: "root",
+        typeHierarchyString: "",
+    })
 
-    await saveJsonAsync(commonPaths.fileModules, result)
+    await saveJsonAsync(commonPaths.fileModules, [...moduleEntityFlatHierarchy.values()])
 }

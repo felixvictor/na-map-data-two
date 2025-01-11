@@ -4,29 +4,30 @@ export type APIModifierName = string
 export type ModifierName = string
 
 export type Module = [ModifierName, ModuleEntity[]]
-export interface ModuleEntityHierarchy {
-    type: string
-    typeParent: string | null
-    sortingGroup?: string
-    permanentType?: string
-    typeString: string
+export interface ModuleEntityFlatHierarchy {
+    name: string
+    typeHierarchyString?: string
+    parentType?: string
+    data?: ModuleEntity
 }
-export interface ModuleEntity extends ModuleEntityHierarchy {
+
+export interface ModuleEntity {
     id: number
     name: string
+    sortingGroup?: string
+    permanentType?: string
     usageType: string
     moduleLevel: string
-    properties?: ModulePropertiesEntity[]
+    properties?: ModuleEntityProperties[]
     hasSamePropertiesAsPrevious?: boolean
 }
 
 export interface ModuleConvertEntity extends ModuleEntity {
     ApiModifiers: ModifiersEntity[]
-
     moduleType: string
 }
 
-export interface ModulePropertiesEntity {
+export interface ModuleEntityProperties {
     modifier: ModifierName
     amount: number
     isPercentage: boolean
