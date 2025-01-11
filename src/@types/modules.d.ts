@@ -9,6 +9,7 @@ export interface ModuleEntityFlatHierarchy {
     typeHierarchyString?: string
     parentType?: string
     data?: ModuleEntity
+    moduleIds?: number[]
 }
 
 export interface ModuleEntity {

@@ -1,3 +1,5 @@
+import * as console from "node:console"
+
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import type {
     APIModifierName,
@@ -65,19 +67,19 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
     }
 
     let parentType = typeString
+    if (sortingGroupString !== "") {
+        parentType = sortingGroupString
+        moduleEntityFlatHierarchy.set(sortingGroupString, {
+            name: sortingGroupString,
+            parentType: typeString,
+        })
+    }
     if (permanentTypeString !== "") {
         parentType = permanentTypeString
         moduleEntityFlatHierarchy.set(permanentTypeString, {
             name: permanentTypeString,
             parentType: sortingGroupString,
         })
-        moduleEntityFlatHierarchy.set(sortingGroupString, {
-            name: sortingGroupString,
-            parentType: typeString,
-        })
-    }
-    if (sortingGroupString !== "") {
-        parentType = sortingGroupString
         moduleEntityFlatHierarchy.set(sortingGroupString, {
             name: sortingGroupString,
             parentType: typeString,
@@ -234,6 +236,23 @@ export const saveModules = async () => {
         typeHierarchyString: "",
     })
 
+    const m = [...moduleEntityFlatHierarchy.values()].filter(
+        ({ parentType, data }) => parentType !== undefined && data !== undefined,
+    )
+    console.log(m)
+    for (const module of m) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const parentData = moduleEntityFlatHierarchy.get(module.parentType!)!
+        if (parentData.moduleIds) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            parentData.moduleIds.push(module.data!.id)
+        } else {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            parentData.moduleIds = [module.data!.id]
+        }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        moduleEntityFlatHierarchy.set(module.parentType!, parentData)
+    }
     await saveJsonAsync(
         commonPaths.fileModules,
         [...moduleEntityFlatHierarchy.values()].sort(sortBy(["typeHierarchyString", "name"])),
