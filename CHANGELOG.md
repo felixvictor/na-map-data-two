@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.5.14 (2025-01-11)</small>
+
+* fix(modules.json): hierarchy with module id list ([8169f8d](https://example.com/commits/8169f8d))
+
 ## <small>1.5.13 (2025-01-11)</small>
 
 * fix(modules.json): hierarchy ([2d89af9](https://example.com/commits/2d89af9))
