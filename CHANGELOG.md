@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.5.10 (2025-01-11)</small>
+
+* fix(modules.json): hierarchy ([cec9702](https://example.com/commits/cec9702))
+* chore(deps): bump ([992c0d5](https://example.com/commits/992c0d5))
+
 ## <small>1.5.9 (2025-01-10)</small>
 
 * fix(modules.json): hierarchy with typeParent ([ec899ba](https://example.com/commits/ec899ba))
