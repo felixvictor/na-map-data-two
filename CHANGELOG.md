@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.5.11 (2025-01-11)</small>
+
+* fix(modules.json): hierarchy ([81e92e3](https://example.com/commits/81e92e3))
+
 ## <small>1.5.10 (2025-01-11)</small>
 
 * fix(modules.json): hierarchy ([cec9702](https://example.com/commits/cec9702))
