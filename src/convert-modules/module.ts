@@ -13,6 +13,7 @@ import { sortBy } from "../common/sort.js"
 import { bonusRegex, flipAmountForModule, modifiers, moduleRate, notPercentage } from "./common.js"
 
 const moduleEntityFlatHierarchy = new Map<string, ModuleEntityFlatHierarchy>()
+const rootName = "Modules"
 const commonPaths = getCommonPaths()
 
 const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
@@ -83,7 +84,7 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
         })
     }
 
-    moduleEntityFlatHierarchy.set(typeString, { name: typeString, parentType: "root" })
+    moduleEntityFlatHierarchy.set(typeString, { name: typeString, parentType: rootName })
 
     if (isUsed(moduleName, typeString, moduleLevel)) {
         const { ApiModifiers, moduleType, sortingGroup, permanentType, ...data } = module
@@ -228,8 +229,8 @@ export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
 
 export const saveModules = async () => {
     moduleEntityFlatHierarchy.delete("Not used")
-    moduleEntityFlatHierarchy.set("Modules", {
-        name: "Modules",
+    moduleEntityFlatHierarchy.set(rootName, {
+        name: rootName,
         typeHierarchyString: "",
     })
 
