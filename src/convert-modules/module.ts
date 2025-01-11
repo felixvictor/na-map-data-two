@@ -234,5 +234,8 @@ export const saveModules = async () => {
         typeHierarchyString: "",
     })
 
-    await saveJsonAsync(commonPaths.fileModules, [...moduleEntityFlatHierarchy.values()])
+    await saveJsonAsync(
+        commonPaths.fileModules,
+        [...moduleEntityFlatHierarchy.values()].sort(sortBy(["typeHierarchyString", "name"])),
+    )
 }
