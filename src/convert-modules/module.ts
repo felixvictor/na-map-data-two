@@ -69,22 +69,22 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
     let parentString = level1String
     if (level2String !== "") {
         parentString = `${level1String}-${level2String}`
-        moduleEntityFlatHierarchy.set(parentString, {
-            name: level2String,
-            parentString: parentString,
+        moduleEntityFlatHierarchy.set(`${level1String}-${level2String}`, {
+            name: `${level1String}-${level2String}`,
+            parentString: level1String,
             typeHierarchyString: branchName,
         })
     }
     if (level3String !== "") {
         parentString = `${level1String}-${level2String}-${level3String}`
-        moduleEntityFlatHierarchy.set(parentString, {
-            name: level3String,
-            parentString,
+        moduleEntityFlatHierarchy.set(`${level1String}-${level2String}-${level3String}`, {
+            name: `${level1String}-${level2String}-${level3String}`,
+            parentString: `${level1String}-${level2String}`,
             typeHierarchyString: branchName,
         })
         moduleEntityFlatHierarchy.set(`${level1String}-${level2String}`, {
-            name: level2String,
-            parentString: `${level1String}-${level2String}`,
+            name: `${level1String}-${level2String}`,
+            parentString: level1String,
             typeHierarchyString: branchName,
         })
     }
