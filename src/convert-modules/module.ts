@@ -27,79 +27,79 @@ const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
  * @returns Module object
  */
 const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
-    let level1String: string
+    let level1: string
     const { permanentType, sortingGroup } = module
     const { moduleLevel, moduleType, name: moduleName, usageType } = module
 
     if (usageType === "All" && sortingGroup && moduleLevel === "U" && moduleType === "Hidden") {
-        level1String = "Ship trim"
+        level1 = "Ship trim"
     } else if (moduleType === "Permanent" && !moduleName.endsWith(" Bonus")) {
-        level1String = "Permanent"
+        level1 = "Permanent"
     } else if (usageType === "All" && !sortingGroup && moduleLevel === "U" && moduleType === "Hidden") {
-        level1String = "Perk"
+        level1 = "Perk"
     } else if (moduleType === "Regular") {
-        level1String = "Ship knowledge"
+        level1 = "Ship knowledge"
     } else {
-        level1String = "Not used"
+        level1 = "Not used"
     }
 
     // Correct sorting group
-    let level2String = sortingGroup
+    let level2 = sortingGroup
     if (moduleName.endsWith("French Rig Refit") || moduleName === "Bridgetown Frame Refit") {
-        level2String = "Survival"
+        level2 = "Survival"
     }
 
-    if (level1String === "Ship trim") {
+    if (level1 === "Ship trim") {
         const result = bonusRegex.exec(moduleName)
-        level2String = result ? result[1] : ""
+        level2 = result ? result[1] : ""
     } else {
-        level2String = sortingGroup ? capitalizeFirstLetter(sortingGroup).replace("_", "/") : ""
+        level2 = sortingGroup ? capitalizeFirstLetter(sortingGroup).replace("_", "/") : ""
     }
 
-    const level3String = permanentType === "Default" ? "" : (permanentType ?? "")
+    const level3 = permanentType === "Default" ? "" : (permanentType ?? "")
 
-    let levelAllString = level1String
-    if (level2String !== "") {
-        levelAllString = `${levelAllString}${cSpaceNarrowNoBreaking}${cDashEn}${cSpaceNarrowNoBreaking}${level2String}`
+    let levelAll = level1
+    if (level2 !== "") {
+        levelAll = `${levelAll}${cSpaceNarrowNoBreaking}${cDashEn}${cSpaceNarrowNoBreaking}${level2}`
     }
-    if (level3String !== "") {
-        levelAllString = `${levelAllString}${cSpaceNarrowNoBreaking}${cCircleWhite}${cSpaceNarrowNoBreaking}${level3String}`
+    if (level3 !== "") {
+        levelAll = `${levelAll}${cSpaceNarrowNoBreaking}${cCircleWhite}${cSpaceNarrowNoBreaking}${level3}`
     }
 
-    let parentString = level1String
-    if (level2String !== "") {
-        parentString = `${level1String}-${level2String}`
-        moduleEntityFlatHierarchy.set(`${level1String}-${level2String}`, {
-            name: `${level1String}-${level2String}`,
-            parentString: level1String,
+    let parentString = level1
+    if (level2 !== "") {
+        parentString = `${level1}-${level2}`
+        moduleEntityFlatHierarchy.set(parentString, {
+            name: parentString,
+            parentString: level1,
             typeHierarchyString: branchName,
         })
     }
-    if (level3String !== "") {
-        parentString = `${level1String}-${level2String}-${level3String}`
-        moduleEntityFlatHierarchy.set(`${level1String}-${level2String}-${level3String}`, {
-            name: `${level1String}-${level2String}-${level3String}`,
-            parentString: `${level1String}-${level2String}`,
+    if (level3 !== "") {
+        parentString = `${level1}-${level2}-${level3}`
+        moduleEntityFlatHierarchy.set(parentString, {
+            name: parentString,
+            parentString: `${level1}-${level2}`,
             typeHierarchyString: branchName,
         })
-        moduleEntityFlatHierarchy.set(`${level1String}-${level2String}`, {
-            name: `${level1String}-${level2String}`,
-            parentString: level1String,
+        moduleEntityFlatHierarchy.set(`${level1}-${level2}`, {
+            name: `${level1}-${level2}`,
+            parentString: level1,
             typeHierarchyString: branchName,
         })
     }
 
-    moduleEntityFlatHierarchy.set(level1String, {
-        name: level1String,
+    moduleEntityFlatHierarchy.set(level1, {
+        name: level1,
         typeHierarchyString: branchName,
         parentString: rootName,
     })
 
-    if (isUsed(moduleName, level1String, moduleLevel)) {
+    if (isUsed(moduleName, level1, moduleLevel)) {
         const { ApiModifiers, moduleType, sortingGroup, permanentType, ...data } = module
         moduleEntityFlatHierarchy.set(moduleName, {
             name: moduleName,
-            typeHierarchyString: levelAllString,
+            typeHierarchyString: levelAll,
             parentString,
             data,
         })
