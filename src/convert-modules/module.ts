@@ -1,5 +1,3 @@
-import * as console from "node:console"
-
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import type {
     APIModifierName,
@@ -14,9 +12,10 @@ import { getCommonPaths } from "../common/path.js"
 import { sortBy } from "../common/sort.js"
 import { bonusRegex, flipAmountForModule, modifiers, moduleRate, notPercentage } from "./common.js"
 
+const commonPaths = getCommonPaths()
+
 const moduleEntityFlatHierarchy = new Map<string, ModuleEntityFlatHierarchy>()
 const rootName = "Modules"
-const commonPaths = getCommonPaths()
 
 const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
     `${modifier.Slot} ${modifier.MappingIds.join(",")}`
@@ -68,25 +67,28 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
 
     let parentType = typeString
     if (sortingGroupString !== "") {
-        parentType = sortingGroupString
-        moduleEntityFlatHierarchy.set(sortingGroupString, {
+        parentType = `${typeString}-${sortingGroupString}`
+        moduleEntityFlatHierarchy.set(parentType, {
             name: sortingGroupString,
-            parentType: typeString,
+            parentType,
+            typeHierarchyString: "node",
         })
     }
     if (permanentTypeString !== "") {
-        parentType = permanentTypeString
-        moduleEntityFlatHierarchy.set(permanentTypeString, {
+        parentType = `${typeString}-${sortingGroupString}-${permanentTypeString}`
+        moduleEntityFlatHierarchy.set(parentType, {
             name: permanentTypeString,
-            parentType: sortingGroupString,
+            parentType,
+            typeHierarchyString: "node",
         })
-        moduleEntityFlatHierarchy.set(sortingGroupString, {
+        moduleEntityFlatHierarchy.set(`${typeString}-${sortingGroupString}`, {
             name: sortingGroupString,
-            parentType: typeString,
+            parentType: `${typeString}-${sortingGroupString}`,
+            typeHierarchyString: "node",
         })
     }
 
-    moduleEntityFlatHierarchy.set(typeString, { name: typeString, parentType: rootName })
+    moduleEntityFlatHierarchy.set(typeString, { name: typeString, typeHierarchyString: "node", parentType: rootName })
 
     if (isUsed(moduleName, typeString, moduleLevel)) {
         const { ApiModifiers, moduleType, sortingGroup, permanentType, ...data } = module
@@ -190,14 +192,17 @@ const isUsed = (name: string, typeString: string, moduleLevel: string) => {
         "Thrifty",
     ])
 
+    const nameL = name.toLocaleLowerCase()
+    const typeStringL = typeString.toLocaleLowerCase()
+
     return !(
         nameExceptions.has(name) ||
         (name === "Optimized Rudder" && moduleLevel !== "U") ||
-        typeString.startsWith("Not used") ||
-        name.startsWith("TEST") ||
-        name.endsWith(" - OLD") ||
-        name.endsWith("TEST") ||
-        name.startsWith("Not used")
+        typeStringL.startsWith("not used") ||
+        nameL.startsWith("test") ||
+        nameL.endsWith("test") ||
+        nameL.endsWith("old") ||
+        nameL.startsWith("not used")
     )
 }
 
@@ -239,7 +244,7 @@ export const saveModules = async () => {
     const m = [...moduleEntityFlatHierarchy.values()].filter(
         ({ parentType, data }) => parentType !== undefined && data !== undefined,
     )
-    console.log(m)
+
     for (const module of m) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const parentData = moduleEntityFlatHierarchy.get(module.parentType!)!
@@ -253,6 +258,7 @@ export const saveModules = async () => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         moduleEntityFlatHierarchy.set(module.parentType!, parentData)
     }
+
     await saveJsonAsync(
         commonPaths.fileModules,
         [...moduleEntityFlatHierarchy.values()].sort(sortBy(["typeHierarchyString", "name"])),
