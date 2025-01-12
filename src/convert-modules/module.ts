@@ -74,35 +74,40 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
     if (level2 !== "") {
         parentString = `${level1}-${level2}`
         moduleEntityFlatHierarchy.set(parentString, {
-            name: parentString,
+            name: level2,
+            hierarchyName: parentString,
             parentString: level1,
-            typeHierarchyString: branchName,
+            hierarchyString: branchName,
         })
     }
     if (level3 !== "") {
         parentString = `${level1}-${level2}-${level3}`
         moduleEntityFlatHierarchy.set(parentString, {
-            name: parentString,
+            name: level3,
+            hierarchyName: parentString,
             parentString: `${level1}-${level2}`,
-            typeHierarchyString: branchName,
+            hierarchyString: branchName,
         })
         moduleEntityFlatHierarchy.set(`${level1}-${level2}`, {
-            name: `${level1}-${level2}`,
+            name: level2,
+            hierarchyName: `${level1}-${level2}`,
             parentString: level1,
-            typeHierarchyString: branchName,
+            hierarchyString: branchName,
         })
     }
 
     moduleEntityFlatHierarchy.set(level1, {
         name: level1,
-        typeHierarchyString: branchName,
+        hierarchyName: level1,
+        hierarchyString: branchName,
         parentString: rootName,
     })
 
     const { ApiModifiers, moduleType: mT, sortingGroup: sG, permanentType: pT, ...data } = module
     moduleEntityFlatHierarchy.set(moduleName, {
         name: moduleName,
-        typeHierarchyString: levelAll,
+        hierarchyName: moduleName,
+        hierarchyString: levelAll,
         parentString,
         data,
     })
@@ -244,7 +249,8 @@ export const saveModules = async () => {
     moduleEntityFlatHierarchy.delete("Not used")
     moduleEntityFlatHierarchy.set(rootName, {
         name: rootName,
-        typeHierarchyString: rootName,
+        hierarchyName: rootName,
+        hierarchyString: rootName,
         parentString: "",
     })
 
@@ -264,6 +270,6 @@ export const saveModules = async () => {
 
     await saveJsonAsync(
         commonPaths.fileModules,
-        [...moduleEntityFlatHierarchy.values()].sort(sortBy(["typeHierarchyString", "name"])),
+        [...moduleEntityFlatHierarchy.values()].sort(sortBy(["hierarchyString", "name"])),
     )
 }
