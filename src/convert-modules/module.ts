@@ -43,6 +43,10 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
         level1 = "Not used"
     }
 
+    if (!isUsed(moduleName, level1, moduleLevel)) {
+        return false
+    }
+
     // Correct sorting group
     let level2 = sortingGroup
     if (moduleName.endsWith("French Rig Refit") || moduleName === "Bridgetown Frame Refit") {
@@ -95,18 +99,15 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
         parentString: rootName,
     })
 
-    if (isUsed(moduleName, level1, moduleLevel)) {
-        const { ApiModifiers, moduleType, sortingGroup, permanentType, ...data } = module
-        moduleEntityFlatHierarchy.set(moduleName, {
-            name: moduleName,
-            typeHierarchyString: levelAll,
-            parentString,
-            data,
-        })
-        return true
-    }
+    const { ApiModifiers, moduleType: mT, sortingGroup: sG, permanentType: pT, ...data } = module
+    moduleEntityFlatHierarchy.set(moduleName, {
+        name: moduleName,
+        typeHierarchyString: levelAll,
+        parentString,
+        data,
+    })
 
-    return false
+    return true
 }
 
 /**
