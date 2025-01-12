@@ -7,7 +7,7 @@ export type Module = [ModifierName, ModuleEntity[]]
 export interface ModuleEntityFlatHierarchy {
     name: string
     typeHierarchyString: string
-    parentType?: string
+    parentString: string
     data?: ModuleEntity
     moduleIds?: number[]
 }
