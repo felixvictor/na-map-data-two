@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0 (2025-01-23)
+
+* feat: use dev server API data ([502992e](https://example.com/commits/502992e))
+* refactor: get api data ([7825ce0](https://example.com/commits/7825ce0))
+
 ## <small>1.5.19 (2025-01-23)</small>
 
 ## <small>1.5.18 (2025-01-23)</small>
