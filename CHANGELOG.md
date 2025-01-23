@@ -1,5 +1,7 @@
 # Changelog
 
+## <small>1.5.19 (2025-01-23)</small>
+
 ## <small>1.5.18 (2025-01-23)</small>
 
 * build: yarn -> pnpm ([c7a812d](https://example.com/commits/c7a812d))
