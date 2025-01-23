@@ -2,7 +2,7 @@ import { exec, execSync } from "node:child_process"
 import path from "node:path"
 
 import { apiBaseFiles, fileExists, fileExistsAsync, getAPIFilename, removeFileSync } from "./file.js"
-import { serverIds } from "./servers.js"
+import { serverIds, testServerIds } from "./servers.js"
 import { currentServerStartDate } from "./time.js"
 
 const commandCompress = "brotli --rm"
@@ -44,7 +44,7 @@ export const unCompressSync = (fileName: string): void => {
 }
 
 const loopApiFiles = (toCompress = true, toRemove = false): void => {
-    for (const serverName of serverIds) {
+    for (const serverName of [...serverIds, ...testServerIds]) {
         for (const apiBaseFile of apiBaseFiles) {
             const fileName = getAPIFilename(`${serverName}-${apiBaseFile}-${currentServerStartDate}.json`)
             if (toRemove) {
