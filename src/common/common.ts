@@ -3,7 +3,7 @@ import type { APIPort } from "../@types/api-port.js"
 import type { APIShop } from "../@types/api-shop.js"
 import type { ServerId } from "../@types/server.js"
 import { getAPIFilename, readJson } from "./file.js"
-import { testServerIds } from "./servers.js"
+import { serverIds } from "./servers.js"
 import { currentServerStartDate as serverDate } from "./time.js"
 
 /**
@@ -16,9 +16,9 @@ export const isEmpty = (object: Record<string, unknown> | undefined): boolean =>
     object !== undefined && Object.getOwnPropertyNames(object).length === 0
 
 export const getApiItems = () =>
-    readJson(getAPIFilename(`${testServerIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
+    readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
 
-export const getApiPorts = () => readJson(getAPIFilename(`${testServerIds[0]}-Ports-${serverDate}.json`)) as APIPort[]
+export const getApiPorts = () => readJson(getAPIFilename(`${serverIds[0]}-Ports-${serverDate}.json`)) as APIPort[]
 
 export const getApiPortsFromServer = (serverId: ServerId) =>
     readJson(getAPIFilename(`${serverId}-Ports-${serverDate}.json`)) as APIPort[]
