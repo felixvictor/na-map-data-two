@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.5.18 (2025-01-23)</small>
+
+* build: yarn -> pnpm ([c7a812d](https://example.com/commits/c7a812d))
+
 ## <small>1.5.17 (2025-01-12)</small>
 
 * fix(modules.json): hierarchy with module id list ([3ff1090](https://example.com/commits/3ff1090))
