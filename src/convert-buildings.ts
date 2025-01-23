@@ -9,11 +9,10 @@ import type {
 } from "./@types/buildings.js"
 import type { Price, PriceSeasonedWood, PriceStandardWood } from "./@types/prices.js"
 import { cleanName } from "./common/api.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { getApiItems } from "./common/common.js"
+import { saveJsonAsync } from "./common/file.js"
 import { getCommonPaths } from "./common/path.js"
-import { serverIds } from "./common/servers.js"
 import { sortBy } from "./common/sort.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
 
 const idWorkshop = 450
 const idAcademy = 879
@@ -243,7 +242,7 @@ const convertBuildings = async (): Promise<void> => {
 }
 
 export const convertBuildingData = async (): Promise<void> => {
-    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
+    apiItems = getApiItems()
 
     await convertBuildings()
 }

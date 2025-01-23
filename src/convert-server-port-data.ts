@@ -9,13 +9,14 @@ import type { Distance } from "./@types/coordinates.js"
 import type { InventoryEntity, PortInventory, PortPerServer } from "./@types/ports.js"
 import type { Trade, TradeItem } from "./@types/trade.js"
 import { cleanItemName, cleanName } from "./common/api.js"
+import { getApiItems, getApiPorts, getApiShops } from "./common/common.js"
 import { convertCoordX, convertCoordY, coordinateAdjust } from "./common/coordinates.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { readJson, saveJsonAsync } from "./common/file.js"
 import { findNationShortNameById } from "./common/nation.js"
 import { getCommonPaths } from "./common/path.js"
 import { serverIds } from "./common/servers.js"
 import { simpleNumberSort, sortBy } from "./common/sort.js"
-import { getTimeFromTicks, currentServerStartDate as serverDate } from "./common/time.js"
+import { getTimeFromTicks } from "./common/time.js"
 
 interface Item {
     name: string
@@ -277,11 +278,10 @@ const setAndSaveTaxIncome = async (serverName: string): Promise<void> => {
 }
 
 export const convertServerPortData = async () => {
-    for (const serverName of serverIds) {
-        apiItems = readJson(getAPIFilename(`${serverName}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
-        apiPorts = readJson(getAPIFilename(`${serverName}-Ports-${serverDate}.json`)) as APIPort[]
-        apiShops = readJson(getAPIFilename(`${serverName}-Shops-${serverDate}.json`)) as APIShop[]
-
+    for (const serverId of serverIds) {
+        apiItems = getApiItems()
+        apiPorts = getApiPorts()
+        apiShops = getApiShops(serverId)
         /**
          * Item names
          */
@@ -327,10 +327,10 @@ export const convertServerPortData = async () => {
             ]),
         )
 
-        await setAndSavePortData(serverName)
-        await setAndSaveInventory(serverName)
-        await setAndSaveTradeData(serverName)
-        await setAndSaveDroppedItems(serverName)
-        await setAndSaveTaxIncome(serverName)
+        await setAndSavePortData(serverId)
+        await setAndSaveInventory(serverId)
+        await setAndSaveTradeData(serverId)
+        await setAndSaveDroppedItems(serverId)
+        await setAndSaveTaxIncome(serverId)
     }
 }

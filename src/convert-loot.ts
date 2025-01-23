@@ -13,12 +13,11 @@ import type {
     LootLootItemsEntity,
 } from "./@types/loot.js"
 import { cleanName } from "./common/api.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { getApiItems } from "./common/common.js"
+import { saveJsonAsync } from "./common/file.js"
 import { getOrdinal } from "./common/format.js"
 import { getCommonPaths } from "./common/path.js"
-import { serverIds } from "./common/servers.js"
 import { sortBy } from "./common/sort.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
 
 const secondsPerHour = 3600
 
@@ -132,7 +131,7 @@ const convertLoot = async (): Promise<void> => {
 }
 
 export const convertLootData = (): void => {
-    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
+    apiItems = getApiItems()
     itemNames = new Map(apiItems.map((item) => [Number(item.Id), getLootItemName(item.Name, item.ItemType)]))
 
     void convertLoot()

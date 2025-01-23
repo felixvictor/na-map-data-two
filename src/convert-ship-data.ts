@@ -16,15 +16,14 @@ import type {
 } from "./@types/ships.js"
 import type { TextEntity, XmlGeneric } from "./@types/xml.js"
 import { cleanName } from "./common/api.js"
+import { getApiItems } from "./common/common.js"
 import { speedConstB, speedConstM } from "./common/constants.js"
-import { fileExists, getAPIFilename, readJson, readTextFile, saveJsonAsync } from "./common/file.js"
+import { fileExists, readJson, readTextFile, saveJsonAsync } from "./common/file.js"
 import { round, roundToThousands } from "./common/format.js"
 import { type ElementMap, groupOfFiles } from "./common/group-of-xml-files.mjs"
 import { getCommonPaths } from "./common/path.js"
-import { serverIds } from "./common/servers.js"
 import { getShipId, getShipMaster, shipNames } from "./common/ship-names.mjs"
 import { sortBy } from "./common/sort.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
 
 const commonPaths = getCommonPaths()
 
@@ -496,7 +495,7 @@ const convertShips = async (): Promise<void> => {
 }
 
 export const convertShipData = async (): Promise<void> => {
-    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
+    apiItems = getApiItems()
     cannons = readJson(commonPaths.fileCannon) as Cannon
 
     await convertShips()

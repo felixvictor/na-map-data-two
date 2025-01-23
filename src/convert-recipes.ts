@@ -8,11 +8,10 @@ import type {
 } from "./@types/api-item.js"
 import type { Recipe, RecipeEntity, RecipeGroup } from "./@types/recipes.js"
 import { cleanName } from "./common/api.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { getApiItems } from "./common/common.js"
+import { saveJsonAsync } from "./common/file.js"
 import { getCommonPaths } from "./common/path.js"
-import { serverIds } from "./common/servers.js"
 import { simpleStringSort, sortBy } from "./common/sort.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
 
 interface Ingredient {
     id: number
@@ -146,7 +145,6 @@ const convertRecipes = async (): Promise<void> => {
         return {
             group,
             recipes: recipes.map((recipe) => {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { craftGroup, ...recipeCleaned } = recipe
                 return recipeCleaned
             }),
@@ -159,7 +157,7 @@ const convertRecipes = async (): Promise<void> => {
 }
 
 export const convertRecipeData = (): void => {
-    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
+    apiItems = getApiItems()
 
     void convertRecipes()
 }

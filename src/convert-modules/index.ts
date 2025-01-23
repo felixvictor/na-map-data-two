@@ -1,9 +1,7 @@
 import type { APIItemGeneric, APIModule } from "../@types/api-item.d.ts"
 import type { ModuleConvertEntity } from "../@types/modules.js"
 import { cleanName } from "../common/api.js"
-import { getAPIFilename, readJson } from "../common/file.js"
-import { serverIds } from "../common/servers.js"
-import { currentServerStartDate as serverDate } from "../common/time.js"
+import { getApiItems } from "../common/common.js"
 import { levels, notUsedExceptionalWoodIds, notUsedModules, usedModules } from "./common.js"
 import { saveModules, setModule } from "./module.js"
 import { saveWoods, setWood } from "./wood.js"
@@ -67,7 +65,7 @@ export const convertModulesAndWoodData = (): void => {
 }
 
 export const convertModules = async () => {
-    apiItems = readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
+    apiItems = getApiItems()
 
     convertModulesAndWoodData()
     await saveModules()

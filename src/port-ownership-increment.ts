@@ -6,8 +6,9 @@ import type { Ownership, OwnershipPort, Segment } from "./@types/ownership.js"
 import type { PowerMapList } from "./@types/power-map.js"
 import type { ServerId } from "./@types/server.js"
 import { cleanName } from "./common/api.js"
+import { getApiPortsFromDate } from "./common/common.js"
 import { capitalToCounty } from "./common/constants.js"
-import { getAPIFilename, readJson } from "./common/file.js"
+import { readJson } from "./common/file.js"
 import { currentServerStartDate as serverDate } from "./common/time.js"
 import { PortOwnership } from "./port-ownership.js"
 
@@ -75,7 +76,7 @@ export class PortOwnershipIncrement extends PortOwnership {
 
     async #processFile() {
         this.currentDate = serverDate
-        this.#apiPorts = readJson(getAPIFilename(`${this.serverId}-Ports-${this.currentDate}.json`)) as APIPort[]
+        this.#apiPorts = getApiPortsFromDate(this.serverId, this.currentDate)
         this.#initData()
         this.parseData(this.#apiPorts)
         await this.writeResult()

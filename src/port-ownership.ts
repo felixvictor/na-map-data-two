@@ -16,13 +16,13 @@ import type {
 import type { PowerMapList } from "./@types/power-map.js"
 import type { ServerId } from "./@types/server.js"
 import { cleanName } from "./common/api.js"
+import { getApiPortsFromServer } from "./common/common.js"
 import { compressExtension } from "./common/compress.js"
 import { capitalToCounty } from "./common/constants.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { saveJsonAsync } from "./common/file.js"
 import { findNationShortNameById, nationShortNamesPerServer } from "./common/nation.js"
 import { getCommonPaths } from "./common/path.js"
 import { sortBy } from "./common/sort.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
 
 export class PortOwnership {
     #currentPort = {} as APIPort
@@ -57,7 +57,7 @@ export class PortOwnership {
     }
 
     #getRegionData() {
-        const lastPortData = readJson(getAPIFilename(`${this.serverId}-Ports-${serverDate}.json`)) as APIPort[]
+        const lastPortData = getApiPortsFromServer(this.serverId)
         this.#portRegionData = new Map(
             lastPortData.map((port) => [
                 port.Id,

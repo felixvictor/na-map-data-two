@@ -5,13 +5,12 @@ import type { APIPort, PortElementsSlotGroupsEntity, PortPosition } from "./@typ
 import type { Coordinate, PointTuple } from "./@types/coordinates.js"
 import type { PbZone, PortBasic } from "./@types/ports.js"
 import { cleanName } from "./common/api.js"
+import { getApiPorts } from "./common/common.js"
 import { capitalToCounty, degreesHalfCircle } from "./common/constants.js"
 import { convertCoordX, convertCoordY, coordinateAdjust, rotationAngleInDegrees } from "./common/coordinates.js"
-import { getAPIFilename, readJson, saveJsonAsync } from "./common/file.js"
+import { saveJsonAsync } from "./common/file.js"
 import { getCommonPaths } from "./common/path.js"
-import { serverIds } from "./common/servers.js"
 import { sortBy } from "./common/sort.js"
-import { currentServerStartDate as serverDate } from "./common/time.js"
 
 const commonPaths = getCommonPaths()
 
@@ -255,7 +254,7 @@ const getEquidistantPorts = async (): Promise<void> => {
 */
 
 export const convertGenericPortData = (): void => {
-    apiPorts = readJson(getAPIFilename(`${serverIds[0]}-Ports-${serverDate}.json`)) as APIPort[]
+    apiPorts = getApiPorts()
 
     apiPortPos = new Map(
         apiPorts.map((apiPort) => [
