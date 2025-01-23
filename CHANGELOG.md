@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.6.1 (2025-01-23)</small>
+
+* Revert "feat: use dev server API data" ([10165cb](https://example.com/commits/10165cb))
+
 ## 1.6.0 (2025-01-23)
 
 * feat: use dev server API data ([502992e](https://example.com/commits/502992e))
