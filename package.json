@@ -9,32 +9,30 @@
         "build:modules:3:correct:enc": "/usr/bin/bash -c 'cd build/Modules/; for FILE in *.xml; do dos2unix -m -q \"${FILE}\"; done'",
         "build:modules:4:correct:names": "cd build/Modules/; mv \"traders brig hull.xml\" \"trader brig hull.xml\"; mv \"agamemnon deck armor .xml\" \"agamemnon deck armor.xml\"",
         "clean:src:js": "find ./src/js -name \"*.ts\" -type f -regextype posix-egrep -regex \".*/(browser|common|node)/.+\" -exec bash -c 'for file in \"${1%.ts}\".js \"${1%.ts}\".js.map; do [ -e \"$file\" ] && rm -f \"$file\"; done' - '{}' ';'",
-        "deploy:netlify": "./helper/deploy.sh",
+        "deploy:netlify": "pnpm netlify deploy --prod --dir lib",
         "dev:deploy": "ssh natopo@byrtz.de './deploy-data-two.sh'",
-        "gen:data": "yarn tsx src/convert-api-data.ts",
-        "gen:distances": "yarn tsx --max-heap-size=10000 src/get-distances.ts",
-        "gen:load": "yarn tsx src/load-api-data.ts",
-        "git:chore": "git add package.json yarn.lock .yarn .yarnrc.yml && git commit -m 'chore(deps): bump'",
-        "helper:get-ship-speed-constants": "yarn tsx helper/get-ship-speed-constants.ts",
+        "gen:data": "pnpm tsx src/convert-api-data.ts",
+        "gen:distances": "pnpm tsx --max-heap-size=10000 src/get-distances.ts",
+        "gen:load": "pnpm tsx src/load-api-data.ts",
+        "git:chore": "git add package.json pnpm-lock.yaml && git commit -m 'chore(deps): bump'",
+        "helper:get-ship-speed-constants": "pnpm tsx helper/get-ship-speed-constants.ts",
         "helper:loc": "npx cloc --by-file --not-match-f='.d.ts' --quiet ./src/js",
         "helper:size:css": "find public/ -iname '*.css' -exec du -bc {} + | sort -k 2 | sed 's|public/||'",
         "helper:size:js": "find public/ -iname '*.js' -not -iname 'data-*.js' -exec du -bc {} + | sort -k 2 | sed 's|public/||'",
         "helper:size:largest": "du -a ~/ -BM | sort -n -r | head -n 15",
-        "helper:xz-to-br": "yarn tsx helper/xz-to-br.ts",
+        "helper:xz-to-br": "pnpm tsx helper/xz-to-br.ts",
         "lint": "run-s lint:js pretty-print pretty-print-package",
         "lint:js": "eslint . --fix",
         "main:prod": "run-s gen:load gen:data deploy:netlify",
         "main:release": "run-s release push dev:deploy",
+        "pnpm:dedupe": "pnpm dedupe",
+        "pnpm:renew": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
+        "pnpm:update": "corepack use pnpm && pnpm --interactive update",
         "pretty-print": "prettier --config .prettierrc.json --log-level error --write .",
-        "pretty-print-package": "yarn prettier-package-json --write ./package.json",
+        "pretty-print-package": "pnpm prettier-package-json --write ./package.json",
         "push": "git push",
         "release": "release-it --ci",
-        "typecheck": "tsc --noEmit",
-        "yarn:dedupe": "yarn dedupe",
-        "yarn:rebuild": "yarn yarn:rebuild:1:cache-clean && yarn yarn:rebuild:2:rm && yarn install",
-        "yarn:rebuild:1:cache-clean": "yarn cache clean --all",
-        "yarn:rebuild:2:rm": "rm -rf node_modules yarn.lock .pnp/ .pnp.cjs .pnp.loader.mjs .yarn/{install-state.gz,unplugged,cache}",
-        "yarn:update": "yarn set version stable && yarn upgrade-interactive"
+        "typecheck": "tsc --noEmit"
     },
     "devDependencies": {
         "@commitlint/cli": "^19.6.1",
@@ -84,7 +82,12 @@
     "browserslist": [
         "defaults and supports es6-module and last 3 versions, maintained node versions"
     ],
-    "packageManager": "yarn@4.6.0",
+    "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b",
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "netlify-cli"
+        ]
+    },
     "prettier-package-json": {
         "tabWidth": 4
     },
