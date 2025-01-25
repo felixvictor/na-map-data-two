@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.0 (2025-01-25)
+
+* feat: ship data with isShallowWaterShip ([7930f70](https://example.com/commits/7930f70))
+
 ## 1.7.0 (2025-01-25)
 
 * feat: ship data with isShallowWaterShip ([f299711](https://example.com/commits/f299711))
