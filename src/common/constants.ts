@@ -3,7 +3,6 @@ export const degreesHalfCircle = 180
 export const degreesQuarterCircle = 90
 export const distanceMapSize = 8192
 export const mapSize = 8192
-export const maxShallowWaterBR = 40
 export const minDeepWaterBR = 22
 export const serverBaseName = "cleanopenworldprod"
 export const testServerBaseName = "clean"

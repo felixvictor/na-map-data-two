@@ -8,7 +8,7 @@ import StylesXform from "exceljs/lib/xlsx/xform/style/styles-xform.js"
 
 import type { PortBasic } from "./@types/ports.js"
 import type { ShipData } from "./@types/ships.js"
-import { maxShallowWaterBR, minDeepWaterBR } from "./common/constants.js"
+import { minDeepWaterBR } from "./common/constants.js"
 import { readJson } from "./common/file.js"
 import { getCommonPaths } from "./common/path.js"
 import { sortBy } from "./common/sort.js"
@@ -141,7 +141,7 @@ const setupData = () => {
         .sort(sortBy(["class", "-battleRating", "name"]))
 
     swShips = shipsOrig
-        .filter((ship) => !isAIShip(ship.name) && ship.battleRating <= maxShallowWaterBR)
+        .filter((ship) => !isAIShip(ship.name) && ship.isShallowWaterShip)
         .sort(sortBy(["class", "-battleRating", "name"]))
 }
 
