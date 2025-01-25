@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.6.2 (2025-01-25)</small>
+
+* fix(server port data): correct server id ([f31a89e](https://example.com/commits/f31a89e))
+* build: yarn -> pnpm ([65e352e](https://example.com/commits/65e352e))
+
 ## <small>1.6.1 (2025-01-23)</small>
 
 * Revert "feat: use dev server API data" ([10165cb](https://example.com/commits/10165cb))
