@@ -2,6 +2,7 @@ export interface ShipDataFromAPI {
     battleRating: number
     bow: ShipHealth
     class: number
+    isShallowWaterShip: boolean
     crew: ShipCrew
     guns: ShipGuns
     holdSize: number

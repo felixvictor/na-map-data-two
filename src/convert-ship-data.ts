@@ -228,6 +228,7 @@ const convertShipDataFromAPI = () => {
             id: Number(apiShip.Id),
             name: cleanName(apiShip.Name),
             class: apiShip.Class,
+            isShallowWaterShip: apiShip.Specs.MaxPassableHeight !== 0,
             guns,
             shipMass: apiShip.ShipMass,
             battleRating: apiShip.BattleRating,
