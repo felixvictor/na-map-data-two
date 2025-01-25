@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.0 (2025-01-25)
+
+* feat: ship data with isShallowWaterShip ([f299711](https://example.com/commits/f299711))
+
 ## <small>1.6.2 (2025-01-25)</small>
 
 * fix(server port data): correct server id ([f31a89e](https://example.com/commits/f31a89e))
