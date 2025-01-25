@@ -280,7 +280,7 @@ const setAndSaveTaxIncome = async (serverName: string): Promise<void> => {
 export const convertServerPortData = async () => {
     for (const serverId of serverIds) {
         apiItems = getApiItems()
-        apiPorts = getApiPorts()
+        apiPorts = getApiPorts(serverId)
         apiShops = getApiShops(serverId)
         /**
          * Item names

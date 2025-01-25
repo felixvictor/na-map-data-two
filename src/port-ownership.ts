@@ -16,7 +16,7 @@ import type {
 import type { PowerMapList } from "./@types/power-map.js"
 import type { ServerId } from "./@types/server.js"
 import { cleanName } from "./common/api.js"
-import { getApiPortsFromServer } from "./common/common.js"
+import { getApiPorts } from "./common/common.js"
 import { compressExtension } from "./common/compress.js"
 import { capitalToCounty } from "./common/constants.js"
 import { saveJsonAsync } from "./common/file.js"
@@ -57,7 +57,7 @@ export class PortOwnership {
     }
 
     #getRegionData() {
-        const lastPortData = getApiPortsFromServer(this.serverId)
+        const lastPortData = getApiPorts(this.serverId)
         this.#portRegionData = new Map(
             lastPortData.map((port) => [
                 port.Id,

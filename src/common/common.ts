@@ -15,16 +15,14 @@ import { currentServerStartDate as serverDate } from "./time.js"
 export const isEmpty = (object: Record<string, unknown> | undefined): boolean =>
     object !== undefined && Object.getOwnPropertyNames(object).length === 0
 
-export const getApiItems = () =>
-    readJson(getAPIFilename(`${serverIds[0]}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
+export const getApiItems = (serverId = serverIds[0]) =>
+    readJson(getAPIFilename(`${serverId}-ItemTemplates-${serverDate}.json`)) as APIItemGeneric[]
 
-export const getApiPorts = () => readJson(getAPIFilename(`${serverIds[0]}-Ports-${serverDate}.json`)) as APIPort[]
-
-export const getApiPortsFromServer = (serverId: ServerId) =>
+export const getApiPorts = (serverId = serverIds[0]) =>
     readJson(getAPIFilename(`${serverId}-Ports-${serverDate}.json`)) as APIPort[]
 
-export const getApiPortsFromDate = (serverId: ServerId, date) =>
+export const getApiPortsFromDate = (serverId: ServerId, date: string) =>
     readJson(getAPIFilename(`${serverId}-Ports-${date}.json`)) as APIPort[]
 
-export const getApiShops = (serverId: ServerId) =>
+export const getApiShops = (serverId = serverIds[0]) =>
     readJson(getAPIFilename(`${serverId}-Shops-${serverDate}.json`)) as APIShop[]
