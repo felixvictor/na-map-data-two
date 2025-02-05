@@ -95,7 +95,7 @@ const convertRecipes = async (): Promise<void> => {
                 .replace(" - ", " – ")
                 .replace("u2013", "–")
                 .replace(/ $/, ""),
-            module: moduleNames.get(apiRecipe.Results[0]?.Template) ?? "",
+            module: apiRecipe.Results.length === 0 ? "" : moduleNames.get(apiRecipe.Results[0].Template),
             goldPrice: apiRecipe.GoldRequirements,
             itemRequirements: apiRecipe.FullRequirements.map((requirement) => ({
                 name: itemNames.get(requirement.Template),
@@ -124,6 +124,7 @@ const convertRecipes = async (): Promise<void> => {
         )
         for (const apiIngredient of apiIngredients) {
             const recipeName = recipe.module ?? recipe.name.replace(" Blueprint", "")
+
             if (ingredients.has(apiIngredient.Template)) {
                 const updatedIngredient = ingredients.get(apiIngredient.Template) ?? ({} as Ingredient)
                 updatedIngredient.recipeNames.push(recipeName)
