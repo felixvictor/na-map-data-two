@@ -123,11 +123,10 @@ const convertRecipes = async (): Promise<void> => {
             ingredientIds.has(APIingredient.Template),
         )
         for (const apiIngredient of apiIngredients) {
-            const recipeName = recipe.module ?? recipe.name.replace(" Blueprint", "")
-
+            const recipeName = recipe.module === "" ? recipe.name.replace(" Blueprint", "") : recipe.module
             if (ingredients.has(apiIngredient.Template)) {
                 const updatedIngredient = ingredients.get(apiIngredient.Template) ?? ({} as Ingredient)
-                updatedIngredient.recipeNames.push(recipeName)
+                updatedIngredient.recipeNames.push(recipeName ?? "")
                 updatedIngredient.recipeNames.sort(simpleStringSort)
                 ingredients.set(apiIngredient.Template, updatedIngredient)
             } else {
