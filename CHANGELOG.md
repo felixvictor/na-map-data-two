@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>1.8.1 (2025-02-05)</small>
+
+* fix: recipe ingredients ([9e2c607](https://example.com/commits/9e2c607))
+* chore(deps): bump ([2aa8664](https://example.com/commits/2aa8664))
+* chore(deps): bump ([fda9fea](https://example.com/commits/fda9fea))
+
 ## 1.8.0 (2025-01-25)
 
 * feat: ship data with isShallowWaterShip ([7930f70](https://example.com/commits/7930f70))
