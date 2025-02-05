@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.8.3 (2025-02-05)</small>
+
+* fix: recipe ingredients ([b630f1b](https://example.com/commits/b630f1b))
+
 ## <small>1.8.2 (2025-02-05)</small>
 
 * fix: recipe ingredients ([88d2f71](https://example.com/commits/88d2f71))
