@@ -7,5 +7,4 @@ export const testServerIds = ["dev"]
 export const servers: Server[] = [
     { id: "eu2", name: "Peace", type: "PVE", icon: "peace" },
     { id: "eu3", name: "Main", type: "PVP", icon: "free" },
-    { id: "dev", name: "Test", type: "PVP", icon: "test" },
 ]
