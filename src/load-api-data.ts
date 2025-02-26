@@ -12,7 +12,7 @@ import {
     testSourceBaseDirectory,
 } from "./common/constants.js"
 import { apiBaseFiles, baseAPIFilename, removeFileASync, saveJsonAsync } from "./common/file.js"
-import { serverIds, testServerIds } from "./common/servers.js"
+import { serverIds } from "./common/servers.js"
 import { sortBy } from "./common/sort.js"
 import { currentServerStartDate as serverDate } from "./common/time.js"
 
@@ -113,15 +113,6 @@ const loadData = async (baseAPIFilename: string): Promise<boolean> => {
 
             await deleteAPIFiles(outfileName)
             await getAPIDataAndSave(serverName, apiBaseFile, outfileName)
-        }
-    }
-
-    for (const serverName of testServerIds) {
-        for (const apiBaseFile of apiBaseFiles) {
-            const outfileName = path.resolve(baseAPIFilename, `${serverName}-${apiBaseFile}-${serverDate}.json`)
-
-            await deleteAPIFiles(outfileName)
-            await getAPIDataAndSave(serverName, apiBaseFile, outfileName, true)
         }
     }
 
