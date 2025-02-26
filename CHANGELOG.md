@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.0 (2025-02-26)
+
+* feat: dev server removed ([f2e8427](https://example.com/commits/f2e8427))
+* feat: dev server removed ([cb2726b](https://example.com/commits/cb2726b))
+* feat: war server removed ([8756a30](https://example.com/commits/8756a30))
+* chore(deps): bump ([31fb25f](https://example.com/commits/31fb25f))
+* chore(deps): bump ([7c53d86](https://example.com/commits/7c53d86))
+
 ## <small>1.8.3 (2025-02-05)</small>
 
 * fix: recipe ingredients ([b630f1b](https://example.com/commits/b630f1b))
