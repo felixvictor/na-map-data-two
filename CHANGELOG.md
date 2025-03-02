@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.9.2 (2025-03-02)</small>
+
+* build: dev server removed ([114444b](https://example.com/commits/114444b))
+
 ## <small>1.9.1 (2025-03-02)</small>
 
 * chore(deps): bump ([2b917ff](https://example.com/commits/2b917ff))
