@@ -1,7 +1,6 @@
 import type { Server } from "../@types/server.js"
 
 export const serverIds = ["eu2", "eu3"]
-export const testServerIds = ["dev"]
 
 // https://storage.googleapis.com/nacleanopenworldprodshards/config.txt
 export const servers: Server[] = [
