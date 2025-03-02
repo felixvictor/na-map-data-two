@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.9.1 (2025-03-02)</small>
+
+* chore(deps): bump ([2b917ff](https://example.com/commits/2b917ff))
+
 ## 1.9.0 (2025-02-26)
 
 * feat: dev server removed ([f2e8427](https://example.com/commits/f2e8427))
