@@ -1,5 +1,7 @@
 # Changelog
 
+## <small>1.9.3 (2025-03-02)</small>
+
 ## <small>1.9.2 (2025-03-02)</small>
 
 * build: dev server removed ([114444b](https://example.com/commits/114444b))
