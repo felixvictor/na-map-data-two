@@ -1,7 +1,7 @@
 import * as fs from "node:fs"
 import path from "node:path"
 
-import { default as PNG } from "pngjs"
+import PNG from "pngjs"
 
 import type { APIPort } from "./@types/api-port.js"
 import type { Distance, PointTuple } from "./@types/coordinates.js"

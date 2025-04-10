@@ -327,9 +327,7 @@ const convertXML = (elements: ElementMap, fileData: XmlGeneric): ShipDataFromXML
 
         const value = Number((pair.Value.Value as TextEntity)._text)
         const { group, element } = elements.get(key) as { [p: string]: string; group: string; element: string }
-        if (!ship[group]) {
-            ship[group] = {}
-        }
+        ship[group] ??= {}
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         ship[group][element] = value
