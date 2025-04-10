@@ -16,13 +16,101 @@
     <Pair>
       <Key>HOLE_DECREASE_RATE</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="false" IsNegative="false">
-        <Value>0.0155</Value>
+        <EffectCurve>
+          <Value>
+            <Time>0</Time>
+            <Value>-0.000579834</Value>
+            <TangentIn>0</TangentIn>
+            <TangentOut>10.0579834</TangentOut>
+          </Value>
+          <Value>
+            <Time>0.01</Time>
+            <Value>0.1</Value>
+            <TangentIn>10.0579834</TangentIn>
+            <TangentOut>0</TangentOut>
+          </Value>
+          <Value>
+            <Time>0.49</Time>
+            <Value>0.1</Value>
+            <TangentIn>0</TangentIn>
+            <TangentOut>40.00004</TangentOut>
+          </Value>
+          <Value>
+            <Time>0.5</Time>
+            <Value>0.5</Value>
+            <TangentIn>40.00004</TangentIn>
+            <TangentOut>0</TangentOut>
+          </Value>
+          <Value>
+            <Time>0.94</Time>
+            <Value>0.5</Value>
+            <TangentIn>0</TangentIn>
+            <TangentOut>70.00007</TangentOut>
+          </Value>
+          <Value>
+            <Time>0.95</Time>
+            <Value>1.2</Value>
+            <TangentIn>70.00007</TangentIn>
+            <TangentOut>0</TangentOut>
+          </Value>
+          <Value>
+            <Time>1.00000036</Time>
+            <Value>1.2</Value>
+            <TangentIn>0</TangentIn>
+            <TangentOut>0</TangentOut>
+          </Value>
+        </EffectCurve>
+        <Value>0.0167</Value>
       </Value>
     </Pair>
     <Pair>
       <Key>FIRE_DECREASE_RATE</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="false" IsNegative="false">
-        <Value>0.07875</Value>
+        <EffectCurve>
+          <Value>
+            <Time>0</Time>
+            <Value>-0.000579834</Value>
+            <TangentIn>0</TangentIn>
+            <TangentOut>10.0579834</TangentOut>
+          </Value>
+          <Value>
+            <Time>0.01</Time>
+            <Value>0.1</Value>
+            <TangentIn>10.0579834</TangentIn>
+            <TangentOut>0</TangentOut>
+          </Value>
+          <Value>
+            <Time>0.69</Time>
+            <Value>0.1</Value>
+            <TangentIn>0</TangentIn>
+            <TangentOut>60.0000572</TangentOut>
+          </Value>
+          <Value>
+            <Time>0.7</Time>
+            <Value>0.7</Value>
+            <TangentIn>60.0000572</TangentIn>
+            <TangentOut>0</TangentOut>
+          </Value>
+          <Value>
+            <Time>0.94</Time>
+            <Value>0.7</Value>
+            <TangentIn>0</TangentIn>
+            <TangentOut>50.0000534</TangentOut>
+          </Value>
+          <Value>
+            <Time>0.95</Time>
+            <Value>1.2</Value>
+            <TangentIn>50.0000534</TangentIn>
+            <TangentOut>0</TangentOut>
+          </Value>
+          <Value>
+            <Time>1.00000036</Time>
+            <Value>1.2</Value>
+            <TangentIn>0</TangentIn>
+            <TangentOut>0</TangentOut>
+          </Value>
+        </EffectCurve>
+        <Value>0.34</Value>
       </Value>
     </Pair>
     <Pair>

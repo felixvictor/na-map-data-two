@@ -1,3 +1,4 @@
+import * as console from "node:console"
 import path from "node:path"
 
 import type { APIItemGeneric } from "./@types/api-item.d.ts"

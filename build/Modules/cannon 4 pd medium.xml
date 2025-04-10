@@ -34,7 +34,7 @@
     <Pair>
       <Key>CANNON_BASIC_DAMAGE</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>5</Value>
+        <Value>18.2</Value>
       </Value>
     </Pair>
     <Pair>
@@ -76,7 +76,7 @@
     <Pair>
       <Key>CANNON_RELOAD_TIME</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>35</Value>
+        <Value>40</Value>
       </Value>
     </Pair>
     <Pair>
@@ -88,7 +88,7 @@
     <Pair>
       <Key>MODULE_BASE_HP</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>50</Value>
+        <Value>182</Value>
       </Value>
     </Pair>
     <Pair>
@@ -118,7 +118,7 @@
     <Pair>
       <Key>CANNON_BASIC_PENETRATION</Key>
       <Value xsi:type="FloatAttribute" Action="Relative" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>110</Value>
+        <Value>86</Value>
       </Value>
     </Pair>
     <Pair>
@@ -130,7 +130,7 @@
     <Pair>
       <Key>FIRE_PROBABILITY</Key>
       <Value xsi:type="FloatAttribute" Action="Relative" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>0</Value>
+        <Value>0.15</Value>
       </Value>
     </Pair>
     <Pair>
@@ -332,74 +332,32 @@
           <Time>0</Time>
           <Value>1</Value>
           <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.1</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.2</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.3</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
+          <TangentOut>-0.0499999523</TangentOut>
         </Value>
         <Value>
           <Time>0.4</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
+          <Value>0.98</Value>
+          <TangentIn>-0.0499999523</TangentIn>
+          <TangentOut>-0.1333334</TangentOut>
         </Value>
         <Value>
-          <Time>0.5</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
+          <Time>1</Time>
+          <Value>0.9</Value>
+          <TangentIn>-0.1333334</TangentIn>
+          <TangentOut>-0.9</TangentOut>
         </Value>
         <Value>
-          <Time>0.6</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.7</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.8</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>-0.857142866</TangentOut>
-        </Value>
-        <Value>
-          <Time>1.5</Time>
-          <Value>0.4</Value>
-          <TangentIn>-0.857142866</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>1.6</Time>
-          <Value>0.4</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
+          <Time>2</Time>
+          <Value>0</Value>
+          <TangentIn>-0.9</TangentIn>
+          <TangentOut>-0.6</TangentOut>
         </Value>
       </Value>
     </Pair>
     <Pair>
       <Key>ARMOR_THICKNESS</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>90</Value>
+        <Value>100</Value>
       </Value>
     </Pair>
     <Pair>
@@ -411,7 +369,7 @@
     <Pair>
       <Key>CANNON_BALL_ARMOR_SPLINTERS_DAMAGE_FOR_CREW</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>0.1</Value>
+        <Value>0.364</Value>
       </Value>
     </Pair>
     <Pair>
@@ -429,6 +387,12 @@
           <TangentIn>0</TangentIn>
           <TangentOut>0</TangentOut>
         </Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>CANNON_GUNPOWDER_AMOUNT</Key>
+      <Value xsi:type="IntegerAttribute" Action="Absolute" IsLocal="true" IsPermanent="false" IsNegative="false">
+        <Value>1</Value>
       </Value>
     </Pair>
   </Attributes>

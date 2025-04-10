@@ -98,6 +98,7 @@ const convertRecipes = async (): Promise<void> => {
             module: apiRecipe.Results.length === 0 ? "" : moduleNames.get(apiRecipe.Results[0].Template),
             goldPrice: apiRecipe.GoldRequirements,
             itemRequirements: apiRecipe.FullRequirements.map((requirement) => ({
+                id: requirement.Template,
                 name: itemNames.get(requirement.Template),
                 amount: requirement.Amount,
             })).sort(sortBy(["name"])),

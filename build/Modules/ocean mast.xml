@@ -4,19 +4,19 @@
     <Pair>
       <Key>MAST_BOTTOM_SECTION_HP</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="false" IsNegative="false">
-        <Value>32</Value>
+        <Value>1181</Value>
       </Value>
     </Pair>
     <Pair>
       <Key>MAST_MIDDLE_SECTION_HP</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="false" IsNegative="false">
-        <Value>16</Value>
+        <Value>885.75</Value>
       </Value>
     </Pair>
     <Pair>
       <Key>MAST_TOP_SECTION_HP</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="false" IsNegative="false">
-        <Value>10</Value>
+        <Value>442.88</Value>
       </Value>
     </Pair>
     <Pair>
@@ -28,13 +28,13 @@
     <Pair>
       <Key>DAMAGE_TYPE</Key>
       <Value xsi:type="IntegerAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>0</Value>
+        <Value>1</Value>
       </Value>
     </Pair>
     <Pair>
       <Key>EXPLOSION_DAMAGE_ABSORB_MULTIPLIER</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="false" IsNegative="false">
-        <Value>0.025</Value>
+        <Value>0.03</Value>
       </Value>
     </Pair>
   </Attributes>

@@ -2,7 +2,7 @@ import type { APIItemGeneric, APIModule } from "../@types/api-item.d.ts"
 import type { ModuleConvertEntity } from "../@types/modules.js"
 import { cleanName } from "../common/api.js"
 import { getApiItems } from "../common/common.js"
-import { levels, notUsedExceptionalWoodIds, notUsedModules, usedModules } from "./common.js"
+import { levels, notUsedExceptionalWoodIds, usedModules } from "./common.js"
 import { saveModules, setModule } from "./module.js"
 import { saveWoods, setWood } from "./wood.js"
 
@@ -17,7 +17,7 @@ const isDoubleEntry = (module: ModuleConvertEntity): boolean => addedModules.has
 export const convertModulesAndWoodData = (): void => {
     const apiModules = apiItems
         .filter((item) => item.ItemType === "Module")
-        .filter((item) => !notUsedModules.has(item.Id))
+        .filter((item) => !item.NotUsed)
         .filter((item) => item.Id <= 2594 || usedModules.has(item.Id))
         .filter((item) => (item.ModuleType === "Permanent" && !item.NotUsed) || item.ModuleType !== "Permanent")
         .filter((item) => !notUsedExceptionalWoodIds.has(item.Id)) as APIModule[]
@@ -40,9 +40,12 @@ export const convertModulesAndWoodData = (): void => {
             moduleLevel: levels.get(apiModule.ModuleLevel),
         } as ModuleConvertEntity
 
+        if (apiModule.scoreValue) {
+            module.scoreValue = apiModule.scoreValue
+        }
+
         if (module.name.startsWith("Bow figure - ")) {
-            module.name = `${module.name.replace("Bow figure - ", "")} bow figure`
-            module.moduleLevel = "U"
+            module.name = module.name.replace("Bow figure - ", "")
         }
 
         // Ignore double entries

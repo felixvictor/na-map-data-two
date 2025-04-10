@@ -750,5 +750,41 @@
         <Value>0.1</Value>
       </Value>
     </Pair>
+    <Pair>
+      <Key>SHIP_SPAWN_HOLE_PROBABILITY</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>0</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_HOLE_INPUT_RATE</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>0</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_FIRE_GROWTH_FROM_HIT</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>0.75</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_GUN_FIRE_PROBABILITY_MODIFIER</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>1</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_RUDDER_RETURN_TO_NEUTRAL_ACC_MODIFIER</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>0.5</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_RUDDER_FLIP_TO_OPPOSITE_SIDE_ACC_MODIFIER</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>1</Value>
+      </Value>
+    </Pair>
   </Attributes>
 </ModuleTemplate>

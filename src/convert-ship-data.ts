@@ -62,6 +62,7 @@ const shipsWith36lb = new Set([
     2487, // Santa Ana (i)
 ])
 const shipsNotUsed = new Set([
+    413, // basic cutter
     1535, // rookie brig
     1536, // rookie snow
     2223, // indiaman rookie
@@ -71,8 +72,6 @@ const shipsNotUsed = new Set([
     2352, // Diana (i)
     2454, // tutorial brig 2
     2483, // Travel Balloon
-    2898, // Duke of Kent
-    2963, // Galeon
 ])
 const blueprintsNotUsed = new Set([
     665, // Santa Cecilia
@@ -113,7 +112,7 @@ const getItemNames = (): Map<number, string> => new Map(apiItems.map((item) => [
 const getShipMass = (id: number): number => apiItems.find((apiItem) => id === apiItem.Id)?.ShipMass ?? 0
 
 const getSpeedDegrees = (specs: Specs): { maxSpeed: number; speedDegrees: number[] } => {
-    const maxSpeed = round(specs.MaxSpeed * speedConstM + speedConstB, 1)
+    const maxSpeed = round(specs.MaxSpeed * speedConstM + speedConstB, 4)
     const speedDegrees = specs.SpeedToWind.map((speed: number) => roundToThousands(speed * maxSpeed))
     const { length } = specs.SpeedToWind
 
@@ -244,7 +243,7 @@ const convertShipDataFromAPI = () => {
             speed: {
                 // eslint-disable-next-line unicorn/no-array-reduce
                 min: speedDegrees.reduce((a, b) => Math.min(a, b)),
-                max: roundToThousands(maxSpeed),
+                max: maxSpeed,
             },
             sides: { armour: apiShip.HealthInfo.LeftArmor },
             bow: { armour: apiShip.HealthInfo.FrontArmor },
@@ -273,6 +272,7 @@ const convertShipDataFromAPI = () => {
  * List of file names to be read
  */
 const baseFileNames = new Set<string>()
+const specialNames = new Set(["basic", "rookie", "trader", "tutorial"])
 
 /**
  * Gets all files from directory <dir> and stores valid ship names in <fileNames>
@@ -283,23 +283,21 @@ const getBaseFileNames = (directory: string): void => {
         /**
          * First part of the file name containing the ship name
          */
-        let string_ = fileName.slice(0, fileName.indexOf(" "))
-        if (string_ === "rookie" || string_ === "trader" || string_ === "tutorial") {
-            const shortenedFileName = fileName.replace("rookie ", "").replace("trader ", "").replace("tutorial ", "")
-            const string2 = shortenedFileName.slice(0, shortenedFileName.indexOf(" "))
-            string_ += ` ${string2}`
+        let baseFileName = fileName.slice(0, fileName.indexOf(" "))
+
+        if (specialNames.has(baseFileName)) {
+            let shortenedFileName = fileName
+            for (const name of specialNames) {
+                shortenedFileName = shortenedFileName.replace(`${name} `, "")
+            }
+            const baseFileNameExtension = shortenedFileName.slice(0, shortenedFileName.indexOf(" "))
+            baseFileName += ` ${baseFileNameExtension}`
         }
 
-        if (shipNames.has(string_)) {
-            baseFileNames.add(string_)
+        if (shipNames.has(baseFileName)) {
+            baseFileNames.add(baseFileName)
         }
     }
-
-    // Add 'basic' ship without files
-    baseFileNames.add("basiccutter")
-    baseFileNames.add("basiclynx")
-    baseFileNames.add("indiaman rookie")
-    baseFileNames.add("tutorial trader")
 }
 
 const readXMLFile = (baseFileName: string, extension: string): XmlGeneric => {

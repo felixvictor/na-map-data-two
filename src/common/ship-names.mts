@@ -4,8 +4,8 @@
  */
 export const shipNames = new Map<string, { id: number; master: string }>([
     ["agamemnon", { id: 694, master: "" }],
-    ["basiccutter", { id: 413, master: "cutter" }],
-    ["basiclynx", { id: 275, master: "lynx" }],
+    ["basic cutter", { id: 413, master: "cutter" }],
+    ["basic lynx", { id: 275, master: "lynx" }],
     ["bellepoule", { id: 264, master: "" }],
     ["bellona", { id: 265, master: "" }],
     ["bellona74", { id: 359, master: "" }],
@@ -20,9 +20,11 @@ export const shipNames = new Map<string, { id: number; master: string }>([
     ["cutter", { id: 271, master: "" }],
     ["de_ruyter", { id: 2318, master: "" }],
     ["diana", { id: 1665, master: "" }],
+    ["dukeofkent", { id: 2898, master: "" }],
     ["endymion", { id: 768, master: "" }],
     ["essex", { id: 272, master: "" }],
     ["frigate", { id: 273, master: "" }],
+    ["galeon", { id: 2963, master: "" }],
     ["grosventre", { id: 396, master: "" }],
     ["grosventrepirate", { id: 1561, master: "" }],
     ["gunboat", { id: 695, master: "" }],

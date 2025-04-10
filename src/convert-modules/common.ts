@@ -1,11 +1,6 @@
 // noinspection SpellCheckingInspection
 import type { APIModifierName, ModifierName } from "../@types/modules.js"
 
-export const notUsedModules = new Set([
-    617, // TEST1
-    1338, // Locust Frame Parts
-])
-
 export const modifiers = new Map<APIModifierName, ModifierName>([
     // Woods
     ["ARMOR_ALL_SIDES ARMOR_THICKNESS", "Armour thickness"],
@@ -18,17 +13,20 @@ export const modifiers = new Map<APIModifierName, ModifierName>([
     ["MAST MAST_TOP_SECTION_HP", ""],
     ["NONE CREW_DAMAGE_RECEIVED_DECREASE_PERCENT", "Splinter resistance"],
     ["NONE GROG_MORALE_BONUS", "Morale"],
-    ["NONE RUDDER_HALFTURN_TIME", "Rudder speed"],
+    ["NONE SHIP_ACCELERATION_MODIFIER", "Acceleration"],
     // ["NONE SHIP_MATERIAL", "Ship material"],
+    ["NONE RUDDER_HALFTURN_TIME", "Rudder speed"],
     ["NONE SHIP_MAX_SPEED", "Max speed"],
     ["NONE SHIP_PHYSICS_ACC_COEF", "Acceleration"],
     ["NONE SHIP_TURNING_ACCELERATION_TIME", "Turn acceleration"],
     ["NONE SHIP_TURNING_SPEED", "Turn speed"],
-    ["REPAIR_ARMOR REPAIR_PERCENT", ""],
+    ["REPAIR_ARMOR REPAIR_PERCENT", "Repair amount"],
     ["SAIL MAST_THICKNESS", "Mast thickness"],
     ["STRUCTURE FIRE_INCREASE_RATE", ""],
     ["STRUCTURE SHIP_PHYSICS_ACC_COEF", "Acceleration"],
     ["STRUCTURE SHIP_STRUCTURE_LEAKS_PER_SECOND", "Leak resistance"],
+
+    // {"Slot":"REPAIR_ARMOR","MappingIds":["REPAIR_PERCENT"],"Absolute":0.07,"Percentage":0}
 
     // Modules
     ["ARMOR_ALL_SIDES REPAIR_MODULE_TIME", "Repair time"],
@@ -63,6 +61,7 @@ export const modifiers = new Map<APIModifierName, ModifierName>([
     ["NONE DECK_GUNS_ACCURACY_BONUS", "Boarding cannons accuracy"],
     ["NONE FIRE_DECREASE_RATE", ""],
     ["NONE FIRE_INCREASE_RATE", ""],
+    ["NONE FIREZONE_HORIZONTAL_ROTATION_SPEED", "Cannon side traverse"],
     ["NONE FIREZONE_MAX_HORIZONTAL_ANGLE", "Cannon side traverse"],
     ["NONE GLOBAL_SIDEBOARD_WATER_FLOW", "Sideboard water flow"],
     ["NONE GRENADES_BONUS", "Grenades"],
@@ -184,6 +183,7 @@ export const modifiers = new Map<APIModifierName, ModifierName>([
     ["NONE RHEA_TURN_SPEED", "Yard turn speed"],
     ["NONE SAIL_DECREASING_SPEED", "Sail decreasing speed"],
     ["NONE SAIL_RISING_SPEED", "Sail rising speed"],
+    ["NONE SHIP_DECELERATION_MODIFIER", "Deceleration"],
     ["NONE SHIP_BOARDING_PREPARATION_BONUS", "Preparation"],
     ["NONE SHIP_EXTRA_CHAIN_UNITS", "Additional chains"],
     ["NONE SHIP_EXTRA_DOBULE_CHARGE_UNITS", "Additional double charges"], // typo
@@ -198,6 +198,7 @@ export const modifiers = new Map<APIModifierName, ModifierName>([
     ["NONE WATER_PUMP_BAILING", "Water pump bailing"],
     ["POWDER POWDER_RADIUS", "Explosion power"],
     ["POWDER REPAIR_MODULE_TIME", ""],
+    ["REPAIR_CREW REPAIR_PERCENT", "Crew repair amount"],
     ["REPAIR_GENERIC REPAIR_PERCENT", "Repair amount"],
     ["REPAIR_SAIL REPAIR_PERCENT", ""],
     ["RUDDER MODULE_BASE_HP", "Rudder hit points"],
@@ -250,21 +251,6 @@ export const rareWoodTrimFrameIds = new Set([
 export const flipAmountForModule = new Set<ModifierName>(["Leak resistance", "Turn acceleration", "Rudder speed"])
 
 export const notPercentage = new Set<ModifierName>(["Crew with muskets", "Melee attack", "Melee defense", "Morale"])
-
-export const moduleRate = [
-    {
-        level: "L",
-        names: [" (1-3 rates)", " 1-3rd"],
-    },
-    {
-        level: "M",
-        names: [" (4-5 rates)", " 4-5th"],
-    },
-    {
-        level: "S",
-        names: [" (6-7 rates)", " 6-7th"],
-    },
-]
 
 export const bonusRegex = /(.+\sBonus)\s(\d)/u
 

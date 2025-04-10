@@ -4,7 +4,15 @@ import path from "node:path"
 import type { ElementCompact } from "xml-js"
 import convert from "xml-js"
 
-import type { Cannon, CannonEntity, CannonPenetration, CannonType, CannonValue } from "./@types/cannons.js"
+import type {
+    Cannon,
+    CannonDamage,
+    CannonEntity,
+    CannonGeneric,
+    CannonPenetration,
+    CannonType,
+    CannonValue,
+} from "./@types/cannons.js"
 import { cannonType, peneDistance } from "./@types/constants.js"
 import type { PairEntity, TangentEntity, TextEntity, XmlGeneric } from "./@types/xml.js"
 import { readTextFile, saveJsonAsync } from "./common/file.js"
@@ -127,6 +135,10 @@ const getFamily = (name: string): string => {
     return family
 }
 
+const minWeight = 1
+const largeWeightFactor = 1.22
+const smallWeightFactor = 1.78
+
 /**
  * Add data
  * @param fileData - File data per cannon
@@ -143,6 +155,11 @@ const addData = (fileData: XmlGeneric): void => {
             fileData._attributes.Name.includes("Navy Gun")
         ) {
             return "long"
+        }
+
+        // Special case 2pd standard
+        if (fileData._attributes.Name === "Cannon 2 pd") {
+            return "standard"
         }
 
         return "medium"
@@ -165,22 +182,32 @@ const addData = (fileData: XmlGeneric): void => {
             .replace("24 (Edinorog)", "18 (Edinorog)")
             .replace(" (Medium)", "")
 
-    const cannon = {} as CannonEntity
+    const cannon = { name: getName(), family: getFamily(getName()) } as CannonEntity
     for (const [value, { group, element }] of dataMapping) {
         if (!Object.hasOwn(cannon, group)) {
-            // @ts-expect-error typing multi-dim objects
-            cannon[group] = {}
+            cannon[group] = {} as string & CannonDamage & CannonGeneric & CannonPenetration
         }
 
         cannon[group][element] = {
-            value: Number(
-                (fileData.Attributes.Pair.find((pair) => pair.Key._text === value)?.Value.Value as TextEntity)._text,
+            value: round(
+                Number(
+                    (fileData.Attributes.Pair.find((pair) => pair.Key._text === value)?.Value.Value as TextEntity)
+                        ._text,
+                ),
+                2,
             ),
         } as CannonValue
     }
 
+    cannon.generic.weight.value = Math.max(
+        minWeight,
+        Number(cannon.name) > 4
+            ? round(cannon.generic.weight.value * largeWeightFactor, 2)
+            : round(cannon.generic.weight.value * smallWeightFactor, 2),
+    )
+
     // Calculate penetrations
-    const type = getType()
+    let type = getType()
     const penetrations = new Map<number, number>(
         (
             fileData.Attributes.Pair.find((pair: PairEntity) => pair.Key._text === "CANNON_PENETRATION_DEGRADATION")
@@ -198,16 +225,51 @@ const addData = (fileData: XmlGeneric): void => {
         )
     }
 
-    if (type === "long") {
-        penetrations.set(100, interpolate(0, 1100, 100))
-        penetrations.set(1000, interpolate(0, 1100, 1000))
-        penetrations.set(1250, interpolate(1100, 1500, 1250))
-    } else if (type === "medium") {
-        penetrations.set(750, interpolate(700, 800, 750))
-        penetrations.set(1000, interpolate(800, 1500, 1000))
-        penetrations.set(1250, interpolate(800, 1500, 1250))
-    } else {
-        penetrations.set(750, interpolate(700, 800, 750))
+    switch (type) {
+        case "long": {
+            penetrations.set(100, interpolate(0, 500, 100))
+            penetrations.set(400, interpolate(0, 500, 400))
+            penetrations.set(750, interpolate(500, 1000, 750))
+            penetrations.set(1250, interpolate(1000, 1500, 1250))
+
+            break
+        }
+        case "medium": {
+            penetrations.set(100, interpolate(0, 400, 100))
+            penetrations.set(200, interpolate(0, 400, 200))
+            penetrations.set(300, interpolate(0, 400, 300))
+            penetrations.set(500, interpolate(400, 1000, 500))
+            penetrations.set(750, interpolate(400, 1000, 750))
+            penetrations.set(1250, interpolate(1000, 2000, 1250))
+            penetrations.set(1500, interpolate(1000, 2000, 1500))
+
+            break
+        }
+        // Special case 2pd standard
+        case "standard": {
+            penetrations.delete(400)
+            penetrations.delete(500)
+            penetrations.delete(750)
+            penetrations.delete(800)
+            penetrations.delete(1000)
+            penetrations.delete(1250)
+            break
+        }
+        case "carronade": {
+            penetrations.set(100, interpolate(0, 300, 200))
+            penetrations.set(200, interpolate(0, 300, 200))
+            penetrations.set(400, interpolate(300, 500, 400))
+            penetrations.set(750, interpolate(700, 800, 750))
+            penetrations.set(1000, interpolate(800, 1500, 100))
+
+            break
+        }
+        // No default
+    }
+
+    // Special case 2pd standard
+    if (type === "standard") {
+        type = "medium"
     }
 
     cannon.penetration = {} as CannonPenetration
@@ -224,8 +286,6 @@ const addData = (fileData: XmlGeneric): void => {
         value: round(cannon.damage.basic.value / cannon.damage["reload time"].value, 2),
     }
 
-    cannon.name = getName()
-    cannon.family = getFamily(cannon.name)
     if (
         !familyIgnored.has(cannon.family) &&
         !(cannon.family === "defense" && cannon.name === "24 (Fort)") &&

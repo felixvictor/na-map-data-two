@@ -22,6 +22,7 @@ export interface ModuleEntity {
     moduleLevel: string
     properties?: ModuleEntityProperties[]
     hasSamePropertiesAsPrevious?: boolean
+    scoreValue?: number
 }
 
 export interface ModuleConvertEntity extends ModuleEntity {

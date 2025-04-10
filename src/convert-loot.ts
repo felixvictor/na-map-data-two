@@ -46,7 +46,7 @@ const getLootItems = (types: string[]) => apiItems.filter((item) => !item.NotUse
 
 const getLootItemsChance = (chestLootTableId: number): number => {
     const lootTable = apiItems.filter((item) => Number(item.Id) === chestLootTableId) as APILootTableItem[]
-    return lootTable[0].Items[0].Chance
+    return lootTable[0]?.Items?.[0]?.Chance
 }
 
 const getLootContent = (

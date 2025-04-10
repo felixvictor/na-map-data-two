@@ -34,7 +34,7 @@
     <Pair>
       <Key>CANNON_BASIC_DAMAGE</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>6</Value>
+        <Value>15</Value>
       </Value>
     </Pair>
     <Pair>
@@ -76,7 +76,7 @@
     <Pair>
       <Key>CANNON_RELOAD_TIME</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>35</Value>
+        <Value>40</Value>
       </Value>
     </Pair>
     <Pair>
@@ -88,7 +88,7 @@
     <Pair>
       <Key>MODULE_BASE_HP</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>60</Value>
+        <Value>150</Value>
       </Value>
     </Pair>
     <Pair>
@@ -118,7 +118,7 @@
     <Pair>
       <Key>CANNON_BASIC_PENETRATION</Key>
       <Value xsi:type="FloatAttribute" Action="Relative" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>110</Value>
+        <Value>86</Value>
       </Value>
     </Pair>
     <Pair>
@@ -130,7 +130,7 @@
     <Pair>
       <Key>FIRE_PROBABILITY</Key>
       <Value xsi:type="FloatAttribute" Action="Relative" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>0</Value>
+        <Value>0.15</Value>
       </Value>
     </Pair>
     <Pair>
@@ -399,7 +399,7 @@
     <Pair>
       <Key>ARMOR_THICKNESS</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>90</Value>
+        <Value>100</Value>
       </Value>
     </Pair>
     <Pair>
@@ -411,7 +411,7 @@
     <Pair>
       <Key>CANNON_BALL_ARMOR_SPLINTERS_DAMAGE_FOR_CREW</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>0.12</Value>
+        <Value>0.3</Value>
       </Value>
     </Pair>
     <Pair>
@@ -429,6 +429,12 @@
           <TangentIn>0</TangentIn>
           <TangentOut>0</TangentOut>
         </Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>CANNON_GUNPOWDER_AMOUNT</Key>
+      <Value xsi:type="IntegerAttribute" Action="Absolute" IsLocal="true" IsPermanent="false" IsNegative="false">
+        <Value>1</Value>
       </Value>
     </Pair>
   </Attributes>

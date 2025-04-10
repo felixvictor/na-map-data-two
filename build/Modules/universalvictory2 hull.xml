@@ -72,65 +72,6 @@
       </Value>
     </Pair>
     <Pair>
-      <Key>SHIP_TURNING_CURVE</Key>
-      <Value xsi:type="CurveAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>
-          <Time>0</Time>
-          <Value>0</Value>
-          <TangentIn>2.6693244</TangentIn>
-          <TangentOut>2.6693244</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.09371338</Time>
-          <Value>0.211779788</Value>
-          <TangentIn>1.82129443</TangentIn>
-          <TangentOut>1.82129443</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.2</Time>
-          <Value>0.4</Value>
-          <TangentIn>1.4799304</TangentIn>
-          <TangentOut>1.4799304</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.35</Time>
-          <Value>0.6</Value>
-          <TangentIn>1.14190269</TangentIn>
-          <TangentOut>1.14190269</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.6</Time>
-          <Value>0.88</Value>
-          <TangentIn>1.16000009</TangentIn>
-          <TangentOut>1.16000009</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.7</Time>
-          <Value>1</Value>
-          <TangentIn>1.15000021</TangentIn>
-          <TangentOut>1.15000021</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.8</Time>
-          <Value>1.11</Value>
-          <TangentIn>1.10000014</TangentIn>
-          <TangentOut>1.10000014</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.9</Time>
-          <Value>1.22</Value>
-          <TangentIn>1.10000014</TangentIn>
-          <TangentOut>1.10000014</TangentOut>
-        </Value>
-        <Value>
-          <Time>1</Time>
-          <Value>1.33</Value>
-          <TangentIn>1.0999999</TangentIn>
-          <TangentOut>1.0999999</TangentOut>
-        </Value>
-      </Value>
-    </Pair>
-    <Pair>
       <Key>SHIP_UPWIND_CURVE</Key>
       <Value xsi:type="CurveAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
         <Value>
@@ -679,6 +620,143 @@
       <Key>SHIP_PHYSICS_ACC_TURN_PENALTY</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
         <Value>0.1</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_NEW_INERTIA_CURVE</Key>
+      <Value xsi:type="CurveAttribute" Action="Absolute" IsLocal="true" IsPermanent="false" IsNegative="false">
+        <Value>
+          <Time>0</Time>
+          <Value>1</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>150</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.01</Time>
+          <Value>2.5</Value>
+          <TangentIn>150</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.19</Time>
+          <Value>2.5</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>-149.999924</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.2</Time>
+          <Value>1</Value>
+          <TangentIn>-149.999924</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.3</Time>
+          <Value>1</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.45</Time>
+          <Value>1</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.59</Time>
+          <Value>1</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.6</Time>
+          <Value>1</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.7</Time>
+          <Value>1</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.71</Time>
+          <Value>1</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.9</Time>
+          <Value>1</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+        <Value>
+          <Time>0.91</Time>
+          <Value>1</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+        <Value>
+          <Time>1</Time>
+          <Value>1</Value>
+          <TangentIn>0</TangentIn>
+          <TangentOut>0</TangentOut>
+        </Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_ACCELERATION_MODIFIER</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>0</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_DECELERATION_MODIFIER</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>0</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_WATERLEVEL_MODIFIER</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>-0.5</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_SPAWN_HOLE_PROBABILITY</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>0</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_HOLE_INPUT_RATE</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>0</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_FIRE_GROWTH_FROM_HIT</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>0.75</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_GUN_FIRE_PROBABILITY_MODIFIER</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>1</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_RUDDER_RETURN_TO_NEUTRAL_ACC_MODIFIER</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>0.5</Value>
+      </Value>
+    </Pair>
+    <Pair>
+      <Key>SHIP_RUDDER_FLIP_TO_OPPOSITE_SIDE_ACC_MODIFIER</Key>
+      <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
+        <Value>1</Value>
       </Value>
     </Pair>
   </Attributes>

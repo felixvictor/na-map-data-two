@@ -1,4 +1,5 @@
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
+import { moduleLevel, moduleLevelUniversal } from "../@types/constants.js"
 import type {
     APIModifierName,
     ModuleConvertEntity,
@@ -10,7 +11,7 @@ import { saveJsonAsync } from "../common/file.js"
 import { capitalizeFirstLetter } from "../common/format.js"
 import { getCommonPaths } from "../common/path.js"
 import { sortBy } from "../common/sort.js"
-import { bonusRegex, flipAmountForModule, modifiers, moduleRate, notPercentage } from "./common.js"
+import { bonusRegex, flipAmountForModule, modifiers, notPercentage } from "./common.js"
 
 const commonPaths = getCommonPaths()
 
@@ -31,11 +32,16 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
     const { permanentType, sortingGroup } = module
     const { moduleLevel, moduleType, name: moduleName, usageType } = module
 
-    if (usageType === "All" && sortingGroup && moduleLevel === "U" && moduleType === "Hidden") {
+    if (usageType === "All" && sortingGroup && moduleLevel === moduleLevelUniversal && moduleType === "Hidden") {
         level1 = "Ship trim"
     } else if (moduleType === "Permanent" && !moduleName.endsWith(" Bonus")) {
         level1 = "Permanent"
-    } else if (usageType === "All" && !sortingGroup && moduleLevel === "U" && moduleType === "Hidden") {
+    } else if (
+        usageType === "All" &&
+        !sortingGroup &&
+        moduleLevel === moduleLevelUniversal &&
+        moduleType === "Hidden"
+    ) {
         level1 = "Perk"
     } else if (moduleType === "Regular") {
         level1 = "Ship knowledge"
@@ -208,7 +214,7 @@ const isUsed = (name: string, typeString: string, moduleLevel: string) => {
 
     return !(
         nameExceptions.has(name) ||
-        (name === "Optimized Rudder" && moduleLevel !== "U") ||
+        (name === "Optimized Rudder" && moduleLevel !== moduleLevelUniversal) ||
         typeStringL.startsWith("not used") ||
         nameL.startsWith("test") ||
         nameL.endsWith("test") ||
@@ -228,17 +234,16 @@ const rateExceptions = new Set([
 ])
 
 export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
-    for (const rate of moduleRate) {
-        for (const name of rate.names) {
-            if (moduleConvertEntity.name.endsWith(name)) {
-                moduleConvertEntity.name = moduleConvertEntity.name.replace(name, "")
-                moduleConvertEntity.moduleLevel = rate.level
-            }
+    for (const level of moduleLevel) {
+        const s = ` - ${level}`
+        if (moduleConvertEntity.name.endsWith(s)) {
+            moduleConvertEntity.name = moduleConvertEntity.name.replace(s, "")
+            moduleConvertEntity.moduleLevel = level
         }
     }
 
     if (rateExceptions.has(moduleConvertEntity.name)) {
-        moduleConvertEntity.moduleLevel = "U"
+        moduleConvertEntity.moduleLevel = moduleLevelUniversal
     }
 
     moduleConvertEntity.properties = getModuleProperties(moduleConvertEntity.ApiModifiers)

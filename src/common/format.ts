@@ -1,3 +1,5 @@
+const locale = "en-GB"
+
 /**
  * {@link https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript}
  * @param   string - String
@@ -20,15 +22,27 @@ export const round = (n: number, d = 0): number => Number(Math.round(n * 10 ** d
  */
 export const roundToThousands = (x: number): number => round(x, 3)
 
+const ordinalRules = new Intl.PluralRules(locale, { type: "ordinal" })
+const suffixes = new Map([
+    ["one", "st"],
+    ["two", "nd"],
+    ["few", "rd"],
+    ["other", "th"],
+])
+const suffixesSuper = new Map([
+    ["one", "ˢᵗ"],
+    ["two", "ⁿᵈ"],
+    ["few", "ʳᵈ"],
+    ["other", "ᵗʰ"],
+])
+
 /**
  * Format ordinal
  * @param   n - Integer
  * @param   sup - True if superscript tags needed
- * @returns Formatted Ordinal
  */
 export function getOrdinal(n: number, sup = true) {
-    const s = sup ? ["th", "st", "nd", "rd"] : ["ᵗʰ", "ˢᵗ", "ⁿᵈ", "ʳᵈ"]
-    const v = n % 100
-    const text = s[(v - 20) % 10] || s[v] || s[0]
-    return String(n) + text
+    const rule = ordinalRules.select(n)
+    const suffix = sup ? suffixesSuper.get(rule) : suffixes.get(rule)
+    return `${n}${suffix}`
 }

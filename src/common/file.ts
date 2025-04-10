@@ -1,4 +1,4 @@
-import { default as fs, promises as fsPromises } from "node:fs"
+import fs, { promises as fsPromises } from "node:fs"
 import path from "node:path"
 
 import { getCommonPaths } from "./path.js"

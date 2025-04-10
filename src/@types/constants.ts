@@ -8,9 +8,9 @@ export const cannonFamilyList: Record<CannonType, CannonFamily[]> = {
     carronade: ["regular", "obusiers"],
 }
 export const peneDistance: PeneDistance = {
-    medium: [100, 750, 1000, 1250, 1500],
-    long: [100, 1000, 1250, 1500],
-    carronade: [100, 400, 500, 750, 1000, 1500],
+    medium: [100, 200, 300, 400, 500, 750, 1000, 1250, 1500],
+    long: [100, 400, 500, 750, 1000, 1250, 1500],
+    carronade: [100, 200, 300, 400, 500, 750, 1000, 1500],
 }
 
 // Loot
@@ -19,3 +19,7 @@ export const lootType = ["item", "loot", "chest", "fish"]
 // Woods
 export const woodFamily = ["regular", "seasoned", "rare"]
 export const woodType = ["frame", "trim"]
+
+export const moduleLevel = ["L", "M", "S"] as const
+export const moduleLevelUniversal = "U"
+export type ModuleLevel = (typeof moduleLevel)[number]

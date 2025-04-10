@@ -94,7 +94,7 @@ export class PortOwnership {
     #getPreviousNation(): NationShortName {
         const portData = this.#ports.get(this.#currentPort.Id)
 
-        if (portData) {
+        if (portData?.data) {
             const index = portData.data.length - 1
             return portData.data[index].val as NationShortName
         }
@@ -105,7 +105,7 @@ export class PortOwnership {
     #setNewNation(): void {
         const portData = this.#ports.get(this.#currentPort.Id)
 
-        if (portData) {
+        if (portData?.data) {
             portData.data.push(this.#getNewSegment())
             this.#ports.set(this.#currentPort.Id, portData)
         }
