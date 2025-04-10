@@ -1,5 +1,7 @@
 # Changelog
 
+## <small>1.10.1 (2025-04-10)</small>
+
 ## 1.10.0 (2025-04-10)
 
 * feat: 10 April server update ([0287f76](https://example.com/commits/0287f76))
