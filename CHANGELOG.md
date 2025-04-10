@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.0 (2025-04-10)
+
+* feat: 10 April server update ([0287f76](https://example.com/commits/0287f76))
+* chore(deps): bump ([6a4fcc9](https://example.com/commits/6a4fcc9))
+
 ## <small>1.9.3 (2025-03-02)</small>
 
 ## <small>1.9.2 (2025-03-02)</small>
