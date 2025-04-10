@@ -66,8 +66,8 @@ importers:
         specifier: ^17.17.0
         version: 17.17.0(eslint@9.24.0(jiti@2.4.2))
       eslint-plugin-unicorn:
-        specifier: ^57.0.0
-        version: 57.0.0(eslint@9.24.0(jiti@2.4.2))
+        specifier: ^58.0.0
+        version: 58.0.0(eslint@9.24.0(jiti@2.4.2))
       exceljs:
         specifier: ^4.4.0
         version: 4.4.0
@@ -78,8 +78,8 @@ importers:
         specifier: ^9.1.7
         version: 9.1.7
       netlify-cli:
-        specifier: ^19.1.7
-        version: 19.1.7(@types/node@22.14.0)(picomatch@4.0.2)
+        specifier: ^20.0.0
+        version: 20.0.0(@types/node@22.14.0)(picomatch@4.0.2)
       npm-run-all2:
         specifier: ^7.0.2
         version: 7.0.2
@@ -997,8 +997,8 @@ packages:
     resolution: {integrity: sha512-kKzGQ9gKNRUjqFMC1/1goeTe1WfzL6KhphwXac7tialowg10Dtmr2X+eDzfH9enGvD6vhYR4a0QMTQWkjfPVmg==}
     engines: {node: ^14.16.0 || >=16.0.0}
 
-  '@netlify/config@21.0.6':
-    resolution: {integrity: sha512-zie9e/lKvdZ88Heduu5X6v+CvhcU1e9notQtugc3Hg60NWfXgRr1Z11opOeD/hh2GmoLkr6f1HBjndyKEFSZJA==}
+  '@netlify/config@21.0.7':
+    resolution: {integrity: sha512-B4SBC1a6TB2bIafJvUnF9RViVYn2QDSW96majr7XkG8kgdd5DbOjKyERHaQ8F2912lpg0pp3izlofERuGkDx9A==}
     engines: {node: ^14.16.0 || >=16.0.0}
     hasBin: true
 
@@ -1927,8 +1927,8 @@ packages:
     resolution: {integrity: sha512-zhaCDicdLuWN5UbN5IMnFqNMhNfo919sH85y2/ea+5Yg9TsTkeZxpL+JLbp6cgYFS4sRLp3YV4S6yDuqVWHYOw==}
     engines: {node: '>=6'}
 
-  builtin-modules@4.0.0:
-    resolution: {integrity: sha512-p1n8zyCkt1BVrKNFymOHjcDSAl7oq/gUvfgULv2EblgpPVQlQr9yHnWjg9IJ2MhfwPqiYqMMrr01OY7yQoK2yA==}
+  builtin-modules@5.0.0:
+    resolution: {integrity: sha512-bkXY9WsVpY7CvMhKSR6pZilZu9Ln5WDrKVBUXf2S443etkmEO4V58heTecXcUIsNsi4Rx8JUO4NfX1IcQl4deg==}
     engines: {node: '>=18.20'}
 
   builtins@5.1.0:
@@ -2791,11 +2791,11 @@ packages:
     peerDependencies:
       eslint: '>=8.23.0'
 
-  eslint-plugin-unicorn@57.0.0:
-    resolution: {integrity: sha512-zUYYa6zfNdTeG9BISWDlcLmz16c+2Ck2o5ZDHh0UzXJz3DEP7xjmlVDTzbyV0W+XksgZ0q37WEWzN2D2Ze+g9Q==}
-    engines: {node: '>=18.18'}
+  eslint-plugin-unicorn@58.0.0:
+    resolution: {integrity: sha512-fc3iaxCm9chBWOHPVjn+Czb/wHS0D2Mko7wkOdobqo9R2bbFObc4LyZaLTNy0mhZOP84nKkLhTUQxlLOZ7EjKw==}
+    engines: {node: ^18.20.0 || ^20.10.0 || >=21.0.0}
     peerDependencies:
-      eslint: '>=9.20.0'
+      eslint: '>=9.22.0'
 
   eslint-scope@8.3.0:
     resolution: {integrity: sha512-pUNxi75F8MJ/GdeKtVLSbYg4ZI34J6C0C7sbL4YOp2exGwen7ZsuBqKzUhXd0qMQ362yET3z+uPwKeg/0C2XCQ==}
@@ -3541,8 +3541,8 @@ packages:
     resolution: {integrity: sha512-BSLE3HnV2syZ0FK0iMA/yUGplUeMmNz4AW5fnTunbCIqZi4vG3WjJT9FHMy5D69xmAYBHXQhJdALdpwVxV501A==}
     engines: {node: '>=6'}
 
-  is-builtin-module@4.0.0:
-    resolution: {integrity: sha512-rWP3AMAalQSesXO8gleROyL2iKU73SX5Er66losQn9rWOWL4Gef0a/xOEOVqjWGMuR2vHG3FJ8UUmT700O8oFg==}
+  is-builtin-module@5.0.0:
+    resolution: {integrity: sha512-f4RqJKBUe5rQkJ2eJEJBXSticB3hGbN9j0yxxMQFqIW89Jp9WYFtzfTcRlstDKVUTRzSOTLKRfO9vIztenwtxA==}
     engines: {node: '>=18.20'}
 
   is-core-module@2.16.1:
@@ -4208,8 +4208,8 @@ packages:
   nested-error-stacks@2.1.1:
     resolution: {integrity: sha512-9iN1ka/9zmX1ZvLV9ewJYEk9h7RyRRtqdK0woXcqohu8EWIerfPUjYJPg0ULy0UqP7cslmdGc8xKDJcojlKiaw==}
 
-  netlify-cli@19.1.7:
-    resolution: {integrity: sha512-1L5DVUDnJgCz445p4C+syYEZ15RrsJ9QAEoonZaPWk5ZVuG/ueDn6C8rYXCjogJL2W6vtrZy2CnKijI8Z6e0kg==}
+  netlify-cli@20.0.0:
+    resolution: {integrity: sha512-A7A4C9cVtolZzSx8X7LChDQzcCIqHvK4kqmuOYu5zmCKwpJJaASXagMW1pUTpvZvrJlBAIycv17rAEOtPdHUJQ==}
     engines: {node: '>=18.14.0'}
     hasBin: true
 
@@ -6632,7 +6632,7 @@ snapshots:
       '@bugsnag/js': 7.25.0
       '@netlify/blobs': 8.1.2
       '@netlify/cache-utils': 5.2.0
-      '@netlify/config': 21.0.6
+      '@netlify/config': 21.0.7
       '@netlify/edge-bundler': 12.4.0(supports-color@9.4.0)
       '@netlify/framework-info': 9.9.3
       '@netlify/functions-utils': 5.3.14(supports-color@9.4.0)
@@ -6707,7 +6707,7 @@ snapshots:
       path-exists: 5.0.0
       readdirp: 3.6.0
 
-  '@netlify/config@21.0.6':
+  '@netlify/config@21.0.7':
     dependencies:
       '@iarna/toml': 2.2.5
       '@netlify/headers-parser': 8.0.0
@@ -7808,7 +7808,7 @@ snapshots:
 
   builtin-modules@3.3.0: {}
 
-  builtin-modules@4.0.0: {}
+  builtin-modules@5.0.0: {}
 
   builtins@5.1.0:
     dependencies:
@@ -8714,18 +8714,19 @@ snapshots:
       minimatch: 9.0.5
       semver: 7.7.1
 
-  eslint-plugin-unicorn@57.0.0(eslint@9.24.0(jiti@2.4.2)):
+  eslint-plugin-unicorn@58.0.0(eslint@9.24.0(jiti@2.4.2)):
     dependencies:
       '@babel/helper-validator-identifier': 7.25.9
       '@eslint-community/eslint-utils': 4.5.1(eslint@9.24.0(jiti@2.4.2))
+      '@eslint/plugin-kit': 0.2.8
       ci-info: 4.2.0
       clean-regexp: 1.0.0
       core-js-compat: 3.41.0
       eslint: 9.24.0(jiti@2.4.2)
       esquery: 1.6.0
-      globals: 15.15.0
+      globals: 16.0.0
       indent-string: 5.0.0
-      is-builtin-module: 4.0.0
+      is-builtin-module: 5.0.0
       jsesc: 3.1.0
       pluralize: 8.0.0
       read-package-up: 11.0.0
@@ -9688,9 +9689,9 @@ snapshots:
     dependencies:
       builtin-modules: 3.3.0
 
-  is-builtin-module@4.0.0:
+  is-builtin-module@5.0.0:
     dependencies:
-      builtin-modules: 4.0.0
+      builtin-modules: 5.0.0
 
   is-core-module@2.16.1:
     dependencies:
@@ -10249,13 +10250,13 @@ snapshots:
 
   nested-error-stacks@2.1.1: {}
 
-  netlify-cli@19.1.7(@types/node@22.14.0)(picomatch@4.0.2):
+  netlify-cli@20.0.0(@types/node@22.14.0)(picomatch@4.0.2):
     dependencies:
       '@fastify/static': 7.0.4
       '@netlify/blobs': 8.1.2
       '@netlify/build': 30.1.1(@opentelemetry/api@1.8.0)(@types/node@22.14.0)(picomatch@4.0.2)
       '@netlify/build-info': 9.0.2
-      '@netlify/config': 21.0.6
+      '@netlify/config': 21.0.7
       '@netlify/edge-bundler': 12.4.0(supports-color@9.4.0)
       '@netlify/edge-functions': 2.11.1
       '@netlify/headers-parser': 8.0.0
