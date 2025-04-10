@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>1.10.2 (2025-04-10)</small>
+
+* chore(deps): bump ([2d595a6](https://example.com/commits/2d595a6))
+* refactor: lint ([15e7d5e](https://example.com/commits/15e7d5e))
+* build: prettierignore ([c5481f1](https://example.com/commits/c5481f1))
+
 ## <small>1.10.1 (2025-04-10)</small>
 
 ## 1.10.0 (2025-04-10)
