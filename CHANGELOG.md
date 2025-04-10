@@ -1,5 +1,7 @@
 # Changelog
 
+## <small>1.10.3 (2025-04-10)</small>
+
 ## <small>1.10.2 (2025-04-10)</small>
 
 * chore(deps): bump ([2d595a6](https://example.com/commits/2d595a6))
