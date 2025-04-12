@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.0 (2025-04-12)
+
+* feat: gunpoweder amount per cannon added ([ec18077](https://example.com/commits/ec18077))
+
 ## <small>1.10.4 (2025-04-12)</small>
 
 * refactor: servers ([fbd616d](https://example.com/commits/fbd616d))
