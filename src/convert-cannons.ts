@@ -106,6 +106,7 @@ const dataMapping = new Map<string, { group: keyof CannonEntity; element: string
     ["CANNON_CREW_REQUIRED", { group: "generic", element: "crew" }],
     // ["ARMOR_THICKNESS", { group: "strength", element: "thickness" }],
     ["CANNON_BALL_ARMOR_SPLINTERS_DAMAGE_FOR_CREW", { group: "damage", element: "splinter" }],
+    ["CANNON_GUNPOWDER_AMOUNT", { group: "generic", element: "gunpowder" }],
 ])
 
 const cannons = {} as Cannon

@@ -32,6 +32,7 @@ export interface CannonDispersion {
 export interface CannonGeneric {
     weight: CannonValue
     crew: CannonValue
+    gunpowder: CannonValue
 }
 export type CannonPenetration = Record<number, CannonValue>
 export interface CannonValue {
