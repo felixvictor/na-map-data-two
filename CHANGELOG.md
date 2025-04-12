@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.10.4 (2025-04-12)</small>
+
+* refactor: servers ([fbd616d](https://example.com/commits/fbd616d))
+* chore(deps): bump ([1b36a39](https://example.com/commits/1b36a39))
+
 ## <small>1.10.3 (2025-04-10)</small>
 
 ## <small>1.10.2 (2025-04-10)</small>
