@@ -66,12 +66,26 @@ const init = () => {
     )
 }
 
+/**
+ * Add '0' padding for gun and carronade name
+ */
+const getLbPadding = (a: string) => {
+    let result = a
+    if (result.includes("Gun") || result.includes("Carronade")) {
+        const aa = Number.parseInt(result)
+        if (!Number.isNaN(aa) && aa < 10) {
+            result = `0${result}`
+        }
+    }
+    return result
+}
+
 const addIngredients = (APIIngredients: TemplateEntity[], recipeName: string) => {
     for (const apiIngredient of APIIngredients) {
         if (ingredients.has(apiIngredient.Template)) {
             const updatedIngredient = ingredients.get(apiIngredient.Template) ?? ({} as Ingredient)
             updatedIngredient.recipeNames.push(recipeName)
-            updatedIngredient.recipeNames.sort(simpleStringSort)
+            updatedIngredient.recipeNames.sort((a, b) => simpleStringSort(getLbPadding(a), getLbPadding(b)))
             ingredients.set(apiIngredient.Template, updatedIngredient)
         } else {
             const ingredient = {
