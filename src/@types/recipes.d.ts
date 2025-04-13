@@ -17,6 +17,7 @@ interface RecipeEntity {
     serverType: number | string
 }
 interface RecipeItemRequirement {
+    id: number
     name: string
     amount: number
 }

@@ -5,8 +5,9 @@ import type {
     APIRecipeModuleResource,
     APIRecipeResource,
     APIShipUpgradeBookItem,
+    TemplateEntity,
 } from "./@types/api-item.js"
-import type { Recipe, RecipeEntity, RecipeGroup } from "./@types/recipes.js"
+import type { RecipeEntity, RecipeGroup } from "./@types/recipes.js"
 import { cleanName } from "./common/api.js"
 import { getApiItems } from "./common/common.js"
 import { saveJsonAsync } from "./common/file.js"
@@ -24,77 +25,81 @@ const commonPaths = getCommonPaths()
 
 // noinspection SpellCheckingInspection
 const craftGroups = new Map([
-    ["AdmiralityShips", "Admirality permits"],
-    ["AdmiraltyBooks", "Admirality books"],
-    ["AdmiraltyModules", "Admirality setModules"],
-    ["AdmiraltyRecipes", "Admirality blueprints"],
-    ["AdmiraltyResourcesAndMaterials", "Admirality resources"],
-    ["AdmiraltyRewards", "PVP rewards"],
+    ["AdmiraltyDefault", "Admirality"],
     ["Cannons", "Repairs"],
-    ["Exchange", "Exchange"],
     ["Manufacturing", "Manufacturing"],
     ["WoodWorking", "Cannons"],
 ])
 
 const recipeItemTypes = new Set(["Recipe", "RecipeModule", "RecipeResource"])
 const recipeUsingResults = new Set(["Recipe", "RecipeResource"])
-const itemIsUsed = new Set([
-    1525, // Labor Contract
-    1939, // Extra Labor Contracts Blueprint
-    2336, // Labor Contract
-    2460, // Additional Outpost Permit Blueprint
-    2461, // Additional dock permit Blueprint
-    2480, // Admiraal de Ruyter Permit Blueprint
-    2482, // Diana Permit Blueprint
-])
 
-const convertRecipes = async (): Promise<void> => {
-    const data = {} as Recipe
-    const recipes = [] as RecipeEntity[]
-    const ingredients = new Map<number, Ingredient>()
+const recipes = [] as RecipeEntity[]
+const ingredients = new Map<number, Ingredient>()
 
-    data.recipe = []
-    data.ingredient = []
+let itemNames: Map<number, string>
+let moduleNames: Map<number, string>
+let ingredientIds: Set<number>
+let upgradeIds: Map<number, number>
 
-    const itemNames = new Map(apiItems.filter((item) => !item.NotUsed).map((item) => [item.Id, cleanName(item.Name)]))
+const init = () => {
+    itemNames = new Map(apiItems.map((item) => [item.Id, cleanName(item.Name)]))
 
-    const moduleNames = new Map(
+    moduleNames = new Map(
         (apiItems.filter((item) => item.ItemType === "ShipUpgradeBookItem") as unknown as APIShipUpgradeBookItem[]).map(
             (item) => [item.Id, itemNames.get(item.Upgrade) ?? ""],
         ),
     )
 
-    const ingredientIds = new Map(
+    ingredientIds = new Set(
         apiItems
             .filter(
                 (item) =>
                     !item.NotUsed &&
                     (item.ItemType === "ShipUpgradeBookItem" || item.SortingGroup === "Resource.Trading"),
             )
-            .map((item) => [item.Id, item.Id]),
+            .map((item) => item.Id),
     )
 
-    const upgradeIds = new Map(
+    upgradeIds = new Map(
         apiItems.filter((item) => !item.NotUsed && item.Upgrade).map((item) => [item.Id, item.Upgrade ?? 0]),
     )
+}
 
+const addIngredients = (recipeIngredients: TemplateEntity[], recipeName: string) => {
+    const apiIngredients = recipeIngredients.filter((APIingredient) => ingredientIds.has(APIingredient.Template))
+
+    for (const apiIngredient of apiIngredients) {
+        if (ingredients.has(apiIngredient.Template)) {
+            const updatedIngredient = ingredients.get(apiIngredient.Template) ?? ({} as Ingredient)
+            updatedIngredient.recipeNames.push(recipeName)
+            updatedIngredient.recipeNames.sort(simpleStringSort)
+            ingredients.set(apiIngredient.Template, updatedIngredient)
+        } else {
+            const ingredient = {
+                id: apiIngredient.Template,
+                name: itemNames.get(apiIngredient.Template),
+                recipeNames: [recipeName],
+            } as Ingredient
+            ingredients.set(apiIngredient.Template, ingredient)
+        }
+    }
+}
+
+const convert = async (): Promise<void> => {
     const filteredItems = apiItems
-        .filter((item) => item.Id !== 1361 && item.Id !== 1956)
-        .filter(
-            (apiRecipe) =>
-                recipeItemTypes.has(apiRecipe.ItemType) && (!apiRecipe.NotUsed || itemIsUsed.has(apiRecipe.Id)),
-        ) as APIRecipeResource[] | APIRecipeModuleResource[]
+        .filter((item) => !item.NotUsed)
+        .filter((apiRecipe) => recipeItemTypes.has(apiRecipe.ItemType)) as
+        | APIRecipeResource[]
+        | APIRecipeModuleResource[]
+
     for (const apiRecipe of filteredItems) {
         const resultReference = recipeUsingResults.has(apiRecipe.ItemType)
             ? apiRecipe.Results[0]
             : (apiRecipe as APIRecipeModuleResource).Qualities[0].Results[0]
         const recipe = {
             id: apiRecipe.Id,
-            name: cleanName(apiRecipe.Name)
-                .replace(" Blueprint", "")
-                .replace(" - ", " – ")
-                .replace("u2013", "–")
-                .replace(/ $/, ""),
+            name: cleanName(apiRecipe.Name).replace(" - ", " – ").replace("u2013", "–").replace(/ $/, ""),
             module: apiRecipe.Results.length === 0 ? "" : moduleNames.get(apiRecipe.Results[0].Template),
             goldPrice: apiRecipe.GoldRequirements,
             itemRequirements: apiRecipe.FullRequirements.map((requirement) => ({
@@ -120,45 +125,33 @@ const convertRecipes = async (): Promise<void> => {
             recipes.push(recipe)
         }
 
-        const apiIngredients = apiRecipe.FullRequirements.filter((APIingredient) =>
-            ingredientIds.has(APIingredient.Template),
-        )
-        for (const apiIngredient of apiIngredients) {
-            const recipeName = recipe.name.replace(" Blueprint", "")
-            if (ingredients.has(apiIngredient.Template)) {
-                const updatedIngredient = ingredients.get(apiIngredient.Template) ?? ({} as Ingredient)
-                updatedIngredient.recipeNames.push(recipeName)
-                updatedIngredient.recipeNames.sort(simpleStringSort)
-                ingredients.set(apiIngredient.Template, updatedIngredient)
-            } else {
-                const ingredient = {
-                    id: apiIngredient.Template,
-                    name: itemNames.get(apiIngredient.Template),
-                    recipeNames: [recipeName],
-                } as Ingredient
-                ingredients.set(apiIngredient.Template, ingredient)
-            }
-        }
+        addIngredients(apiRecipe.FullRequirements, recipe.name)
     }
 
-    // @ts-expect-error typing sort
-    data.recipe = [...d3Group(recipes, (recipe) => recipe.craftGroup)].sort(sortBy(["id"])).map(([group, recipes]) => {
+    /** Save recipes */
+    const recipeGrouped = [...d3Group(recipes, (recipe) => recipe.craftGroup)]
+    const recipeCleaned = recipeGrouped.map(([group, recipes]) => {
         return {
             group,
-            recipes: recipes.map((recipe) => {
-                const { craftGroup, ...recipeCleaned } = recipe
-                return recipeCleaned
-            }),
+            recipes: recipes
+                .map((recipe) => {
+                    const { craftGroup, ...recipeCleaned } = recipe
+                    recipeCleaned.itemRequirements.sort(sortBy(["id"]))
+                    return recipeCleaned
+                })
+                .sort(sortBy(["id"])),
         } as RecipeGroup
     })
-    const result = [...ingredients.values()]
-    data.ingredient = result.sort(sortBy(["id"]))
+    await saveJsonAsync(commonPaths.fileRecipe, recipeCleaned)
 
-    await saveJsonAsync(commonPaths.fileRecipe, data)
+    /** Save ingredients */
+    const ingredientData = [...ingredients.values()].sort(sortBy(["id"]))
+    await saveJsonAsync(commonPaths.fileIngredient, ingredientData)
 }
 
-export const convertRecipeData = (): void => {
+export const convertRecipeData = async (): Promise<void> => {
     apiItems = getApiItems()
 
-    void convertRecipes()
+    init()
+    await convert()
 }

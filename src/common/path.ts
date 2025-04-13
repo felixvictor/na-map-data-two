@@ -10,6 +10,7 @@ export interface DirectoryList {
     fileBuilding: string
     fileDistances: string
     fileCannon: string
+    fileIngredient: string
     fileLoot: string
     fileModules: string
     filePbSheet: string
@@ -45,6 +46,7 @@ export function getCommonPaths(appRoot = process.env.PWD ?? ""): DirectoryList {
         fileBuilding: path.join(directoryGenGeneric, "buildings.json"),
         fileDistances: path.join(directoryLibrary, "distances.json"),
         fileCannon: path.join(directoryGenGeneric, "cannons.json"),
+        fileIngredient: path.join(directoryGenGeneric, "ingredients.json"),
         fileLoot: path.join(directoryGenGeneric, "loot.json"),
         fileModules: path.join(directoryGenGeneric, "modules.json"),
         filePbSheet: path.join(directoryGenGeneric, "port-battle.xlsx"),
