@@ -39,7 +39,6 @@ const ingredients = new Map<number, Ingredient>()
 
 let itemNames: Map<number, string>
 let moduleNames: Map<number, string>
-let ingredientIds: Set<number>
 let upgradeIds: Map<number, number>
 
 const init = () => {
@@ -49,16 +48,6 @@ const init = () => {
         (apiItems.filter((item) => item.ItemType === "ShipUpgradeBookItem") as unknown as APIShipUpgradeBookItem[]).map(
             (item) => [item.Id, itemNames.get(item.Upgrade) ?? ""],
         ),
-    )
-
-    ingredientIds = new Set(
-        apiItems
-            .filter(
-                (item) =>
-                    !item.NotUsed &&
-                    (item.ItemType === "ShipUpgradeBookItem" || item.SortingGroup === "Resource.Trading"),
-            )
-            .map((item) => item.Id),
     )
 
     upgradeIds = new Map(

@@ -17,7 +17,7 @@ const convertApiData = async (): Promise<void> => {
     convertGenericPortData()
     convertLootData()
     await convertModules()
-    convertRecipeData()
+    await convertRecipeData()
     await convertRepairData()
     await convertServerPortData()
     await convertOwnershipData()
