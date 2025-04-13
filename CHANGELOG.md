@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>1.11.1 (2025-04-13)</small>
+
+* fix: convert ingredients ([498be17](https://example.com/commits/498be17))
+* fix: convert recipes ([a7fbb86](https://example.com/commits/a7fbb86))
+* chore(deps): bump ([f536d45](https://example.com/commits/f536d45))
+
 ## 1.11.0 (2025-04-12)
 
 * feat: gunpoweder amount per cannon added ([ec18077](https://example.com/commits/ec18077))
