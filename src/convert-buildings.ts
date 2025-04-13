@@ -89,17 +89,14 @@ const getBuildings = (): Building[] => {
             switch (building.name) {
                 case "Shipyard": {
                     building.result = [{ id: 0, name: "Ships", price: 0 }]
-                    building.byproduct = []
                     break
                 }
                 case "Forge": {
                     building.result = [{ id: 0, name: "Cannons", price: 0 }]
-                    building.byproduct = []
                     break
                 }
                 case "Workshop": {
                     building.result = getItemsCraftedByWorkshop()
-                    building.byproduct = []
                     break
                 }
             }
