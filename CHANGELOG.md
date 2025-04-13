@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.11.2 (2025-04-13)</small>
+
+* refactor: lint ([bb07bed](https://example.com/commits/bb07bed))
+* fix: ingredient gun sort ([34608eb](https://example.com/commits/34608eb))
+
 ## <small>1.11.1 (2025-04-13)</small>
 
 * fix: convert ingredients ([498be17](https://example.com/commits/498be17))
