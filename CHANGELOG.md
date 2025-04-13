@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.11.4 (2025-04-13)</small>
+
+* fix: buildings ([c677daa](https://example.com/commits/c677daa))
+
 ## <small>1.11.3 (2025-04-13)</small>
 
 * fix: wood prices ([6b0fde1](https://example.com/commits/6b0fde1))
