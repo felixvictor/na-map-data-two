@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.11.3 (2025-04-13)</small>
+
+* fix: wood prices ([6b0fde1](https://example.com/commits/6b0fde1))
+
 ## <small>1.11.2 (2025-04-13)</small>
 
 * refactor: lint ([bb07bed](https://example.com/commits/bb07bed))
