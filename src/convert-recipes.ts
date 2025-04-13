@@ -66,10 +66,8 @@ const init = () => {
     )
 }
 
-const addIngredients = (recipeIngredients: TemplateEntity[], recipeName: string) => {
-    const apiIngredients = recipeIngredients.filter((APIingredient) => ingredientIds.has(APIingredient.Template))
-
-    for (const apiIngredient of apiIngredients) {
+const addIngredients = (APIIngredients: TemplateEntity[], recipeName: string) => {
+    for (const apiIngredient of APIIngredients) {
         if (ingredients.has(apiIngredient.Template)) {
             const updatedIngredient = ingredients.get(apiIngredient.Template) ?? ({} as Ingredient)
             updatedIngredient.recipeNames.push(recipeName)
