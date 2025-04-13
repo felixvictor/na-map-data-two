@@ -107,7 +107,7 @@ const convert = async (): Promise<void> => {
                 id: requirement.Template,
                 name: itemNames.get(requirement.Template),
                 amount: requirement.Amount,
-            })).sort(sortBy(["name"])),
+            })).sort(sortBy(["id"])),
             result: {
                 id: upgradeIds.has(resultReference.Template)
                     ? upgradeIds.get(resultReference.Template)
@@ -137,7 +137,6 @@ const convert = async (): Promise<void> => {
             recipes: recipes
                 .map((recipe) => {
                     const { craftGroup, ...recipeCleaned } = recipe
-                    recipeCleaned.itemRequirements.sort(sortBy(["id"]))
                     return recipeCleaned
                 })
                 .sort(sortBy(["id"])),
