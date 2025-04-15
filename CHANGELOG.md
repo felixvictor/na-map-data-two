@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.0 (2025-04-15)
+
+* feat: crafting cost ([21ea58e](https://example.com/commits/21ea58e))
+* refactor: sort recipe item by id ([1d04715](https://example.com/commits/1d04715))
+
 ## <small>1.11.4 (2025-04-13)</small>
 
 * fix: buildings ([c677daa](https://example.com/commits/c677daa))
