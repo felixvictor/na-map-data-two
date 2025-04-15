@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.13.0 (2025-04-15)
+
+* feat: more recipe data ([9fe81d6](https://example.com/commits/9fe81d6))
+
 ## 1.12.0 (2025-04-15)
 
 * feat: crafting cost ([21ea58e](https://example.com/commits/21ea58e))
