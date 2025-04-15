@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.14.0 (2025-04-15)
+
+* feat: 10/15 April 2025 patch ([d5c9409](https://example.com/commits/d5c9409))
+
 ## 1.13.0 (2025-04-15)
 
 * feat: more recipe data ([9fe81d6](https://example.com/commits/9fe81d6))
