@@ -11,6 +11,7 @@ import type { RecipeEntity, RecipeGroup } from "./@types/recipes.js"
 import { cleanName } from "./common/api.js"
 import { getApiItems } from "./common/common.js"
 import { saveJsonAsync } from "./common/file.js"
+import { round } from "./common/format.js"
 import { getCommonPaths } from "./common/path.js"
 import { simpleStringSort, sortBy } from "./common/sort.js"
 
@@ -26,7 +27,7 @@ const commonPaths = getCommonPaths()
 // noinspection SpellCheckingInspection
 const craftGroups = new Map([
     ["AdmiraltyDefault", "Admirality"],
-    ["Cannons", "Repairs"],
+    ["Cannons", "Cannon and repair supply"],
     ["Manufacturing", "Manufacturing"],
     ["WoodWorking", "Cannons"],
 ])
@@ -40,6 +41,10 @@ const ingredients = new Map<number, Ingredient>()
 let itemNames: Map<number, string>
 let moduleNames: Map<number, string>
 let upgradeIds: Map<number, number>
+let basePrices: Map<number, number>
+const craftPrices = new Map<number, number>()
+
+const tax = 0.05
 
 const init = () => {
     itemNames = new Map(apiItems.map((item) => [item.Id, cleanName(item.Name)]))
@@ -53,6 +58,8 @@ const init = () => {
     upgradeIds = new Map(
         apiItems.filter((item) => !item.NotUsed && item.Upgrade).map((item) => [item.Id, item.Upgrade ?? 0]),
     )
+
+    basePrices = new Map(apiItems.map((item) => [item.Id, item.BasePrice]))
 }
 
 /**
@@ -87,7 +94,7 @@ const addIngredients = (APIIngredients: TemplateEntity[], recipeName: string) =>
     }
 }
 
-const convert = async (): Promise<void> => {
+const convert = async (printOutput = false): Promise<void> => {
     const filteredItems = apiItems
         .filter((item) => !item.NotUsed)
         .filter((apiRecipe) => recipeItemTypes.has(apiRecipe.ItemType)) as
@@ -120,6 +127,49 @@ const convert = async (): Promise<void> => {
                 : apiRecipe.CraftGroup,
             serverType: apiRecipe.ServerType,
         } as RecipeEntity
+
+        // Price
+        let craftingCost = recipe.goldPrice
+        if (printOutput) {
+            console.log("\n**", recipe.result.name, "**")
+            console.log("Manufacturing cost:", craftingCost)
+        }
+
+        for (const item of recipe.itemRequirements) {
+            let itemPrice = basePrices.get(item.id) ?? 0
+            let priceString = `(port buy price: ${itemPrice} // total including 5% tax: ${round(item.amount * itemPrice * (1 + tax), 2)})`
+
+            if (craftPrices.has(item.id)) {
+                itemPrice = craftPrices.get(item.id) ?? 0
+                priceString = `(crafted resource cost: ${itemPrice} // total: ${round(item.amount * itemPrice, 2)})`
+            }
+            if (printOutput) {
+                console.log(item.amount, item.name, priceString)
+            }
+
+            craftingCost += item.amount * itemPrice
+        }
+
+        const portBuyPrice = round((basePrices.get(recipe.result.id) ?? 0) * (1 + tax), 2)
+        const pricePerUnit = round(craftingCost / recipe.result.amount, 2)
+        const reduction = round(1 - pricePerUnit / portBuyPrice, 3)
+
+        recipe.result.craftingCost = pricePerUnit
+        recipe.result.reduction = reduction
+
+        if (printOutput) {
+            console.log(
+                "Total crafting cost for",
+                recipe.result.amount,
+                "units:",
+                round(craftingCost, 2),
+                "(per unit:",
+                pricePerUnit,
+                `// port buy price per unit including 5% tax: ${portBuyPrice} // reduction of ${round(reduction * 100)}%)`,
+            )
+        }
+
+        craftPrices.set(recipe.result.id, round(craftingCost / recipe.result.amount, 2))
 
         // if result exists
         if (recipe.result.name) {

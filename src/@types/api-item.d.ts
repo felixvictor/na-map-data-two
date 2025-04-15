@@ -204,10 +204,10 @@ interface PortPrices<valid, price> {
     Produced: SellAndBuyPrices<price>
     Consumed: SellAndBuyPrices<price>
     Regular: SellAndBuyPrices<price>
-    FullStackAmount: price
+    FullStackAmount: number
     FullStack: SellAndBuyPrices<price>
-    RandomPct: price
-    RangePct: price
+    RandomPct: number
+    RangePct: number
 }
 interface SellAndBuyPrices<price> {
     SellPrice: MinMax<price>
@@ -381,6 +381,55 @@ export interface APIBuilding {
     ShowInContractsSelector: false
     DeliveryOrderOptions: DeliveryOrderOptions<false, 0>
     PortPrices: PortPrices<false, 0>
+}
+
+/****************************
+ * Resource
+ */
+export interface APIResource {
+    __type: MegaChaka.Services.Items.ResourceTemplate
+    MegaChaka
+    Name: string
+    Id: number
+    NotUsed: boolean
+    Hided: boolean
+    NotTradeable: boolean
+    PreventTeleport: boolean
+    DropChanceReductionPerItem: number
+    MaxStack: number
+    ItemWeight: number
+    BasePrice: number
+    SellPrice: PriceModifier
+    BuyPrice: PriceModifier
+    MinContractAmount: number
+    MaxContractAmount: number
+    PriceReductionAmount: number
+    ConsumedScale: number
+    NonConsumedScale: number
+    PriceTierQuantity: number
+    MaxQuantity: number
+    SortingOverrideTemplateType: string
+    SortingGroup: string
+    SellableInShop: boolean
+    CanBeSoldToShop: boolean
+    ResetStockOnServerStart: boolean
+    SellPriceCoefficient: number
+    ItemType: string
+    MongoID: string
+    InitialAmount: number
+    ProductionScale: number
+    ConsumptionScale: number
+    SpawnChance: number
+    AutoFillCoefficient: number
+    ProducedByNation: number
+    ConsumedByNation: number
+    ProducedInCapitals: boolean
+    ProducedInTowns: boolean
+    ConsumedInCapitals: boolean
+    ConsumedInTowns: boolean
+    ShowInContractsSelector: boolean
+    DeliveryOrderOptions: DeliveryOrderOptions<true, number>
+    PortPrices: PortPrices<true, number>
 }
 
 /****************************

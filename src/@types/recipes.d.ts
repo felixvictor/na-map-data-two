@@ -25,6 +25,8 @@ interface RecipeResult {
     id: number
     name: string
     amount: number
+    craftingCost: number
+    reduction: number
 }
 interface RecipeIngredientEntity {
     id: number
