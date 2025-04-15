@@ -14,6 +14,8 @@ interface RecipeEntity {
     itemRequirements: RecipeItemRequirement[]
     result: RecipeResult
     craftGroup?: string
+    requiredLevel: number
+    xp: number
     serverType: number | string
 }
 interface RecipeItemRequirement {

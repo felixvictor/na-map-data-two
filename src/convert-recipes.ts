@@ -101,6 +101,17 @@ const convert = async (printOutput = false): Promise<void> => {
         | APIRecipeResource[]
         | APIRecipeModuleResource[]
 
+    /*
+    {
+	"__type": "MegaChaka.Services.Items.RecipeTemplate, MegaChaka",
+	"Name": "Iron Fittings Blueprint",
+	"Id": 232,
+	"ItemType": "Recipe",
+	"CraftGroup": "Manufacturing",
+	"RequiresLevel": 3,
+	"GivesXP": 3,
+	},
+     */
     for (const apiRecipe of filteredItems) {
         const resultReference = recipeUsingResults.has(apiRecipe.ItemType)
             ? apiRecipe.Results[0]
@@ -125,6 +136,8 @@ const convert = async (printOutput = false): Promise<void> => {
             craftGroup: craftGroups.has(apiRecipe.CraftGroup)
                 ? craftGroups.get(apiRecipe.CraftGroup)
                 : apiRecipe.CraftGroup,
+            requiredLevel: apiRecipe.RequiresLevel,
+            xp: apiRecipe.GivesXP,
             serverType: apiRecipe.ServerType,
         } as RecipeEntity
 
