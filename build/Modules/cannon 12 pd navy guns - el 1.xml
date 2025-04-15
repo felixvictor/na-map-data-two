@@ -46,7 +46,7 @@
     <Pair>
       <Key>CANNON_BASIC_DAMAGE</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>28.6</Value>
+        <Value>29.6</Value>
       </Value>
     </Pair>
     <Pair>
@@ -100,7 +100,7 @@
     <Pair>
       <Key>MODULE_BASE_HP</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>285.6</Value>
+        <Value>295.6</Value>
       </Value>
     </Pair>
     <Pair>
@@ -369,7 +369,7 @@
     <Pair>
       <Key>CANNON_BALL_ARMOR_SPLINTERS_DAMAGE_FOR_CREW</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>0.5712</Value>
+        <Value>0.5912</Value>
       </Value>
     </Pair>
     <Pair>
@@ -392,7 +392,7 @@
     <Pair>
       <Key>CANNON_GUNPOWDER_AMOUNT</Key>
       <Value xsi:type="IntegerAttribute" Action="Absolute" IsLocal="true" IsPermanent="false" IsNegative="false">
-        <Value>3</Value>
+        <Value>8</Value>
       </Value>
     </Pair>
   </Attributes>

@@ -716,24 +716,24 @@
           <Time>0</Time>
           <Value>1</Value>
           <TangentIn>0</TangentIn>
-          <TangentOut>400</TangentOut>
+          <TangentOut>150</TangentOut>
         </Value>
         <Value>
           <Time>0.01</Time>
-          <Value>5</Value>
-          <TangentIn>400</TangentIn>
+          <Value>2.5</Value>
+          <TangentIn>150</TangentIn>
           <TangentOut>0</TangentOut>
         </Value>
         <Value>
           <Time>0.19</Time>
-          <Value>5</Value>
+          <Value>2.5</Value>
           <TangentIn>0</TangentIn>
-          <TangentOut>-399.9998</TangentOut>
+          <TangentOut>-149.999924</TangentOut>
         </Value>
         <Value>
           <Time>0.2</Time>
           <Value>1</Value>
-          <TangentIn>-399.9998</TangentIn>
+          <TangentIn>-149.999924</TangentIn>
           <TangentOut>0</TangentOut>
         </Value>
         <Value>
@@ -749,45 +749,27 @@
           <TangentOut>0</TangentOut>
         </Value>
         <Value>
-          <Time>0.59</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
           <Time>0.6</Time>
           <Value>1</Value>
           <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
+          <TangentOut>-1.0000006</TangentOut>
         </Value>
         <Value>
           <Time>0.7</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
+          <Value>0.9</Value>
+          <TangentIn>-1.0000006</TangentIn>
           <TangentOut>0</TangentOut>
         </Value>
         <Value>
-          <Time>0.71</Time>
-          <Value>1</Value>
+          <Time>0.95</Time>
+          <Value>0.9</Value>
           <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.9</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.91</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
+          <TangentOut>2</TangentOut>
         </Value>
         <Value>
           <Time>1</Time>
           <Value>1</Value>
-          <TangentIn>0</TangentIn>
+          <TangentIn>2</TangentIn>
           <TangentOut>0</TangentOut>
         </Value>
       </Value>
@@ -813,7 +795,7 @@
     <Pair>
       <Key>SHIP_SPAWN_HOLE_PROBABILITY</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
-        <Value>0.7</Value>
+        <Value>0.6</Value>
       </Value>
     </Pair>
     <Pair>
