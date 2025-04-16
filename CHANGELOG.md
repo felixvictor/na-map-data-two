@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.15.0 (2025-04-16)
+
+* feat: 16 April 2025 patch ([636519c](https://example.com/commits/636519c))
+* chore(deps): bump ([9599121](https://example.com/commits/9599121))
+
 ## 1.14.0 (2025-04-15)
 
 * feat: 10/15 April 2025 patch ([d5c9409](https://example.com/commits/d5c9409))
