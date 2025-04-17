@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.16.1 (2025-04-17)</small>
+
+* fix: recipes with isResource flag ([ff484d2](https://example.com/commits/ff484d2))
+
 ## 1.16.0 (2025-04-17)
 
 * feat: recipes with isResource flag ([84799a7](https://example.com/commits/84799a7))
