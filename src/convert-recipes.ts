@@ -62,7 +62,11 @@ const init = () => {
 
     basePrices = new Map(apiItems.map((item) => [item.Id, item.BasePrice]))
 
-    isResourceSet = new Set(apiItems.filter((item) => item.ItemType === "Resource").map((item) => item.Id))
+    isResourceSet = new Set(
+        apiItems
+            .filter((item) => item.ItemType === "Resource" && item.SortingGroup !== "Resource.Ammo")
+            .map((item) => item.Id),
+    )
 }
 
 /**
