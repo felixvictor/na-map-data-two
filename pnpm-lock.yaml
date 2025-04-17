@@ -78,8 +78,8 @@ importers:
         specifier: ^9.1.7
         version: 9.1.7
       netlify-cli:
-        specifier: ^20.0.1
-        version: 20.0.1(@types/node@22.14.1)(picomatch@4.0.2)
+        specifier: ^20.0.2
+        version: 20.0.2(@types/node@22.14.1)(picomatch@4.0.2)
       npm-run-all2:
         specifier: ^7.0.2
         version: 7.0.2
@@ -963,8 +963,8 @@ packages:
     resolution: {integrity: sha512-siVwmrp7Ow+7jLALi6jXOja4Y4uHMMgOLLQMgd+OZ1TESOstrJvkUisJEDAc9hx7u0v/B0mh5g1g1huiH3uS3A==}
     engines: {node: '>=18.14.0'}
 
-  '@netlify/open-api@2.36.0':
-    resolution: {integrity: sha512-cxdjUkHh0/SLvPusCFOmIoKpXdfvom+cpBT/bUrP2oxxH1htWgJ59GGuu/pJGEU+xhKpPotr+TSJl00u7ktIhg==}
+  '@netlify/open-api@2.37.0':
+    resolution: {integrity: sha512-zXnRFkxgNsalSgU8/vwTWnav3R+8KG8SsqHxqaoJdjjJtnZR7wo3f+qqu4z+WtZ/4V7fly91HFUwZ6Uz2OdW7w==}
     engines: {node: '>=14.8.0'}
 
   '@netlify/opentelemetry-utils@1.3.1':
@@ -2903,9 +2903,6 @@ packages:
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
 
-  flush-write-stream@2.0.0:
-    resolution: {integrity: sha512-uXClqPxT4xW0lcdSBheb2ObVU+kuqUk3Jk64EwieirEXZx9XUrVwp/JuBfKAWaM4T5Td/VL7QLDWPXp/MvGm/g==}
-
   fn.name@1.1.0:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
 
@@ -2940,9 +2937,6 @@ packages:
   fresh@0.5.2:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
-
-  from2-array@0.0.4:
-    resolution: {integrity: sha512-0G0cAp7sYLobH7ALsr835x98PU/YeVF7wlwxdWbCUaea7wsa7lJfKZUAo6p2YZGZ8F94luCuqHZS3JtFER6uPg==}
 
   from2@2.3.0:
     resolution: {integrity: sha512-OMcX/4IC/uqEPVgGeyfN22LJk6AZrMkRZHxcHBMBvHScDGgwTm2GT2Wkgtocyd3JfZffjj2kYUDXXII0Fk9W0g==}
@@ -4036,8 +4030,8 @@ packages:
   nested-error-stacks@2.1.1:
     resolution: {integrity: sha512-9iN1ka/9zmX1ZvLV9ewJYEk9h7RyRRtqdK0woXcqohu8EWIerfPUjYJPg0ULy0UqP7cslmdGc8xKDJcojlKiaw==}
 
-  netlify-cli@20.0.1:
-    resolution: {integrity: sha512-MEGq/86msjpdUKW5LtvUAXyNk5jMOjLjP0PonbPa3vkGvR7CY0RaZCusypyjQTZCKtbPqcG2/dinP9QQrmcCbA==}
+  netlify-cli@20.0.2:
+    resolution: {integrity: sha512-f3skyVgoOp1JOzA/UKS7PNzq57UWkS2gS2xqBgetmyq7+z3pf2mzVE5jFW5juAqiymeb7bARtmuS1XLOMajHjw==}
     engines: {node: '>=18.14.0'}
     hasBin: true
 
@@ -5070,9 +5064,6 @@ packages:
   string_decoder@1.3.0:
     resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==}
 
-  strip-ansi-control-characters@2.0.0:
-    resolution: {integrity: sha512-Q0/k5orrVGeaOlIOUn1gybGU0IcAbgHQT1faLo5hik4DqClKVSaka5xOhNNoRgtfztHVxCYxi7j71mrWom0bIw==}
-
   strip-ansi@6.0.1:
     resolution: {integrity: sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==}
     engines: {node: '>=8'}
@@ -5206,19 +5197,8 @@ packages:
   thread-stream@3.1.0:
     resolution: {integrity: sha512-OqyPZ9u96VohAyMfJykzmivOrY2wfMSf3C5TtFJVgN+Hm6aj+voFhlK+kZEIv2FBh1X6Xp3DlnCOfEQ3B2J86A==}
 
-  through2-filter@4.0.0:
-    resolution: {integrity: sha512-P8IpQL19bSdXqGLvLdbidYRxERXgHEXGcQofPxbLpPkqS1ieOrUrocdYRTNv8YwSukaDJWr71s6F2kZ3bvgEhA==}
-    engines: {node: '>= 6'}
-
-  through2-map@4.0.0:
-    resolution: {integrity: sha512-+rpmDB5yckiBGEuqJSsWYWMs9e1zdksypDKvByysEyN+knhsPXV9Z6O2mA9meczIa6AON7bi2G3xWk5T8UG4zQ==}
-    engines: {node: '>= 6'}
-
   through2@2.0.5:
     resolution: {integrity: sha512-/mrRod8xqpA+IHSLyGCQ2s8SPHiCDEeQJSep1jqLYeEUClOFG2Qsh+4FU6G9VeqpZnGW/Su8LQGc4YKni5rYSQ==}
-
-  through2@4.0.2:
-    resolution: {integrity: sha512-iOqSav00cVxEEICeD7TjLB1sueEL+81Wpzp2bY17uZjZN0pWZPuo4suZ/61VujxmqSGFfgOcNuTZ85QJwNZQpw==}
 
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
@@ -5726,8 +5706,8 @@ packages:
     resolution: {integrity: sha512-9qv4rlDiopXg4E69k+vMHjNN63YFMe9sZMrdlvKnCjlCRWeCBswPPMPUfx+ipsAWq1LXHe70RcbaHdJJpS6hyQ==}
     engines: {node: '>= 10'}
 
-  zod@3.24.2:
-    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+  zod@3.24.3:
+    resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}
 
 snapshots:
 
@@ -6625,7 +6605,7 @@ snapshots:
       '@netlify/local-functions-proxy-win32-ia32': 1.1.1
       '@netlify/local-functions-proxy-win32-x64': 1.1.1
 
-  '@netlify/open-api@2.36.0': {}
+  '@netlify/open-api@2.37.0': {}
 
   '@netlify/opentelemetry-utils@1.3.1(@opentelemetry/api@1.8.0)':
     dependencies:
@@ -6682,7 +6662,7 @@ snapshots:
       unixify: 1.0.0
       urlpattern-polyfill: 8.0.2
       yargs: 17.7.2
-      zod: 3.24.2
+      zod: 3.24.3
     transitivePeerDependencies:
       - encoding
       - rollup
@@ -8806,11 +8786,6 @@ snapshots:
 
   flatted@3.3.3: {}
 
-  flush-write-stream@2.0.0:
-    dependencies:
-      inherits: 2.0.4
-      readable-stream: 3.6.2
-
   fn.name@1.1.0: {}
 
   folder-walker@3.2.0:
@@ -8835,10 +8810,6 @@ snapshots:
   forwarded@0.2.0: {}
 
   fresh@0.5.2: {}
-
-  from2-array@0.0.4:
-    dependencies:
-      from2: 2.3.0
 
   from2@2.3.0:
     dependencies:
@@ -9916,7 +9887,7 @@ snapshots:
 
   nested-error-stacks@2.1.1: {}
 
-  netlify-cli@20.0.1(@types/node@22.14.1)(picomatch@4.0.2):
+  netlify-cli@20.0.2(@types/node@22.14.1)(picomatch@4.0.2):
     dependencies:
       '@fastify/static': 7.0.4
       '@netlify/blobs': 8.1.2
@@ -9960,9 +9931,7 @@ snapshots:
       fastest-levenshtein: 1.0.16
       fastify: 4.29.0
       find-up: 7.0.0
-      flush-write-stream: 2.0.0
       folder-walker: 3.2.0
-      from2-array: 0.0.4
       fuzzy: 0.1.3
       get-port: 5.1.1
       gh-release-fetch: 4.0.3
@@ -10005,11 +9974,8 @@ snapshots:
       readdirp: 4.1.2
       semver: 7.7.1
       source-map-support: 0.5.21
-      strip-ansi-control-characters: 2.0.0
       tempy: 3.1.0
       terminal-link: 4.0.0
-      through2-filter: 4.0.0
-      through2-map: 4.0.0
       toml: 3.0.0
       tomlify-j0.4: 3.0.0
       ulid: 2.3.0
@@ -10053,7 +10019,7 @@ snapshots:
 
   netlify@13.3.4:
     dependencies:
-      '@netlify/open-api': 2.36.0
+      '@netlify/open-api': 2.37.0
       lodash-es: 4.17.21
       micro-api-client: 3.3.0
       node-fetch: 3.3.2
@@ -11139,8 +11105,6 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  strip-ansi-control-characters@2.0.0: {}
-
   strip-ansi@6.0.1:
     dependencies:
       ansi-regex: 5.0.1
@@ -11291,22 +11255,10 @@ snapshots:
     dependencies:
       real-require: 0.2.0
 
-  through2-filter@4.0.0:
-    dependencies:
-      through2: 4.0.2
-
-  through2-map@4.0.0:
-    dependencies:
-      through2: 4.0.2
-
   through2@2.0.5:
     dependencies:
       readable-stream: 2.3.8
       xtend: 4.0.2
-
-  through2@4.0.2:
-    dependencies:
-      readable-stream: 3.6.2
 
   through@2.3.8: {}
 
@@ -11739,4 +11691,4 @@ snapshots:
       compress-commons: 4.1.2
       readable-stream: 3.6.2
 
-  zod@3.24.2: {}
+  zod@3.24.3: {}

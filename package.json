@@ -58,7 +58,7 @@
         "exceljs": "^4.4.0",
         "globals": "^16.0.0",
         "husky": "^9.1.7",
-        "netlify-cli": "^20.0.1",
+        "netlify-cli": "^20.0.2",
         "npm-run-all2": "^7.0.2",
         "pngjs": "^7.0.0",
         "polylabel": "^2.0.1",
