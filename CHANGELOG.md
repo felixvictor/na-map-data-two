@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.16.0 (2025-04-17)
+
+* feat: recipes with isResource flag ([84799a7](https://example.com/commits/84799a7))
+* chore(deps): bump ([b14a5f6](https://example.com/commits/b14a5f6))
+
 ## 1.15.0 (2025-04-16)
 
 * feat: 16 April 2025 patch ([636519c](https://example.com/commits/636519c))
