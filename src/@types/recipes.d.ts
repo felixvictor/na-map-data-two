@@ -22,6 +22,7 @@ interface RecipeItemRequirement {
     id: number
     name: string
     amount: number
+    isResource: boolean
 }
 interface RecipeResult {
     id: number

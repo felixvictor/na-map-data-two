@@ -43,6 +43,7 @@ let moduleNames: Map<number, string>
 let upgradeIds: Map<number, number>
 let basePrices: Map<number, number>
 const craftPrices = new Map<number, number>()
+let isResourceSet: Set<number>
 
 const tax = 0.05
 
@@ -60,6 +61,8 @@ const init = () => {
     )
 
     basePrices = new Map(apiItems.map((item) => [item.Id, item.BasePrice]))
+
+    isResourceSet = new Set(apiItems.filter((item) => item.ItemType === "Resource").map((item) => item.Id))
 }
 
 /**
@@ -101,17 +104,6 @@ const convert = async (printOutput = false): Promise<void> => {
         | APIRecipeResource[]
         | APIRecipeModuleResource[]
 
-    /*
-    {
-	"__type": "MegaChaka.Services.Items.RecipeTemplate, MegaChaka",
-	"Name": "Iron Fittings Blueprint",
-	"Id": 232,
-	"ItemType": "Recipe",
-	"CraftGroup": "Manufacturing",
-	"RequiresLevel": 3,
-	"GivesXP": 3,
-	},
-     */
     for (const apiRecipe of filteredItems) {
         const resultReference = recipeUsingResults.has(apiRecipe.ItemType)
             ? apiRecipe.Results[0]
@@ -125,6 +117,7 @@ const convert = async (printOutput = false): Promise<void> => {
                 id: requirement.Template,
                 name: itemNames.get(requirement.Template),
                 amount: requirement.Amount,
+                isResource: isResourceSet.has(requirement.Template),
             })).sort(sortBy(["id"])),
             result: {
                 id: upgradeIds.has(resultReference.Template)
