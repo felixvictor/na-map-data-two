@@ -47,7 +47,7 @@ const topMastThicknessRatio = 0.5
 /**
  * Logs needed for planking as a ratio of ship mass
  */
-const plankingRatio = 0.2134
+const trimRatio = 0.2134
 
 /**
  * Hemp needed for crew space trim as a ratio of ship mass
@@ -406,7 +406,7 @@ const convertShipBlueprints = async (): Promise<void> => {
                 wood: [
                     { name: "Crew Space", amount: Math.round(shipMass * crewSpaceRatio + 0.5) },
                     { name: "Frame", amount: apiBlueprint.WoodTypeDescs[0].Requirements[0].Amount },
-                    { name: "Planking", amount: Math.round(shipMass * plankingRatio + 0.5) },
+                    { name: "Trim", amount: Math.round(shipMass * trimRatio + 0.5) },
                 ],
                 resources: apiBlueprint.FullRequirements.filter(
                     (requirement) =>
