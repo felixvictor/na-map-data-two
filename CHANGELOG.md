@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.19.0 (2025-04-21)
+
+* feat: raid data ([232da3e](https://example.com/commits/232da3e))
+
 ## 1.18.0 (2025-04-21)
 
 * feat: raid data ([f1222dc](https://example.com/commits/f1222dc))
