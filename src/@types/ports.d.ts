@@ -79,4 +79,7 @@ export interface PbZone {
     forts: PointTuple[]
     towers: PointTuple[]
     joinCircle: PointTuple
+    spawnPoints: PointTuple[]
+    raidCircles: PointTuple[]
+    raidPoints: PointTuple[]
 }

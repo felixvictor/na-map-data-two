@@ -1,7 +1,12 @@
 import type { Feature, FeatureCollection, Point as GJPoint, MultiPoint } from "geojson"
 import polylabel from "polylabel"
 
-import type { APIPort, PortElementsSlotGroupsEntity, PortPosition } from "./@types/api-port.js"
+import type {
+    APIPort,
+    PortElementsSlotGroupsEntity,
+    PortPosition,
+    PortRaidSpawnPointsEntity,
+} from "./@types/api-port.js"
 import type { Coordinate, PointTuple } from "./@types/coordinates.js"
 import type { PbZone, PortBasic } from "./@types/ports.js"
 import { cleanName } from "./common/api.js"
@@ -97,6 +102,27 @@ const getJoinCircle = (id: number, rotation: number): PointTuple => {
     return [x1, y1]
 }
 
+const spawnPoints = new Set([1, 2])
+const getSpawnPoints = (portRaidSpawnPoints: PortRaidSpawnPointsEntity[]): PointTuple[] =>
+    portRaidSpawnPoints
+        .filter((_, index) => spawnPoints.has(index))
+        .map((raidPoint) => [
+            Math.trunc(convertCoordX(raidPoint.Position.x, raidPoint.Position.z)),
+            Math.trunc(convertCoordY(raidPoint.Position.x, raidPoint.Position.z)),
+        ])
+
+const getRaidCircles = (portRaidZonePositions: PortPosition[]): PointTuple[] =>
+    portRaidZonePositions.map((raidCircle) => [
+        Math.trunc(convertCoordX(raidCircle.x, raidCircle.z)),
+        Math.trunc(convertCoordY(raidCircle.x, raidCircle.z)),
+    ])
+
+const getRaidPoints = (portRaidSpawnPoints: PortRaidSpawnPointsEntity[]): PointTuple[] =>
+    portRaidSpawnPoints.map((raidPoint) => [
+        Math.trunc(convertCoordX(raidPoint.Position.x, raidPoint.Position.z)),
+        Math.trunc(convertCoordY(raidPoint.Position.x, raidPoint.Position.z)),
+    ])
+
 const setAndSavePBZones = async (): Promise<void> => {
     const ports = apiPorts
         .filter((port) => !port.NonCapturable)
@@ -109,6 +135,9 @@ const setAndSavePBZones = async (): Promise<void> => {
                 forts: coordinateAdjust(getForts(port.PortElementsSlotGroups)),
                 towers: coordinateAdjust(getTowers(port.PortElementsSlotGroups)),
                 joinCircle: coordinateAdjust(getJoinCircle(Number(port.Id), Number(port.Rotation))),
+                spawnPoints: getSpawnPoints(port.PortRaidSpawnPoints),
+                raidCircles: getRaidCircles(port.PortRaidZonePositions),
+                raidPoints: getRaidPoints(port.PortRaidSpawnPoints),
             } as PbZone
         })
         .sort(sortBy(["id"]))
