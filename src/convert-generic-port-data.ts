@@ -135,9 +135,9 @@ const setAndSavePBZones = async (): Promise<void> => {
                 forts: coordinateAdjust(getForts(port.PortElementsSlotGroups)),
                 towers: coordinateAdjust(getTowers(port.PortElementsSlotGroups)),
                 joinCircle: coordinateAdjust(getJoinCircle(Number(port.Id), Number(port.Rotation))),
-                spawnPoints: getSpawnPoints(port.PortRaidSpawnPoints),
-                raidCircles: getRaidCircles(port.PortRaidZonePositions),
-                raidPoints: getRaidPoints(port.PortRaidSpawnPoints),
+                spawnPoints: coordinateAdjust(getSpawnPoints(port.PortRaidSpawnPoints)),
+                raidCircles: coordinateAdjust(getRaidCircles(port.PortRaidZonePositions)),
+                raidPoints: coordinateAdjust(getRaidPoints(port.PortRaidSpawnPoints)),
             } as PbZone
         })
         .sort(sortBy(["id"]))
