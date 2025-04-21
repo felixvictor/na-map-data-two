@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.19.1 (2025-04-21)</small>
+
+* fix: ship blueprint ([c5f1f7c](https://example.com/commits/c5f1f7c))
+
 ## 1.19.0 (2025-04-21)
 
 * feat: raid data ([232da3e](https://example.com/commits/232da3e))
