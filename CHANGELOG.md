@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.18.0 (2025-04-21)
+
+* feat: raid data ([f1222dc](https://example.com/commits/f1222dc))
+
 ## <small>1.17.1 (2025-04-21)</small>
 
 * fix: ship-blueprint planking -> trim ([cc262d3](https://example.com/commits/cc262d3))
