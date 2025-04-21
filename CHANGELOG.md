@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>1.17.1 (2025-04-21)</small>
+
+* fix: ship-blueprint planking -> trim ([cc262d3](https://example.com/commits/cc262d3))
+* chore(deps): bump ([58f2367](https://example.com/commits/58f2367))
+* chore(deps): bump ([67c8706](https://example.com/commits/67c8706))
+
 ## 1.17.0 (2025-04-18)
 
 * feat: 18 April 2025 patch ([f496460](https://example.com/commits/f496460))
