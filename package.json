@@ -2,6 +2,12 @@
     "name": "na-map-data-two",
     "version": "1.19.1",
     "type": "module",
+    "license": "SEE LICENSE IN licence.md",
+    "homepage": "https://github.com/felixvictor/na-map-data-two#README.md",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/felixvictor/na-map-data-two.git"
+    },
     "scripts": {
         "build:modules": "run-s 'build:modules:**'",
         "build:modules:1:get": "cp -u /mnt/Modules.zip build/ && unzip -L -u build/Modules.zip -d build/",
