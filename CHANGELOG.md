@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>1.19.2 (2025-04-22)</small>
+
+* chore(deps): bump ([860be42](https://github.com/felixvictor/na-map-data-two/commit/860be42))
+* refactor: lint ([ebc558d](https://github.com/felixvictor/na-map-data-two/commit/ebc558d))
+* refactor: repo files ([c0cb82d](https://github.com/felixvictor/na-map-data-two/commit/c0cb82d))
+
 ## <small>1.19.1 (2025-04-21)</small>
 
 * fix: ship blueprint ([c5f1f7c](https://example.com/commits/c5f1f7c))
