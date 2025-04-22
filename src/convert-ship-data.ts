@@ -44,16 +44,6 @@ const middleMastThicknessRatio = 0.75
  */
 const topMastThicknessRatio = 0.5
 
-/**
- * Logs needed for planking as a ratio of ship mass
- */
-const trimRatio = 0.2134
-
-/**
- * Hemp needed for crew space trim as a ratio of ship mass
- */
-const crewSpaceRatio = 0.025
-
 // noinspection SpellCheckingInspection
 const shipsWith36lb = new Set([
     2229, // Redoutable (i)
