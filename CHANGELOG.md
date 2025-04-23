@@ -1,5 +1,7 @@
 # Changelog
 
+## <small>1.21.1 (2025-04-23)</small>
+
 ## 1.21.0 (2025-04-23)
 
 * feat: netlify -> cloudflare ([abe9a3c](https://github.com/felixvictor/na-map-data-two/commit/abe9a3c))
