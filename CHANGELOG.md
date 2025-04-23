@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.20.0 (2025-04-23)
+
+* feat: 23 April 2025 patch ([a2496c5](https://github.com/felixvictor/na-map-data-two/commit/a2496c5))
+* chore(deps): bump ([1fb7fba](https://github.com/felixvictor/na-map-data-two/commit/1fb7fba))
+
 ## <small>1.19.2 (2025-04-22)</small>
 
 * chore(deps): bump ([860be42](https://github.com/felixvictor/na-map-data-two/commit/860be42))
