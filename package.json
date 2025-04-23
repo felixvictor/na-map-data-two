@@ -15,7 +15,7 @@
         "build:modules:3:correct:enc": "/usr/bin/bash -c 'cd build/Modules/; for FILE in *.xml; do dos2unix -m -q \"${FILE}\"; done'",
         "build:modules:4:correct:names": "cd build/Modules/; mv \"traders brig hull.xml\" \"trader brig hull.xml\"; mv \"agamemnon deck armor .xml\" \"agamemnon deck armor.xml\"",
         "clean:src:js": "find ./src/js -name \"*.ts\" -type f -regextype posix-egrep -regex \".*/(browser|common|node)/.+\" -exec bash -c 'for file in \"${1%.ts}\".js \"${1%.ts}\".js.map; do [ -e \"$file\" ] && rm -f \"$file\"; done' - '{}' ';'",
-        "deploy:netlify": "pnpm netlify deploy --prod --dir lib",
+        "deploy:cloudflare": "pnpm wrangler pages deploy lib",
         "dev:deploy": "ssh natopo@byrtz.de './deploy-data-two.sh'",
         "gen:data": "pnpm tsx src/convert-api-data.ts",
         "gen:distances": "pnpm tsx --max-heap-size=10000 src/get-distances.ts",
@@ -29,7 +29,7 @@
         "helper:xz-to-br": "pnpm tsx helper/xz-to-br.ts",
         "lint": "run-s lint:js pretty-print pretty-print-package",
         "lint:js": "eslint . --fix",
-        "main:prod": "run-s gen:load gen:data deploy:netlify",
+        "main:prod": "run-s gen:load gen:data deploy:cloudflare",
         "main:release": "run-s release push dev:deploy",
         "pnpm:dedupe": "pnpm dedupe",
         "pnpm:renew": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
@@ -64,7 +64,6 @@
         "exceljs": "^4.4.0",
         "globals": "^16.0.0",
         "husky": "^9.1.7",
-        "netlify-cli": "^20.0.2",
         "npm-run-all2": "^7.0.2",
         "pngjs": "^7.0.0",
         "polylabel": "^2.0.1",
@@ -95,7 +94,8 @@
             "esbuild",
             "netlify-cli",
             "sharp",
-            "unix-dgram"
+            "unix-dgram",
+            "workerd"
         ]
     },
     "prettier-package-json": {
@@ -121,5 +121,8 @@
                 "preset": "conventionalcommits"
             }
         }
+    },
+    "devDependencies": {
+        "wrangler": "^4.13.0"
     }
 }
