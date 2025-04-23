@@ -15,7 +15,7 @@
         "build:modules:3:correct:enc": "/usr/bin/bash -c 'cd build/Modules/; for FILE in *.xml; do dos2unix -m -q \"${FILE}\"; done'",
         "build:modules:4:correct:names": "cd build/Modules/; mv \"traders brig hull.xml\" \"trader brig hull.xml\"; mv \"agamemnon deck armor .xml\" \"agamemnon deck armor.xml\"",
         "clean:src:js": "find ./src/js -name \"*.ts\" -type f -regextype posix-egrep -regex \".*/(browser|common|node)/.+\" -exec bash -c 'for file in \"${1%.ts}\".js \"${1%.ts}\".js.map; do [ -e \"$file\" ] && rm -f \"$file\"; done' - '{}' ';'",
-        "deploy:cloudflare": "pnpm wrangler pages deploy lib",
+        "deploy:cloudflare": "pnpm wrangler pages deploy lib --project-name 'na-map-data-two'",
         "dev:deploy": "ssh natopo@byrtz.de './deploy-data-two.sh'",
         "gen:data": "pnpm tsx src/convert-api-data.ts",
         "gen:distances": "pnpm tsx --max-heap-size=10000 src/get-distances.ts",
