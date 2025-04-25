@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.25.0 (2025-04-25)
+
+* chore(deps): bump ([6e481b5](https://github.com/felixvictor/na-map-data-two/commit/6e481b5))
+* feat: resource prices ([d9ee8e1](https://github.com/felixvictor/na-map-data-two/commit/d9ee8e1))
+
 ## 1.24.0 (2025-04-25)
 
 * fix: ShipBlueprintResource with id ([2e8f2f1](https://github.com/felixvictor/na-map-data-two/commit/2e8f2f1))
