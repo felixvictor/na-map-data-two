@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.24.0 (2025-04-25)
+
+* fix: ShipBlueprintResource with id ([2e8f2f1](https://github.com/felixvictor/na-map-data-two/commit/2e8f2f1))
+* feat: wood prices ([cd165da](https://github.com/felixvictor/na-map-data-two/commit/cd165da))
+
 ## 1.23.0 (2025-04-25)
 
 * chore(deps): bump ([3fc7b37](https://github.com/felixvictor/na-map-data-two/commit/3fc7b37))
