@@ -14,6 +14,8 @@ export const speedConstM = 0.071_134_734_044_393_12
 export const speedFactor = 390
 export const timeFactor = 2.63
 
+export const defaultPortTax = 0.05
+
 export const cCircleWhite = "\u25CB"
 export const cDashEn = "\u2013"
 export const cDashFigure = "\u2012"

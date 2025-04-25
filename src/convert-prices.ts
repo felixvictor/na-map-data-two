@@ -1,6 +1,7 @@
 import type { APIItemGeneric } from "./@types/api-item.js"
 import type { PriceWood } from "./@types/prices.js"
 import { getApiItems } from "./common/common.js"
+import { defaultPortTax } from "./common/constants.js"
 import { saveJsonAsync } from "./common/file.js"
 import { getCommonPaths } from "./common/path.js"
 import { sortBy } from "./common/sort.js"
@@ -32,7 +33,7 @@ const getPrices = (): PriceWood[] => {
             return {
                 id: rareWoodId,
                 name: rareWood?.Name ?? "",
-                reales: rareWood?.BasePrice ?? 0,
+                reales: (rareWood?.BasePrice ?? 0) * (1 + defaultPortTax),
             }
         })
         .sort(sortBy(["id"]))

@@ -10,6 +10,7 @@ import type {
 import type { RecipeEntity, RecipeGroup } from "./@types/recipes.js"
 import { cleanName } from "./common/api.js"
 import { getApiItems } from "./common/common.js"
+import { defaultPortTax } from "./common/constants.js"
 import { saveJsonAsync } from "./common/file.js"
 import { round } from "./common/format.js"
 import { getCommonPaths } from "./common/path.js"
@@ -44,8 +45,6 @@ let upgradeIds: Map<number, number>
 let basePrices: Map<number, number>
 const craftPrices = new Map<number, number>()
 let isResourceSet: Set<number>
-
-const tax = 0.05
 
 const init = () => {
     itemNames = new Map(apiItems.map((item) => [item.Id, cleanName(item.Name)]))
@@ -147,7 +146,7 @@ const convert = async (printOutput = false): Promise<void> => {
 
         for (const item of recipe.itemRequirements) {
             let itemPrice = basePrices.get(item.id) ?? 0
-            let priceString = `(port buy price: ${itemPrice} // total including 5% tax: ${round(item.amount * itemPrice * (1 + tax), 2)})`
+            let priceString = `(port buy price: ${itemPrice} // total including 5% tax: ${round(item.amount * itemPrice * (1 + defaultPortTax), 2)})`
 
             if (craftPrices.has(item.id)) {
                 itemPrice = craftPrices.get(item.id) ?? 0
@@ -160,7 +159,7 @@ const convert = async (printOutput = false): Promise<void> => {
             craftingCost += item.amount * itemPrice
         }
 
-        const portBuyPrice = round((basePrices.get(recipe.result.id) ?? 0) * (1 + tax), 2)
+        const portBuyPrice = round((basePrices.get(recipe.result.id) ?? 0) * (1 + defaultPortTax), 2)
         const pricePerUnit = round(craftingCost / recipe.result.amount, 2)
         const reduction = round(1 - pricePerUnit / portBuyPrice, 3)
 
