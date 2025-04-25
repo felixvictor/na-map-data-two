@@ -9,22 +9,59 @@ import { sortBy } from "./common/sort.js"
 
 let apiItems: APIItemGeneric[]
 
+const getLogId = (name: string) => {
+    const baseName = name.replace(" Planking", "").replace(" Frame", "")
+    let logName = baseName
+
+    const logItem = apiItems.find((item) => !item.NotUsed && item.Name === logName)
+    if (logItem !== undefined) {
+        return logItem.Id
+    }
+
+    logName = `${baseName} Log`
+    return apiItems.find((item) => !item.NotUsed && item.Name === logName)?.Id
+}
+
 const getPrices = (): PriceWood[] => {
     const resourceIds = new Set(
         apiItems.filter((item) => !item.NotUsed && item.SortingGroup === "Resource.Resources").map((item) => item.Id),
     )
 
-    return [...resourceIds]
-        .map((id): PriceWood => {
-            const item = apiItems.find((item) => item.Id === id)
+    let prices = [...resourceIds].map((id): PriceWood => {
+        const item = apiItems.find((item) => item.Id === id)
+
+        return {
+            id,
+            name: item?.Name ?? "",
+            reales: round((item?.BasePrice ?? 0) * (1 + defaultPortTax), 2),
+        }
+    })
+
+    // add planking and frame
+    const plankingOrFrameIds = new Set(
+        apiItems
+            .filter((item) => !item.NotUsed && (item.Name.endsWith(" Planking") || item.Name.endsWith(" Frame")))
+            .map((item) => ({
+                id: item.Id,
+                logId: getLogId(item.Name),
+                name: item.Name,
+            })),
+    )
+
+    prices = [
+        ...prices,
+        ...[...plankingOrFrameIds].map(({ id, logId, name }): PriceWood => {
+            const item = apiItems.find((item) => item.Id === logId)
 
             return {
                 id,
-                name: item?.Name ?? "",
+                name,
                 reales: round((item?.BasePrice ?? 0) * (1 + defaultPortTax), 2),
             }
-        })
-        .sort(sortBy(["id"]))
+        }),
+    ]
+
+    return prices.sort(sortBy(["id"]))
 }
 
 const convertWoodPrices = async (): Promise<void> => {
