@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.23.0 (2025-04-25)
+
+* chore(deps): bump ([3fc7b37](https://github.com/felixvictor/na-map-data-two/commit/3fc7b37))
+* feat: wood prices ([b3dd386](https://github.com/felixvictor/na-map-data-two/commit/b3dd386))
+
 ## 1.22.0 (2025-04-23)
 
 * feat: netlify -> cloudflare ([c7e9879](https://github.com/felixvictor/na-map-data-two/commit/c7e9879))
