@@ -5,9 +5,7 @@ import type {
     BuildingLevelsEntity,
     BuildingMaterialsEntity,
     BuildingResult,
-    BuildingWithResult,
 } from "./@types/buildings.js"
-import type { PriceWood } from "./@types/prices.js"
 import { cleanName } from "./common/api.js"
 import { getApiItems } from "./common/common.js"
 import { saveJsonAsync } from "./common/file.js"
@@ -108,48 +106,9 @@ const getBuildings = (): Building[] => {
     return [...buildings.values()]
 }
 
-const getPrices = (buildings: Building[]): PriceWood[] => {
-    const standardPrices = (
-        buildings.filter((building: Building) => building.result?.[0]?.price) as BuildingWithResult[]
-    )
-        .map((building: BuildingWithResult): PriceWood => {
-            const result = building.result[0]
-            return {
-                id: result.id,
-                name: result.name.replace(" Log", ""),
-                reales: result.price,
-            }
-        })
-        .sort((a, b) => a.id - b.id)
-
-    const rareWoods = new Set([
-        807, // Malabar Teak
-        863, // Rangoon Teak
-        1894, // Danzic Oak
-        1895, // African Oak
-        1898, // New England Fir
-    ])
-    const rarePrices = [...rareWoods]
-        .map((rareWoodId): PriceWood => {
-            const rareWood = apiItems.find((item) => item.Id === rareWoodId)
-
-            return {
-                id: rareWoodId,
-                name: rareWood?.Name ?? "",
-                reales: rareWood?.BasePrice ?? 0,
-            }
-        })
-        .sort((a, b) => a.id - b.id)
-
-    return [...standardPrices, ...rarePrices]
-}
-
 const convertBuildings = async (): Promise<void> => {
     const commonPaths = getCommonPaths()
     let buildings = getBuildings()
-
-    const prices = getPrices(buildings)
-    await saveJsonAsync(commonPaths.filePrices, prices)
 
     buildings = buildings.filter((building) => Object.keys(building).length).sort(sortBy(["id"]))
     await saveJsonAsync(commonPaths.fileBuilding, buildings)

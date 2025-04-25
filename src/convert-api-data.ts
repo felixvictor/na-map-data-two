@@ -6,6 +6,7 @@ import { convertLootData } from "./convert-loot.js"
 import { convertRepairData } from "./convert-module-repair-data.js"
 import { convertModules } from "./convert-modules/index.js"
 import { convertOwnershipData } from "./convert-ownership.js"
+import { convertPrices } from "./convert-prices.js"
 import { convertRecipeData } from "./convert-recipes.js"
 import { convertServerPortData } from "./convert-server-port-data.js"
 import { convertShipData } from "./convert-ship-data.js"
@@ -17,6 +18,7 @@ const convertApiData = async (): Promise<void> => {
     convertGenericPortData()
     convertLootData()
     await convertModules()
+    await convertPrices()
     await convertRecipeData()
     await convertRepairData()
     await convertServerPortData()
