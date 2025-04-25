@@ -403,6 +403,7 @@ const convertShipBlueprints = async (): Promise<void> => {
                         ),
                 )
                     .map((requirement) => ({
+                        id: requirement.Template,
                         name: itemNames.get(requirement.Template)?.replace(" Log", ""),
                         amount: requirement.Amount,
                     }))

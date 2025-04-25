@@ -161,6 +161,7 @@ export interface ShipBlueprint {
     craftXP: number
 }
 interface ShipBlueprintResource {
+    id: number
     name: string
     amount: number
 }
