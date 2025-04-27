@@ -26,18 +26,6 @@ interface Item {
     buyPrice: number
 }
 
-const rareWoodIds = new Set([
-    807, // Malabar Teak
-    863, // Rangoon Teak
-    1440, // Greenheart
-    1894, // Danzic Oak
-    1895, // African Oak
-    1896, // Riga Fir
-    1898, // New England Fir
-    1900, // African Teak
-    1901, // Italian Larch
-])
-
 const minProfit = 30_000
 const minTaxIncomeToShow = 100_000
 
@@ -69,7 +57,7 @@ const getDistance = (fromPortId: number, toPortId: number): number =>
 const getPriceTierQuantity = (id: number): number => apiItems.find((item) => item.Id === id)?.PriceTierQuantity ?? 0
 
 const isTradeItem = (item: APIItemGeneric): boolean =>
-    item.SortingGroup === "Resource.Trading" || item.Name === "American Cotton" || item.Name === "Tobacco"
+    item.SortingGroup === "Resource.Trading" || (item.SortingGroup === "Resource.Food" && item.ItemType === "Resource")
 
 const setPortFeaturePerServer = (apiPort: APIPort): void => {
     const portShop = getPortShop(apiPort.Id)
@@ -80,10 +68,10 @@ const setPortFeaturePerServer = (apiPort: APIPort): void => {
         portBattleStartTime: apiPort.PortBattleStartTime,
         isAvailableForAll: apiPort.AvailableForAll,
         isCapturable: !apiPort.NonCapturable,
-        conquestMarksPension: apiPort.ConquestMarksPension,
+        isCountyCapital: apiPort.Name === apiPort.CountyCapitalName,
         portTax: Math.round(apiPort.PortTax * 100) / 100,
         taxIncome: apiPort.LastTax,
-    } as Partial<PortPerServer>
+    } as PortPerServer
 
     if (apiPort.Capturer !== "") {
         portFeaturesPerServer.capturer = apiPort.Capturer
@@ -96,36 +84,24 @@ const setPortFeaturePerServer = (apiPort: APIPort): void => {
         portFeaturesPerServer.capturer = "RAIDER"
     }
 
-    portTaxMap.set(apiPort.Id, portFeaturesPerServer.portTax ?? 0)
+    if (apiPort.LastRaidStartTime > 0) {
+        portFeaturesPerServer.raiderAttackTime = getTimeFromTicks(apiPort.LastRaidStartTime)
+    }
+
+    portTaxMap.set(apiPort.Id, portFeaturesPerServer.portTax)
 
     const trades = {
         dropsTrading: [
             ...new Set(
                 portShop.ResourcesAdded.filter((good) =>
-                    itemNames.get(good.Template) ? itemNames.get(good.Template)?.trading : true,
+                    itemNames.has(good.Template) ? itemNames.get(good.Template)?.trading : true,
                 ).map((good) => good.Template),
-            ),
-        ].sort(simpleNumberSort),
-        consumesTrading: [
-            ...new Set(
-                portShop.ResourcesConsumed.filter((good) =>
-                    itemNames.get(good.Key) ? itemNames.get(good.Key)?.trading : true,
-                ).map((good) => good.Key),
-            ),
-        ].sort(simpleNumberSort),
-        producesNonTrading: [
-            ...new Set(
-                portShop.ResourcesProduced.filter((good) => {
-                    return itemNames.get(good.Key) ? !itemNames.get(good.Key)?.trading : false
-                }).map((good) => good.Key),
             ),
         ].sort(simpleNumberSort),
         dropsNonTrading: [
             ...new Set(
                 portShop.ResourcesAdded.filter((good) =>
-                    !rareWoodIds.has(good.Template) && itemNames.get(good.Template)
-                        ? !itemNames.get(good.Template)?.trading
-                        : false,
+                    itemNames.has(good.Template) ? !itemNames.get(good.Template)?.trading : false,
                 ).map((good) => good.Template),
             ),
         ].sort(simpleNumberSort),
@@ -137,7 +113,7 @@ const setPortFeaturePerServer = (apiPort: APIPort): void => {
         }
     }
 
-    portData.push(portFeaturesPerServer as PortPerServer)
+    portData.push(portFeaturesPerServer)
 }
 
 const setAndSavePortData = async (serverName: string): Promise<void> => {
@@ -218,17 +194,8 @@ const setAndSaveTradeData = async (serverName: string): Promise<void> => {
 }
 
 const setAndSaveDroppedItems = async (serverName: string): Promise<void> => {
-    const allowedItems = new Set([
-        600, // Labor Contracts
-        988, // Combat Medal
-        1009, // Perks Reset Permit
-        1537, // Victory Mark
-        1758, // Light carriages
-        2226, // Ship Logbook
-    ])
-
     const items = apiItems
-        .filter((item) => !item.NotUsed && ((item.CanBeSoldToShop && item.BasePrice > 0) || allowedItems.has(item.Id)))
+        .filter((item) => !item.NotUsed && item.CanBeSoldToShop && item.BasePrice > 0)
         .map((item) => {
             const tradeItem = {
                 id: item.Id,
