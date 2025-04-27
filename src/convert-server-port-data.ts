@@ -56,8 +56,7 @@ const getDistance = (fromPortId: number, toPortId: number): number =>
 
 const getPriceTierQuantity = (id: number): number => apiItems.find((item) => item.Id === id)?.PriceTierQuantity ?? 0
 
-const isTradeItem = (item: APIItemGeneric): boolean =>
-    item.SortingGroup === "Resource.Trading" || (item.SortingGroup === "Resource.Food" && item.ItemType === "Resource")
+const isTradeItem = (item: APIItemGeneric): boolean => item.SortingGroup === "Resource.Trading"
 
 const setPortFeaturePerServer = (apiPort: APIPort): void => {
     const portShop = getPortShop(apiPort.Id)
