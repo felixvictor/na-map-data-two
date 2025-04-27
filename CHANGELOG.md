@@ -1,5 +1,7 @@
 # Changelog
 
+## <small>1.26.3 (2025-04-27)</small>
+
 ## <small>1.26.2 (2025-04-27)</small>
 
 * fix: port items ([eee513d](https://github.com/felixvictor/na-map-data-two/commit/eee513d))
