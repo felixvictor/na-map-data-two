@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.26.1 (2025-04-27)</small>
+
+* fix: port items ([097bf67](https://github.com/felixvictor/na-map-data-two/commit/097bf67))
+* chore(deps): bump ([02ba4e4](https://github.com/felixvictor/na-map-data-two/commit/02ba4e4))
+
 ## 1.26.0 (2025-04-25)
 
 * feat: resource prices ([d58836e](https://github.com/felixvictor/na-map-data-two/commit/d58836e))
