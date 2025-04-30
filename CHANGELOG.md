@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.27.0 (2025-04-30)
+
+* feat: 30 April 2025 patch ([ab85adb](https://github.com/felixvictor/na-map-data-two/commit/ab85adb))
+* chore(deps): bump ([60150b7](https://github.com/felixvictor/na-map-data-two/commit/60150b7))
+
 ## <small>1.26.3 (2025-04-27)</small>
 
 ## <small>1.26.2 (2025-04-27)</small>
