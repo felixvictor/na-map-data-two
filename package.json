@@ -52,7 +52,7 @@
         "@types/d3-array": "^3.2.1",
         "@types/eslint": "^9.6.1",
         "@types/geojson": "^7946.0.16",
-        "@types/node": "^22.15.2",
+        "@types/node": "^22.15.3",
         "@types/pngjs": "^6.0.5",
         "@types/polylabel": "^1.1.3",
         "d3-array": "^3.2.4",
@@ -75,11 +75,11 @@
         "timelines-chart": "^2.14.2",
         "ts-deepmerge": "^7.0.2",
         "ts-node": "^10.9.2",
-        "tsx": "^4.19.3",
+        "tsx": "^4.19.4",
         "typescript": "^5.8.3",
-        "typescript-eslint": "^8.30.1",
+        "typescript-eslint": "^8.31.1",
         "utility-types": "^3.11.0",
-        "wrangler": "^4.13.2",
+        "wrangler": "^4.14.0",
         "xml-js": "^1.6.11"
     },
     "engines": {
@@ -88,7 +88,7 @@
     "browserslist": [
         "defaults and supports es6-module and last 3 versions, maintained node versions"
     ],
-    "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f",
+    "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
     "pnpm": {
         "onlyBuiltDependencies": [
             "@parcel/watcher",
