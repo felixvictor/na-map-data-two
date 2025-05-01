@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.28.0 (2025-05-01)
+
+* chore(deps): bump ([b042f03](https://github.com/felixvictor/na-map-data-two/commit/b042f03))
+* feat: updated ship speeds ([e3f2a63](https://github.com/felixvictor/na-map-data-two/commit/e3f2a63))
+
 ## 1.27.0 (2025-04-30)
 
 * feat: 30 April 2025 patch ([ab85adb](https://github.com/felixvictor/na-map-data-two/commit/ab85adb))
