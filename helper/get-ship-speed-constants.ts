@@ -12,6 +12,7 @@ interface InGameSpeed {
     id: number
     name: string
     maxSpeed: number
+    diff: number
 }
 
 const fileNameAPIItems = path.resolve(baseAPIFilename, `${serverIds[0]}-ItemTemplates-${serverDate}.json`)
@@ -32,7 +33,7 @@ const inGameSpeedJson = readJson(path.resolve("helper", "ship-speed.json")) as I
 const data: number[][] = inGameSpeedJson
     .filter((ship) => apiSpeedMap.has(ship.id))
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    .map((ship) => [apiSpeedMap.get(ship.id)!, ship.maxSpeed])
+    .map((ship) => [apiSpeedMap.get(ship.id)!, ship.maxSpeed + ship.diff])
 
 const linearReg = linearRegression(data)
 console.log(linearReg)

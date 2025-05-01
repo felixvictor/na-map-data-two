@@ -1,247 +1,111 @@
 [
     {
-        "id": 286,
-        "name": "Santísima Trinidad",
-        "maxSpeed": 8.28
-    },
-    {
-        "id": 650,
-        "name": "L'Océan",
-        "maxSpeed": 8.37
-    },
-    {
         "id": 2350,
         "name": "Victory 1765",
-        "maxSpeed": 8.6
-    },
-    {
-        "id": 294,
-        "name": "Victory",
-        "maxSpeed": 8.6
-    },
-    {
-        "id": 268,
-        "name": "Le Bucentaure",
-        "maxSpeed": 9
-    },
-    {
-        "id": 1664,
-        "name": "Christian",
-        "maxSpeed": 9
-    },
-    {
-        "id": 2235,
-        "name": "Implacable",
-        "maxSpeed": 10.35
-    },
-    {
-        "id": 279,
-        "name": "St. Pavel",
-        "maxSpeed": 9.27
+        "maxSpeed": 10.01,
+        "diff": 0.05
     },
     {
         "id": 2229,
         "name": "Redoutable",
-        "maxSpeed": 10.35
-    },
-    {
-        "id": 2318,
-        "name": "Admiraal de Ruyter",
-        "maxSpeed": 10.35
-    },
-    {
-        "id": 265,
-        "name": "Bellona",
-        "maxSpeed": 10.35
-    },
-    {
-        "id": 359,
-        "name": "3rd Rate",
-        "maxSpeed": 10.62
+        "maxSpeed": 10.52,
+        "diff": 0.05
     },
     {
         "id": 1021,
         "name": "Wasa",
-        "maxSpeed": 10.62
+        "maxSpeed": 11.13,
+        "diff": 0.38
     },
-    {
-        "id": 970,
-        "name": "Wapen von Hamburg",
-        "maxSpeed": 11.25
-    },
+
     {
         "id": 694,
         "name": "Agamemnon",
-        "maxSpeed": 11.25
+        "maxSpeed": 11.16,
+        "diff": 0.38
     },
     {
         "id": 395,
         "name": "Ingermanland",
-        "maxSpeed": 11.25
+        "maxSpeed": 11.2,
+        "diff": 0.38
     },
     {
         "id": 1674,
         "name": "Constitution",
-        "maxSpeed": 12.19
+        "maxSpeed": 11.64,
+        "diff": 0.39
     },
     {
         "id": 270,
         "name": "United States",
-        "maxSpeed": 12.06
+        "maxSpeed": 11.64,
+        "diff": 0.39
     },
     {
         "id": 293,
         "name": "Trincomalee",
-        "maxSpeed": 12.42
+        "maxSpeed": 11.76,
+        "diff": 0.4
     },
     {
         "id": 768,
         "name": "Endymion",
-        "maxSpeed": 12.42
-    },
-    {
-        "id": 787,
-        "name": "Indefatigable",
-        "maxSpeed": 12.15
-    },
-    {
-        "id": 1665,
-        "name": "Diana",
-        "maxSpeed": 12.42
-    },
-    {
-        "id": 272,
-        "name": "Essex",
-        "maxSpeed": 12.15
-    },
-    {
-        "id": 281,
-        "name": "Pirate Frigate",
-        "maxSpeed": 12.6
-    },
-    {
-        "id": 273,
-        "name": "Frigate",
-        "maxSpeed": 12.42
-    },
-    {
-        "id": 264,
-        "name": "La Belle-Poule",
-        "maxSpeed": 12.42
+        "maxSpeed": 11.78,
+        "diff": 0.4
     },
     {
         "id": 288,
         "name": "Surprise",
-        "maxSpeed": 12.46
+        "maxSpeed": 12.17,
+        "diff": 0.41
     },
     {
         "id": 1675,
         "name": "Hercules",
-        "maxSpeed": 12.33
+        "maxSpeed": 12.27,
+        "diff": 0.41
     },
     {
         "id": 425,
         "name": "Indiaman",
-        "maxSpeed": 11
-    },
-    {
-        "id": 285,
-        "name": "La Renommée",
-        "maxSpeed": 12.6
-    },
-    {
-        "id": 269,
-        "name": "Cerberus",
-        "maxSpeed": 12.46
-    },
-    {
-        "id": 1561,
-        "name": "Le Gros Ventre Refit",
-        "maxSpeed": 12.6
+        "maxSpeed": 12.64,
+        "diff": 0.43
     },
     {
         "id": 287,
         "name": "Snow",
-        "maxSpeed": 12.6
+        "maxSpeed": 13.45,
+        "diff": 0.45
     },
     {
         "id": 292,
         "name": "TradersSnow",
-        "maxSpeed": 11.97
-    },
-    {
-        "id": 278,
-        "name": "Niagara",
-        "maxSpeed": 12.6
-    },
-    {
-        "id": 396,
-        "name": "Le Gros Ventre",
-        "maxSpeed": 12.15
-    },
-    {
-        "id": 276,
-        "name": "Mercury",
-        "maxSpeed": 12.49
-    },
-    {
-        "id": 1125,
-        "name": "Prince de Neufchâtel",
-        "maxSpeed": 13.05
-    },
-    {
-        "id": 277,
-        "name": "Navy Brig",
-        "maxSpeed": 13.05
+        "maxSpeed": 13.26,
+        "diff": 0.45
     },
     {
         "id": 283,
         "name": "Rattlesnake",
-        "maxSpeed": 12.87
-    },
-    {
-        "id": 266,
-        "name": "Brig",
-        "maxSpeed": 12.6
-    },
-    {
-        "id": 289,
-        "name": "TradersBrig",
-        "maxSpeed": 12
-    },
-    {
-        "id": 271,
-        "name": "Cutter",
-        "maxSpeed": 13.5
-    },
-    {
-        "id": 290,
-        "name": "TradersCutter",
-        "maxSpeed": 12.6
+        "maxSpeed": 13.73,
+        "diff": 0.46
     },
     {
         "id": 282,
         "name": "Privateer",
-        "maxSpeed": 13.5
-    },
-    {
-        "id": 280,
-        "name": "Pickle",
-        "maxSpeed": 13.5
-    },
-    {
-        "id": 267,
-        "name": "Mortar Brig",
-        "maxSpeed": 11.7
+        "maxSpeed": 14.34,
+        "diff": 0.48
     },
     {
         "id": 274,
         "name": "Lynx",
-        "maxSpeed": 13.95
+        "maxSpeed": 14.51,
+        "diff": 0.49
     },
     {
         "id": 291,
         "name": "TradersLynx",
-        "maxSpeed": 12.6
+        "maxSpeed": 14.33,
+        "diff": 0.48
     }
 ]
