@@ -33,7 +33,7 @@ const inGameSpeedJson = readJson(path.resolve("helper", "ship-speed.json")) as I
 const data: number[][] = inGameSpeedJson
     .filter((ship) => apiSpeedMap.has(ship.id))
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    .map((ship) => [apiSpeedMap.get(ship.id)!, ship.maxSpeed + ship.diff])
+    .map((ship) => [apiSpeedMap.get(ship.id)!, ship.maxSpeed - ship.diff])
 
 const linearReg = linearRegression(data)
 console.log(linearReg)

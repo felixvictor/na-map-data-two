@@ -9,8 +9,8 @@ export const testServerBaseName = "clean"
 export const sourceBaseDirectory = "nacleanopenworldprodshards"
 export const testSourceBaseDirectory = "nacleandevshards"
 export const sourceBaseUrl = "https://storage.googleapis.com/"
-export const speedConstB = -0.980_374_449_756_306_3
-export const speedConstM = 0.081_886_477_279_878_9
+export const speedConstB = -0.016_317_478_606_097_78
+export const speedConstM = 0.071_532_635_662_990_84
 export const speedFactor = 390
 export const timeFactor = 2.63
 
