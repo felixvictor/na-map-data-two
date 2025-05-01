@@ -778,7 +778,7 @@
     <Pair>
       <Key>SHIP_SPAWN_HOLE_PROBABILITY</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
-        <Value>0.5</Value>
+        <Value>0.4</Value>
       </Value>
     </Pair>
     <Pair>
