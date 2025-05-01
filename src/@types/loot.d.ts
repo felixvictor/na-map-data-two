@@ -22,10 +22,11 @@ export interface LootChestGroup {
 export interface LootChestItemsEntity {
     id: number
     name: string
-    amount: LootAmount
+    amount?: LootAmount
 }
 export interface LootLootItemsEntity extends LootChestItemsEntity {
     chance: number
+    group: number
 }
 interface LootAmount {
     min: number

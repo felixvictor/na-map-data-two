@@ -14,7 +14,7 @@ export const peneDistance: PeneDistance = {
 }
 
 // Loot
-export const lootType = ["item", "loot", "chest", "fish"]
+export const lootType = ["item", "loot", "chest"]
 
 // Woods
 export const woodFamily = ["regular", "seasoned", "rare"]

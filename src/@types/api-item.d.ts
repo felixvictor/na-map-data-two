@@ -11,6 +11,7 @@ export interface APIItemGeneric {
     Name: string
     Id: number
     NotUsed: boolean
+    Hided: boolean
     NotTradeable: boolean
     PreventTeleport: boolean
     DropChanceReductionPerItem: number
@@ -19,11 +20,15 @@ export interface APIItemGeneric {
     BasePrice: number
     SellPrice: PriceModifier
     BuyPrice: PriceModifier
+    MinContractAmount: number
+    MaxContractAmount: number
     PriceReductionAmount: number
     ConsumedScale: number
     NonConsumedScale: number
     PriceTierQuantity: number
     MaxQuantity: number
+    ShopRestQuantityLimit: number
+    ShopAbsorptionPercent: number
     SortingOverrideTemplateType: string
     SortingGroup: string
     SellableInShop: boolean
@@ -222,10 +227,10 @@ export interface ModifiersEntity {
 interface ItemsEntity {
     Template: number
     Chance: number
+    Group: number
     Stack: MinMax<number>
     StackIsPercOfAmount: boolean
     Unique: boolean
-    ItemTypes: number[]
 }
 interface MinMax<amount> {
     Min: amount
@@ -499,6 +504,7 @@ export interface APIGenericLootTableItem {
     Name: string
     Id: number
     NotUsed: boolean
+    Hided: boolean
     NotTradeable: false
     PreventTeleport: true
     DropChanceReductionPerItem: 0
@@ -507,20 +513,32 @@ export interface APIGenericLootTableItem {
     BasePrice: -1
     SellPrice: PriceModifier
     BuyPrice: PriceModifier
+    MinContractAmount: number
+    MaxContractAmount: number
     PriceReductionAmount: -1
     ConsumedScale: 1.5
     NonConsumedScale: 1
     PriceTierQuantity: 100
     MaxQuantity: 1000
+    ShopRestQuantityLimit: number
+    ShopAbsorptionPercent: number
     SortingOverrideTemplateType: ""
-    SortingGroup: ""
+    SortingGroup: string
     SellableInShop: true
     CanBeSoldToShop: true
     ResetStockOnServerStart: false
     SellPriceCoefficient: 0.5
+    ItemType: "ShipLootTableItem"
     MongoID: string
     EventLootTable: boolean
-    Class: number
+    isDefault: boolean
+    isTradersTable: boolean
+    isEliteNPC: boolean
+    RankId: -1
+    MinBRShipTemplate: number
+    MaxBRShipTemplate: number
+    MinBR: number
+    MaxBR: number
     ItemsToGive: MinMax<1>
     lootProbability: number[]
     itemProbability: number[]
@@ -544,6 +562,7 @@ export interface APITimeBasedConvertibleItem {
     Name: string
     Id: number
     NotUsed: boolean
+    Hided: boolean
     NotTradeable: false
     PreventTeleport: true
     DropChanceReductionPerItem: 0
@@ -552,11 +571,15 @@ export interface APITimeBasedConvertibleItem {
     BasePrice: 5000
     SellPrice: PriceModifier
     BuyPrice: PriceModifier
+    MinContractAmount: number
+    MaxContractAmount: number
     PriceReductionAmount: -1
     ConsumedScale: 1.5
     NonConsumedScale: 1
     PriceTierQuantity: 5000
     MaxQuantity: 5000
+    ShopRestQuantityLimit: number
+    ShopAbsorptionPercent: number
     SortingOverrideTemplateType: ""
     SortingGroup: ""
     SellableInShop: false
@@ -566,7 +589,7 @@ export interface APITimeBasedConvertibleItem {
     ItemType: "TimeBasedConvertibleItem"
     MongoID: string
     GeneralChest: boolean
-    LifetimeSeconds: 10_800
+    LifetimeSeconds: number
     ExtendedLootTable: number[]
     CanBeConverted: "Port"
     ConvertsTo: unknown[]
