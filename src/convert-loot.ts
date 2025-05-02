@@ -24,8 +24,8 @@ const secondsPerHour = 3600
 let apiItems: APIItemGeneric[]
 let itemNames: Map<number, string>
 
-const getLootName = (minBR: number, maxBR: number, isTrader: boolean): string => {
-    return `${minBR} to ${maxBR} BR ${isTrader ? "trader " : ""}bot`
+const getLootName = (minBR: number, maxBR: number, isTrader: boolean, isElite: boolean): string => {
+    return `${minBR} to ${maxBR} BR ${isTrader ? "trader " : ""}${isElite ? "elite " : ""}bot`
 }
 
 const getLootItemName = (name: string, type: string): string => {
@@ -78,13 +78,15 @@ const convertLoot = async (): Promise<void> => {
     const data = {} as Loot
 
     // Loot
-    const loot = getLootItems(["ShipLootTableItem"]) as APIShipLootTableItem[]
+    const loot = (getLootItems(["ShipLootTableItem"]) as APIShipLootTableItem[]).filter(
+        (item) => Number(item.MinBR) > 0 && Number(item.MaxBR) > 0,
+    )
     data.loot = loot
         .map(
             (item) =>
                 ({
                     id: Number(item.Id),
-                    name: getLootName(Number(item.MinBR), Number(item.MaxBR), item.isTradersTable),
+                    name: getLootName(Number(item.MinBR), Number(item.MaxBR), item.isTradersTable, item.isEliteNPC),
                     items: getLootContent(item.Items).sort(sortBy(["chance", "id"])),
                 }) as LootLootEntity,
         )
