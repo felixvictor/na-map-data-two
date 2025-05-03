@@ -69,6 +69,7 @@ const getChestItems = (lootItems: ItemsEntity[]): LootChestItemsEntity[] =>
             Number(item.Stack.Min) === 1 && Number(item.Stack.Max) === 1
                 ? undefined
                 : { min: Number(item.Stack.Min), max: Number(item.Stack.Max) },
+        group: Number(item.Group),
     }))
 
 const getChestItemsFromChestLootTable = (chestLootTableId: number): LootChestItemsEntity[] =>
