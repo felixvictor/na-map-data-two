@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.29.3 (2025-05-03)</small>
+
+* fix: loot data ([64c3255](https://github.com/felixvictor/na-map-data-two/commit/64c3255))
+
 ## <small>1.29.2 (2025-05-02)</small>
 
 * fix: loot data ([99e046e](https://github.com/felixvictor/na-map-data-two/commit/99e046e))
