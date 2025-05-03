@@ -24,9 +24,10 @@ const secondsPerHour = 3600
 let apiItems: APIItemGeneric[]
 let itemNames: Map<number, string>
 
-const getLootName = (minBR: number, maxBR: number, isTrader: boolean, isElite: boolean): string => {
-    return `${minBR} to ${maxBR} BR ${isTrader ? "trader " : ""}${isElite ? "elite " : ""}bot`
-}
+const getLootName = (minBR: number, maxBR: number, isTrader: boolean, isElite: boolean): string =>
+    `${minBR} to ${maxBR} BR ${isTrader ? "trader " : ""}${
+        isElite ? "elite " : ""
+    }${minBR === 10 && maxBR === 353 ? "HDF " : ""}bot`
 
 const getLootItemName = (name: string, type: string): string => {
     let cleanedName = cleanName(name)
