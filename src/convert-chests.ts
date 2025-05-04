@@ -17,6 +17,10 @@ const secondsPerHour = 3600
 let apiItems: APIItemGeneric[]
 let itemNames: Map<number, string>
 
+const notUsedChests = new Set([
+    2327, // Bookshelf
+])
+
 const getLootItemName = (name: string, type: string): string => {
     let cleanedName = cleanName(name)
 
@@ -54,6 +58,7 @@ const convertChests = async (): Promise<void> => {
 
     const chests = getLootItems(["TimeBasedConvertibleItem"]) as unknown as APITimeBasedConvertibleItem[]
     const data: Chest[] = chests
+        .filter((item) => !notUsedChests.has(Number(item.Id)))
         .map(
             (item) =>
                 ({
