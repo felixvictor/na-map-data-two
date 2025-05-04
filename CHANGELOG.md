@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.31.0 (2025-05-04)
+
+* feat: loot removed -> chests only ([35dca6c](https://github.com/felixvictor/na-map-data-two/commit/35dca6c))
+
 ## 1.30.0 (2025-05-04)
 
 * feat: loot removed -> chests only ([88c7ba9](https://github.com/felixvictor/na-map-data-two/commit/88c7ba9))
