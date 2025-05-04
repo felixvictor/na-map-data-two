@@ -1,34 +1,21 @@
-import type { lootType } from "./constants.js"
-
-export type LootType = (typeof lootType)[number]
-export type LootTypeList<T> = Record<LootType, T>
-export type Loot = LootTypeList<LootLootEntity[] | LootChestsEntity[]>
-interface LootGenericEntity {
+interface Chest {
     id: number
     name: string
-}
-interface LootLootEntity extends LootGenericEntity {
-    items: LootLootItemsEntity[]
-}
-interface LootChestsEntity extends LootGenericEntity {
     weight: number
     lifetime: number
-    itemGroup: LootChestGroup[]
+    itemGroup: ChestGroup[]
 }
-export interface LootChestGroup {
+export interface ChestGroup {
     chance: number
-    items: LootChestItemsEntity[]
+    items: ChestItem[]
 }
-export interface LootChestItemsEntity {
+export interface ChestItem {
     id: number
     name: string
     group: number
-    amount?: LootAmount
+    amount?: ChestAmount
 }
-export interface LootLootItemsEntity extends LootChestItemsEntity {
-    chance: number
-}
-interface LootAmount {
+interface ChestAmount {
     min: number
     max: number
 }

@@ -13,9 +13,6 @@ export const peneDistance: PeneDistance = {
     carronade: [100, 200, 300, 400, 500, 750, 1000, 1500],
 }
 
-// Loot
-export const lootType = ["item", "loot", "chest"]
-
 // Woods
 export const woodFamily = ["regular", "seasoned", "rare"]
 export const woodType = ["frame", "trim"]

@@ -2,17 +2,10 @@ import type {
     APIGenericLootTableItem,
     APIItemGeneric,
     APILootTableItem,
-    APIShipLootTableItem,
     APITimeBasedConvertibleItem,
     ItemsEntity,
 } from "./@types/api-item.js"
-import type {
-    Loot,
-    LootChestItemsEntity,
-    LootChestsEntity,
-    LootLootEntity,
-    LootLootItemsEntity,
-} from "./@types/loot.js"
+import type { Chest, ChestItem } from "./@types/loot.js"
 import { cleanName } from "./common/api.js"
 import { getApiItems } from "./common/common.js"
 import { saveJsonAsync } from "./common/file.js"
@@ -23,11 +16,6 @@ const secondsPerHour = 3600
 
 let apiItems: APIItemGeneric[]
 let itemNames: Map<number, string>
-
-const getLootName = (minBR: number, maxBR: number, isTrader: boolean, isElite: boolean): string =>
-    `${minBR} to ${maxBR} BR ${isTrader ? "trader " : ""}${
-        isElite ? "elite " : ""
-    }${minBR === 10 && maxBR === 353 ? "HDF " : ""}bot`
 
 const getLootItemName = (name: string, type: string): string => {
     let cleanedName = cleanName(name)
@@ -42,27 +30,13 @@ const getLootItemName = (name: string, type: string): string => {
 const getLootItems = (types: string[]) =>
     apiItems.filter((item) => !item.NotUsed && types.includes(item.ItemType)) as unknown as APIGenericLootTableItem[]
 
-const getLootItemsChance = (chestLootTableId: number): number => {
+const getChestItemsChance = (chestLootTableId: number): number => {
     const lootTable = apiItems.filter((item) => Number(item.Id) === chestLootTableId) as unknown as APILootTableItem[]
     return lootTable[0]?.Items?.[0]?.Chance
 }
 
-const getLootContent = (lootItems: ItemsEntity[]): LootLootItemsEntity[] =>
-    lootItems.map(
-        (item): LootLootItemsEntity => ({
-            id: Number(item.Template),
-            name: itemNames.get(Number(item.Template)) ?? "",
-            chance: Number(item.Chance),
-            amount:
-                Number(item.Stack.Min) === 1 && Number(item.Stack.Max) === 1
-                    ? undefined
-                    : { min: Number(item.Stack.Min), max: Number(item.Stack.Max) },
-            group: Number(item.Group),
-        }),
-    )
-
-const getChestItems = (lootItems: ItemsEntity[]): LootChestItemsEntity[] =>
-    lootItems.map((item) => ({
+const getChestItems = (chestItems: ItemsEntity[]): ChestItem[] =>
+    chestItems.map((item) => ({
         id: Number(item.Template),
         name: itemNames.get(Number(item.Template)) ?? "",
         amount:
@@ -72,31 +46,14 @@ const getChestItems = (lootItems: ItemsEntity[]): LootChestItemsEntity[] =>
         group: Number(item.Group),
     }))
 
-const getChestItemsFromChestLootTable = (chestLootTableId: number): LootChestItemsEntity[] =>
+const getChestItemsFromChestLootTable = (chestLootTableId: number): ChestItem[] =>
     apiItems.filter((item) => Number(item.Id) === chestLootTableId).flatMap((item) => getChestItems(item.Items ?? []))
 
-const convertLoot = async (): Promise<void> => {
+const convertChests = async (): Promise<void> => {
     const commonPaths = getCommonPaths()
-    const data = {} as Loot
 
-    // Loot
-    const loot = (getLootItems(["ShipLootTableItem"]) as APIShipLootTableItem[]).filter(
-        (item) => Number(item.MinBR) > 0 && Number(item.MaxBR) > 0,
-    )
-    data.loot = loot
-        .map(
-            (item) =>
-                ({
-                    id: Number(item.Id),
-                    name: getLootName(Number(item.MinBR), Number(item.MaxBR), item.isTradersTable, item.isEliteNPC),
-                    items: getLootContent(item.Items).sort(sortBy(["chance", "id"])),
-                }) as LootLootEntity,
-        )
-        .sort(sortBy(["id"]))
-
-    // Chests
     const chests = getLootItems(["TimeBasedConvertibleItem"]) as unknown as APITimeBasedConvertibleItem[]
-    data.chest = chests
+    const data: Chest[] = chests
         .map(
             (item) =>
                 ({
@@ -105,19 +62,19 @@ const convertLoot = async (): Promise<void> => {
                     weight: Number(item.ItemWeight),
                     lifetime: Number(item.LifetimeSeconds) / secondsPerHour,
                     itemGroup: item.ExtendedLootTable.map((lootChestLootTableId) => ({
-                        chance: getLootItemsChance(lootChestLootTableId),
+                        chance: getChestItemsChance(lootChestLootTableId),
                         items: getChestItemsFromChestLootTable(lootChestLootTableId).sort(sortBy(["id"])),
                     })).sort(sortBy(["chance"])),
-                }) as LootChestsEntity,
+                }) as Chest,
         )
         .sort(sortBy(["id"]))
 
-    await saveJsonAsync(commonPaths.fileLoot, data)
+    await saveJsonAsync(commonPaths.fileChest, data)
 }
 
 export const convertLootData = (): void => {
     apiItems = getApiItems()
     itemNames = new Map(apiItems.map((item) => [Number(item.Id), getLootItemName(item.Name, item.ItemType)]))
 
-    void convertLoot()
+    void convertChests()
 }
