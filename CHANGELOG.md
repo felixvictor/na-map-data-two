@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.32.0 (2025-05-05)
+
+* feat: 5 May 2025 patch ([1abb184](https://github.com/felixvictor/na-map-data-two/commit/1abb184))
+* chore(deps): bump ([2f48326](https://github.com/felixvictor/na-map-data-two/commit/2f48326))
+
 ## 1.31.0 (2025-05-04)
 
 * feat: loot removed -> chests only ([35dca6c](https://github.com/felixvictor/na-map-data-two/commit/35dca6c))
