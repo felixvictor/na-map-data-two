@@ -689,7 +689,7 @@
     <Pair>
       <Key>SHIP_PHYSICS_ACC_TURN_PENALTY</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="false" IsPermanent="true" IsNegative="false">
-        <Value>0.13</Value>
+        <Value>0.033</Value>
       </Value>
     </Pair>
     <Pair>
