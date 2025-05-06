@@ -662,15 +662,15 @@
           <TangentOut>0</TangentOut>
         </Value>
         <Value>
-          <Time>0.6</Time>
+          <Time>0.5</Time>
           <Value>1</Value>
           <TangentIn>0</TangentIn>
-          <TangentOut>-1.0000006</TangentOut>
+          <TangentOut>-2</TangentOut>
         </Value>
         <Value>
-          <Time>0.7</Time>
+          <Time>0.55</Time>
           <Value>0.9</Value>
-          <TangentIn>-1.0000006</TangentIn>
+          <TangentIn>-2</TangentIn>
           <TangentOut>0</TangentOut>
         </Value>
         <Value>
@@ -683,7 +683,7 @@
           <Time>1</Time>
           <Value>1</Value>
           <TangentIn>2</TangentIn>
-          <TangentOut>0</TangentOut>
+          <TangentOut>2</TangentOut>
         </Value>
       </Value>
     </Pair>
