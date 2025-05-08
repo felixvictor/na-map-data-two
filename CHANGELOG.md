@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.34.0 (2025-05-08)
+
+* feat: ship data with powder needed ([3601604](https://github.com/felixvictor/na-map-data-two/commit/3601604))
+* chore(deps): bump ([ba40d52](https://github.com/felixvictor/na-map-data-two/commit/ba40d52))
+
 ## 1.33.0 (2025-05-06)
 
 * feat: 6 May 2025 patch ([badf364](https://github.com/felixvictor/na-map-data-two/commit/badf364))
