@@ -79,7 +79,7 @@
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.32.0",
         "utility-types": "^3.11.0",
-        "wrangler": "^4.14.3",
+        "wrangler": "^4.14.4",
         "xml-js": "^1.6.11"
     },
     "engines": {
