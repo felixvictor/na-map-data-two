@@ -136,10 +136,6 @@ const getFamily = (name: string): string => {
     return family
 }
 
-const minWeight = 1
-const largeWeightFactor = 1.22
-const smallWeightFactor = 1.78
-
 /**
  * Add data
  * @param fileData - File data per cannon
@@ -199,13 +195,6 @@ const addData = (fileData: XmlGeneric): void => {
             ),
         } as CannonValue
     }
-
-    cannon.generic.weight.value = Math.max(
-        minWeight,
-        Number(cannon.name) > 4
-            ? round(cannon.generic.weight.value * largeWeightFactor, 2)
-            : round(cannon.generic.weight.value * smallWeightFactor, 2),
-    )
 
     // Calculate penetrations
     let type = getType()
