@@ -1,6 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 
+import { min } from "d3-array"
 import { merge } from "ts-deepmerge"
 import convert, { type ElementCompact } from "xml-js"
 
@@ -31,6 +32,7 @@ interface GunData {
     damage: number
     weight: number
     crew: number
+    powder: number
 }
 type GunDataMap = Map<number, GunData>
 
@@ -124,6 +126,7 @@ const getGunData = (cannon: CannonEntity): [number, GunData] => [
         damage: cannon.damage.basic.value,
         weight: cannon.generic.weight.value,
         crew: cannon.generic.crew.value,
+        powder: cannon.generic.gunpowder.value,
     },
 ]
 
@@ -152,15 +155,15 @@ const convertShipDataFromAPI = () => {
             damage: { cannons: 0, carronades: 0 },
             gunsPerDeck: [],
             weight: { cannons: 0, carronades: 0 },
+            powder: 0,
         } as ShipGuns
         let totalCannonCrew = 0
         let totalCarroCrew = 0
 
         const { maxSpeed, speedDegrees } = getSpeedDegrees(apiShip.Specs)
 
-        const addDeck = (deckLimit: Limit, index: number) => {
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (deckLimit == undefined) {
+        const addDeck = (index: number, deckLimit?: Limit, addPowder = false) => {
+            if (deckLimit === undefined) {
                 guns.gunsPerDeck.push(emptyDeck)
             } else {
                 const gunsPerDeck = apiShip.GunsPerDeck[index]
@@ -181,6 +184,10 @@ const convertShipDataFromAPI = () => {
                 guns.weight.cannons += cannonWeight
                 totalCannonCrew += cannonCrew
 
+                if (addPowder) {
+                    guns.powder += gunsPerDeck * (cannonData.get(currentDeck.maxCannonLb)?.powder ?? 0)
+                }
+
                 if (currentDeck.maxCarroLb) {
                     guns.weight.carronades += Math.round(
                         gunsPerDeck * (cannonData.get(currentDeck.maxCarroLb)?.weight ?? 0),
@@ -194,7 +201,7 @@ const convertShipDataFromAPI = () => {
         }
 
         for (let deckIndex = 0; deckIndex <= sideDeckMaxIndex; deckIndex += 1) {
-            addDeck(apiShip.DeckClassLimit[deckIndex], deckIndex)
+            addDeck(deckIndex, apiShip.DeckClassLimit[deckIndex], true)
 
             const gunsPerDeck = guns.gunsPerDeck[deckIndex].amount
             guns.total += gunsPerDeck
@@ -210,8 +217,8 @@ const convertShipDataFromAPI = () => {
                     : cannonBroadsideDamage
         }
 
-        addDeck(apiShip.FrontDeckClassLimit[0], frontDeckIndex)
-        addDeck(apiShip.BackDeckClassLimit[0], backDeckIndex)
+        addDeck(frontDeckIndex, apiShip.FrontDeckClassLimit[0])
+        addDeck(backDeckIndex, apiShip.BackDeckClassLimit[0])
 
         const ship = {
             id: Number(apiShip.Id),
@@ -229,10 +236,8 @@ const convertShipDataFromAPI = () => {
                 cannons: totalCannonCrew,
                 carronades: totalCarroCrew,
             },
-            speedDegrees,
             speed: {
-                // eslint-disable-next-line unicorn/no-array-reduce
-                min: speedDegrees.reduce((a, b) => Math.min(a, b)),
+                min: min(speedDegrees) ?? 0,
                 max: maxSpeed,
             },
             sides: { armour: apiShip.HealthInfo.LeftArmor },
@@ -249,10 +254,6 @@ const convertShipDataFromAPI = () => {
             tradeShip: apiShip.ShipType === 1,
             // hostilityScore: ship.HostilityScore
         } as ShipDataFromAPI
-
-        if (ship.id === 1535) {
-            ship.name = "Rookie Brig"
-        }
 
         shipDataFromAPI.set(ship.id, ship)
     }

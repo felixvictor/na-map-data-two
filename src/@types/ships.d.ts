@@ -68,6 +68,7 @@ interface ShipGuns {
     damage: ShipBroadsideDamage
     gunsPerDeck: ShipGunDeck[]
     weight: ShipGunWeight
+    powder: number
 }
 interface ShipGunDeck {
     amount: number
