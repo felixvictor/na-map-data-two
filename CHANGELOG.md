@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.34.1 (2025-05-08)</small>
+
+* fix: cannon weight ([8400c77](https://github.com/felixvictor/na-map-data-two/commit/8400c77))
+* chore(deps): bump ([bbd8630](https://github.com/felixvictor/na-map-data-two/commit/bbd8630))
+
 ## 1.34.0 (2025-05-08)
 
 * feat: ship data with powder needed ([3601604](https://github.com/felixvictor/na-map-data-two/commit/3601604))
