@@ -240,6 +240,7 @@ const convertShipDataFromAPI = () => {
                 min: min(speedDegrees) ?? 0,
                 max: maxSpeed,
             },
+            speedDegrees,
             sides: { armour: apiShip.HealthInfo.LeftArmor },
             bow: { armour: apiShip.HealthInfo.FrontArmor },
             stern: { armour: apiShip.HealthInfo.BackArmor },
