@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.34.2 (2025-05-09)</small>
+
+* fix: ship speed degrees ([2d6ba22](https://github.com/felixvictor/na-map-data-two/commit/2d6ba22))
+
 ## <small>1.34.1 (2025-05-08)</small>
 
 * fix: cannon weight ([8400c77](https://github.com/felixvictor/na-map-data-two/commit/8400c77))
