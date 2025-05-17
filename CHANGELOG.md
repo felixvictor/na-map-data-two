@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.37.0 (2025-05-17)
+
+* feat: ship speed spreadsheet ([392927c](https://github.com/felixvictor/na-map-data-two/commit/392927c))
+
 ## 1.36.0 (2025-05-17)
 
 * feat: ship speed spreadsheet ([4fab1db](https://github.com/felixvictor/na-map-data-two/commit/4fab1db))
