@@ -38,7 +38,7 @@ export const intStyle: Partial<Excel.Style> = {
     numFmt: intNumberFmt,
 }
 
-export const floatNumberFmt = "#,##0.00"
+export const floatNumberFmt = "#,###0.000"
 export const floatAlign: Partial<Excel.Alignment> = {
     horizontal: "right",
     indent: 1,
@@ -104,6 +104,6 @@ export const getExcelAlpha = (colNumber: number): string => {
 }
 
 export const formula = (formula: string): Excel.CellFormulaValue => ({
-    formula,
     date1904: false,
+    formula,
 })

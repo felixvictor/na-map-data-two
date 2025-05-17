@@ -3,9 +3,10 @@ import Excel from "exceljs"
 import StylesXform from "exceljs/lib/xlsx/xform/style/styles-xform.js"
 
 import type { ShipData } from "./@types/ships.js"
-import { degreesFullCircle } from "./common/constants.js"
+import { degreesFullCircle, degreesHalfCircle } from "./common/constants.js"
 import {
     border,
+    colourContrastLight,
     colourContrastMiddle,
     colourContrastNearWhite,
     colourContrastWhite,
@@ -14,7 +15,10 @@ import {
     fillPattern,
     floatAlign,
     floatNumberFmt,
+    floatStyle,
     fontColourBold,
+    formula,
+    getExcelAlpha,
     intAlign,
     intNumberFmt,
     intStyle,
@@ -36,6 +40,9 @@ const columnsHeader = [
     { name: "Ship rate", width: 8, style: intStyle },
     { name: "Ship name", width: 22, style: textStyle },
     { name: "Ship battle rating", width: 8, style: intStyle },
+    { name: "Degree", width: 10, style: intStyle },
+    { name: "Current", width: 10, style: floatStyle },
+    { name: "Proposal", width: 10, style: floatStyle },
 ]
 
 let workbook: Excel.Workbook
@@ -100,6 +107,9 @@ function fillSheet(sheet: Excel.Worksheet, ship: ShipData): void {
     sheet.getCell(currentRowNumber, 1).value = "Rate"
     sheet.getCell(currentRowNumber, 2).value = "Name"
     sheet.getCell(currentRowNumber, 3).value = "BR"
+    sheet.getCell(currentRowNumber, 4).value = "Degree"
+    sheet.getCell(currentRowNumber, 5).value = "Current"
+    sheet.getCell(currentRowNumber, 6).value = "Proposal"
 
     // Ship row
     currentRowNumber += 1
@@ -109,54 +119,49 @@ function fillSheet(sheet: Excel.Worksheet, ship: ShipData): void {
     cell.alignment = intAlign
     cell.numFmt = intNumberFmt
     cell.border = border
-    cell.fill = fillPattern(fgColourShip[ship.class % 2])
+    cell.fill = fillPattern(colourWhite)
 
     cell = sheet.getCell(currentRowNumber, 2)
     cell.value = ship.name
     cell.alignment = textAlign
     cell.numFmt = textNumberFmt
     cell.border = border
-    cell.fill = fillPattern(fgColourShip[ship.class % 2])
+    cell.fill = fillPattern(colourWhite)
 
     cell = sheet.getCell(currentRowNumber, 3)
     cell.value = ship.battleRating
     cell.alignment = intAlign
     cell.numFmt = intNumberFmt
     cell.border = border
-    cell.fill = fillPattern(fgColourShip[ship.class % 2])
+    cell.fill = fillPattern(colourWhite)
 
-    currentRowNumber += 1
-    cell = sheet.getCell(currentRowNumber, 1)
-    cell.value = "Degrees"
-    cell.alignment = textAlign
-    cell.numFmt = textNumberFmt
-    cell.border = border
-
-    cell = sheet.getCell(currentRowNumber, 2)
-    cell.value = "Current"
-    cell.alignment = textAlign
-    cell.numFmt = textNumberFmt
-    cell.border = border
-
-    cell = sheet.getCell(currentRowNumber, 3)
-    cell.value = "Proposal"
-    cell.alignment = textAlign
-    cell.numFmt = textNumberFmt
-    cell.border = border
-
-    currentRowNumber += 1
+    let referenceIndex = currentRowNumber + ship.speedDegrees.length / 2 - 1
     for (const [index, speed] of ship.speedDegrees.entries()) {
-        cell = sheet.getCell(currentRowNumber, 1)
-        cell.value = (index * degreesFullCircle) / ship.speedDegrees.length
-        cell.alignment = textAlign
-        cell.numFmt = textNumberFmt
+        const degrees = (index * degreesFullCircle) / ship.speedDegrees.length
+        cell = sheet.getCell(currentRowNumber, 4)
+        cell.value = degrees
+        cell.alignment = intAlign
+        cell.numFmt = intNumberFmt
         cell.border = border
-        for (const column of [2, 3]) {
+        for (const column of [5, 6]) {
             cell = sheet.getCell(currentRowNumber, column)
-            cell.value = speed
+            cell.fill = fillPattern(colourContrastLight)
+
+            if (degrees <= degreesHalfCircle) {
+                cell.value = speed
+                if (column === 6) {
+                    cell.fill = fillPattern(colourWhite)
+                }
+            } else {
+                cell.value = formula(`${getExcelAlpha(column)}${referenceIndex}`)
+            }
+
             cell.alignment = floatAlign
             cell.numFmt = floatNumberFmt
             cell.border = border
+        }
+        if (degrees > degreesHalfCircle) {
+            referenceIndex--
         }
         currentRowNumber++
     }
