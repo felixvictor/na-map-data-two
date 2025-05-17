@@ -11,6 +11,7 @@ import { convertRecipeData } from "./convert-recipes.js"
 import { convertServerPortData } from "./convert-server-port-data.js"
 import { convertShipData } from "./convert-ship-data.js"
 import { createPortBattleSheet } from "./create-pb-sheets.js"
+import { createShipWorkbook } from "./create-ship-sheets.js"
 
 const convertApiData = async (): Promise<void> => {
     await convertBuildingData()
@@ -30,6 +31,7 @@ const convert = async (): Promise<void> => {
     unCompressApiJson()
     await convertApiData()
     await createPortBattleSheet()
+    await createShipWorkbook()
     removeApiJson()
 }
 

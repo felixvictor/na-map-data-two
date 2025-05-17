@@ -20,6 +20,7 @@ export interface DirectoryList {
     fileRecipe: string
     fileRepair: string
     fileShip: string
+    fileShipSheet: string
     fileShipBlueprint: string
     fileWood: string
 }
@@ -56,6 +57,7 @@ export function getCommonPaths(appRoot = process.env.PWD ?? ""): DirectoryList {
         fileRecipe: path.join(directoryGenGeneric, "recipes.json"),
         fileRepair: path.join(directoryGenGeneric, "repairs.json"),
         fileShip: path.join(directoryGenGeneric, "ships.json"),
+        fileShipSheet: path.join(directoryGenGeneric, "ships.xlsx"),
         fileShipBlueprint: path.join(directoryGenGeneric, "ship-blueprints.json"),
         fileWood: path.join(directoryGenGeneric, "woods.json"),
     }
