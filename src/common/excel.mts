@@ -76,11 +76,11 @@ export const fontColourBold = (colour: string): Partial<Excel.Font> => ({
 export const border: Partial<Excel.Borders> = {
     top: {
         style: "thin",
-        color: { argb: colourContrastLight },
+        color: { argb: colourContrastMiddle },
     },
     bottom: {
         style: "thin",
-        color: { argb: colourContrastLight },
+        color: { argb: colourContrastMiddle },
     },
 }
 

@@ -1,15 +1,15 @@
-import { range } from "d3-array"
 import Excel from "exceljs"
 import StylesXform from "exceljs/lib/xlsx/xform/style/styles-xform.js"
 
+import type { APIItemGeneric, APIShip } from "./@types/api-item.js"
 import type { ShipData } from "./@types/ships.js"
+import { getApiItems } from "./common/common.js"
 import { degreesFullCircle, degreesHalfCircle } from "./common/constants.js"
 import {
     border,
     colourContrastLight,
     colourContrastMiddle,
     colourContrastNearWhite,
-    colourContrastWhite,
     colourWhite,
     defaultFont,
     fillPattern,
@@ -27,6 +27,7 @@ import {
     textStyle,
 } from "./common/excel.mjs"
 import { readJson } from "./common/file.js"
+import { round } from "./common/format.js"
 import { getCommonPaths } from "./common/path.js"
 import { sortBy } from "./common/sort.js"
 import { currentServerStartDate } from "./common/time.js"
@@ -40,6 +41,7 @@ const columnsHeader = [
     { name: "Ship rate", width: 8, style: intStyle },
     { name: "Ship name", width: 22, style: textStyle },
     { name: "Ship battle rating", width: 8, style: intStyle },
+    { name: "Max speed", width: 12, style: floatStyle },
     { name: "Degree", width: 10, style: intStyle },
     { name: "Current", width: 10, style: floatStyle },
     { name: "Proposal", width: 10, style: floatStyle },
@@ -72,13 +74,41 @@ const wsOptions: Partial<Excel.AddWorksheetOptions> = {
     },
 }
 
+let apiShipData: Map<number, APIShip>
 const setupData = () => {
+    const apiItems: APIItemGeneric[] = getApiItems()
+
+    apiShipData = new Map(
+        apiItems
+            .filter((item) => item.ItemType === "Ship" && !item.NotUsed)
+            .map((ship) => [ship.Id, ship as unknown as APIShip]),
+    )
+
     shipData = (readJson(commonPaths.fileShip) as ShipData[]).sort(sortBy(["name"]))
 }
 
-const fgColourShip = [colourWhite, colourContrastWhite]
+const addFloatToCell = (cell: Excel.Cell, value: Excel.CellFormulaValue | number) => {
+    cell.value = value
+    cell.alignment = floatAlign
+    cell.numFmt = floatNumberFmt
+    cell.border = border
+}
 
-function fillSheet(sheet: Excel.Worksheet, ship: ShipData): void {
+const addIntToCell = (cell: Excel.Cell, value: Excel.CellFormulaValue | number) => {
+    cell.value = value
+    cell.alignment = intAlign
+    cell.numFmt = intNumberFmt
+    cell.border = border
+}
+
+const addTextToCell = (cell: Excel.Cell, text: string) => {
+    cell.value = text
+    cell.alignment = textAlign
+    cell.numFmt = textNumberFmt
+    cell.border = border
+}
+
+const fillSheet = (sheet: Excel.Worksheet, ship: ShipData): void => {
     let cell: Excel.Cell
 
     const setColumns = (): void => {
@@ -107,62 +137,70 @@ function fillSheet(sheet: Excel.Worksheet, ship: ShipData): void {
     sheet.getCell(currentRowNumber, 1).value = "Rate"
     sheet.getCell(currentRowNumber, 2).value = "Name"
     sheet.getCell(currentRowNumber, 3).value = "BR"
-    sheet.getCell(currentRowNumber, 4).value = "Degree"
-    sheet.getCell(currentRowNumber, 5).value = "Current"
-    sheet.getCell(currentRowNumber, 6).value = "Proposal"
+    sheet.getCell(currentRowNumber, 4).value = "Max speed"
+    sheet.getCell(currentRowNumber, 5).value = "Degree"
+    sheet.getCell(currentRowNumber, 6).value = "Current speed"
+    sheet.getCell(currentRowNumber, 7).value = "Proposed speed"
+    sheet.getCell(currentRowNumber, 8).value = "Current"
+    sheet.getCell(currentRowNumber, 9).value = "Proposal"
 
     // Ship row
     currentRowNumber += 1
 
     cell = sheet.getCell(currentRowNumber, 1)
-    cell.value = ship.class
-    cell.alignment = intAlign
-    cell.numFmt = intNumberFmt
-    cell.border = border
+    addIntToCell(cell, ship.class)
     cell.fill = fillPattern(colourWhite)
 
     cell = sheet.getCell(currentRowNumber, 2)
-    cell.value = ship.name
-    cell.alignment = textAlign
-    cell.numFmt = textNumberFmt
-    cell.border = border
+    addTextToCell(cell, ship.name)
     cell.fill = fillPattern(colourWhite)
 
     cell = sheet.getCell(currentRowNumber, 3)
-    cell.value = ship.battleRating
-    cell.alignment = intAlign
-    cell.numFmt = intNumberFmt
-    cell.border = border
+    addIntToCell(cell, ship.battleRating)
     cell.fill = fillPattern(colourWhite)
 
-    let referenceIndex = currentRowNumber + ship.speedDegrees.length / 2 - 1
-    for (const [index, speed] of ship.speedDegrees.entries()) {
+    cell = sheet.getCell(currentRowNumber, 4)
+    addFloatToCell(cell, ship.speed.max)
+    cell.fill = fillPattern(colourWhite)
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const apiShip = apiShipData.get(ship.id)!
+    for (const [index, speed] of apiShip.Specs.SpeedToWind.reverse().entries()) {
         const degrees = (index * degreesFullCircle) / ship.speedDegrees.length
-        cell = sheet.getCell(currentRowNumber, 4)
-        cell.value = degrees
-        cell.alignment = intAlign
-        cell.numFmt = intNumberFmt
-        cell.border = border
-        for (const column of [5, 6]) {
+        cell = sheet.getCell(currentRowNumber, 5)
+        addIntToCell(cell, degrees)
+
+        for (const column of [6, 7]) {
             cell = sheet.getCell(currentRowNumber, column)
+            addFloatToCell(cell, formula(`$${getExcelAlpha(4)}$2*$${getExcelAlpha(column + 2)}${currentRowNumber}/100`))
             cell.fill = fillPattern(colourContrastLight)
-
-            if (degrees <= degreesHalfCircle) {
-                cell.value = speed
-                if (column === 6) {
-                    cell.fill = fillPattern(colourWhite)
-                }
-            } else {
-                cell.value = formula(`${getExcelAlpha(column)}${referenceIndex}`)
-            }
-
-            cell.alignment = floatAlign
-            cell.numFmt = floatNumberFmt
-            cell.border = border
         }
-        if (degrees > degreesHalfCircle) {
-            referenceIndex--
+        for (const column of [8, 9]) {
+            cell = sheet.getCell(currentRowNumber, column)
+            addIntToCell(cell, round(speed, 2) * 100)
+            cell.fill = column === 9 ? fillPattern(colourWhite) : fillPattern(colourContrastLight)
         }
+        currentRowNumber++
+    }
+
+    let referenceIndex = currentRowNumber - 2
+    for (const [index] of apiShip.Specs.SpeedToWind.slice(1, -1).entries()) {
+        const degrees = degreesHalfCircle + ((index + 1) * degreesFullCircle) / ship.speedDegrees.length
+        cell = sheet.getCell(currentRowNumber, 5)
+        addIntToCell(cell, degrees)
+
+        for (const column of [6, 7]) {
+            cell = sheet.getCell(currentRowNumber, column)
+            addFloatToCell(cell, formula(`$${getExcelAlpha(4)}$2*$${getExcelAlpha(column + 2)}${currentRowNumber}/100`))
+            cell.fill = fillPattern(colourContrastLight)
+        }
+        for (const column of [8, 9]) {
+            cell = sheet.getCell(currentRowNumber, column)
+            addIntToCell(cell, formula(`${getExcelAlpha(column)}${referenceIndex}`))
+            cell.fill = fillPattern(colourContrastLight)
+        }
+
+        referenceIndex--
         currentRowNumber++
     }
 }
