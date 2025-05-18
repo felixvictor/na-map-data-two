@@ -194,7 +194,10 @@ const setAndSaveTradeData = async (serverName: string): Promise<void> => {
 
 const setAndSaveDroppedItems = async (serverName: string): Promise<void> => {
     const items = apiItems
-        .filter((item) => !item.NotUsed && item.CanBeSoldToShop && item.BasePrice > 0)
+        .filter(
+            (item) =>
+                !item.NotUsed && item.CanBeSoldToShop && item.SortingGroup !== "Resource.Trading" && item.BasePrice > 0,
+        )
         .map((item) => {
             const tradeItem = {
                 id: item.Id,
