@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.38.0 (2025-05-18)
+
+* fix: trade items ([751de48](https://github.com/felixvictor/na-map-data-two/commit/751de48))
+* feat: ship speed spreadsheet ([bfe3a63](https://github.com/felixvictor/na-map-data-two/commit/bfe3a63))
+
 ## 1.37.0 (2025-05-17)
 
 * feat: ship speed spreadsheet ([392927c](https://github.com/felixvictor/na-map-data-two/commit/392927c))
