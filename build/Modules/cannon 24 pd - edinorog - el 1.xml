@@ -130,7 +130,7 @@
     <Pair>
       <Key>CANNON_BASIC_PENETRATION</Key>
       <Value xsi:type="FloatAttribute" Action="Relative" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>95</Value>
+        <Value>100</Value>
       </Value>
     </Pair>
     <Pair>
@@ -357,7 +357,7 @@
     <Pair>
       <Key>CANNON_BALL_ARMOR_SPLINTERS_DAMAGE_FOR_CREW</Key>
       <Value xsi:type="FloatAttribute" Action="Absolute" IsLocal="true" IsPermanent="true" IsNegative="false">
-        <Value>3.15</Value>
+        <Value>3.2</Value>
       </Value>
     </Pair>
     <Pair>
@@ -380,7 +380,7 @@
     <Pair>
       <Key>CANNON_GUNPOWDER_AMOUNT</Key>
       <Value xsi:type="IntegerAttribute" Action="Absolute" IsLocal="true" IsPermanent="false" IsNegative="false">
-        <Value>18</Value>
+        <Value>19</Value>
       </Value>
     </Pair>
   </Attributes>
