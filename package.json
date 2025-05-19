@@ -9,7 +9,7 @@
     },
     "type": "module",
     "scripts": {
-        "build:modules": "run-s 'build:modules:**'",
+        "build:modules": "run-s build:modules:*:**",
         "build:modules:1:get": "cp -u /mnt/Modules.zip build/ && unzip -L -u build/Modules.zip -d build/",
         "build:modules:2:correct:dir": "rm -rf build/Modules/; mv build/modules build/Modules",
         "build:modules:3:correct:enc": "/usr/bin/bash -c 'cd build/Modules/; for FILE in *.xml; do dos2unix -m -q \"${FILE}\"; done'",
