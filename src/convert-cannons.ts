@@ -229,6 +229,11 @@ const addData = (fileData: XmlGeneric): void => {
         )
     }
 
+    // Special case 2pd standard
+    if (type === "standard") {
+        type = "medium"
+    }
+
     switch (type) {
         case "long": {
             penetrations.set(100, interpolate(0, 500, 100))
@@ -250,17 +255,6 @@ const addData = (fileData: XmlGeneric): void => {
 
             break
         }
-        // Special case 2pd standard
-        case "standard": {
-            penetrations.delete(400)
-            penetrations.delete(500)
-            penetrations.delete(750)
-            penetrations.delete(800)
-            penetrations.delete(1000)
-            penetrations.delete(1250)
-            break
-        }
-
         case "carronade": {
             penetrations.set(100, interpolate(0, 300, 100))
             penetrations.set(200, interpolate(0, 300, 200))
@@ -272,11 +266,6 @@ const addData = (fileData: XmlGeneric): void => {
             break
         }
         // No default
-    }
-
-    // Special case 2pd standard
-    if (type === "standard") {
-        type = "medium"
     }
 
     cannon.penetration = {} as CannonPenetration
