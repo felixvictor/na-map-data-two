@@ -1,3 +1,4 @@
+import * as console from "node:console"
 import fs from "node:fs"
 import path from "node:path"
 
@@ -180,6 +181,11 @@ const addData = (fileData: XmlGeneric): void => {
             .replace(" (Medium)", "")
 
     const cannon = { name: getName(), family: getFamily(getName()) } as CannonEntity
+
+    if (cannon.name.includes("Fort") || cannon.name.includes("Tower") || cannon.name.includes("useless")) {
+        return
+    }
+
     for (const [value, { group, element }] of dataMapping) {
         if (!Object.hasOwn(cannon, group)) {
             cannon[group] = {} as string & CannonDamage & CannonGeneric & CannonPenetration
@@ -206,8 +212,16 @@ const addData = (fileData: XmlGeneric): void => {
     )
 
     const interpolate = (lowerDistribution: number, higherDistribution: number, targetDistribution: number): number => {
-        const lowerPene = penetrations.get(lowerDistribution) ?? 1
-        const higherPene = penetrations.get(higherDistribution) ?? 1
+        if (lowerDistribution > higherDistribution) {
+            throw new Error(`interpolate distribution ${lowerDistribution} higher than ${higherDistribution}`)
+        }
+
+        const lowerPene = penetrations.get(lowerDistribution)
+        const higherPene = penetrations.get(higherDistribution)
+        if (lowerPene === undefined || higherPene === undefined) {
+            throw new Error(`interpolate penetrations  undefined`)
+        }
+
         return (
             lowerPene +
             ((targetDistribution - lowerDistribution) * (higherPene - lowerPene)) /
@@ -218,9 +232,9 @@ const addData = (fileData: XmlGeneric): void => {
     switch (type) {
         case "long": {
             penetrations.set(100, interpolate(0, 500, 100))
-            penetrations.set(400, interpolate(0, 500, 400))
             penetrations.set(750, interpolate(500, 1000, 750))
-            penetrations.set(1250, interpolate(1000, 1500, 1250))
+            penetrations.set(1250, interpolate(1000, 2000, 1250))
+            penetrations.set(1500, interpolate(1000, 2000, 1500))
 
             break
         }
@@ -228,10 +242,11 @@ const addData = (fileData: XmlGeneric): void => {
             penetrations.set(100, interpolate(0, 400, 100))
             penetrations.set(200, interpolate(0, 400, 200))
             penetrations.set(300, interpolate(0, 400, 300))
-            penetrations.set(500, interpolate(400, 1000, 500))
-            penetrations.set(750, interpolate(400, 1000, 750))
-            penetrations.set(1250, interpolate(1000, 2000, 1250))
-            penetrations.set(1500, interpolate(1000, 2000, 1500))
+            penetrations.set(500, interpolate(400, 1300, 500))
+            penetrations.set(750, interpolate(400, 1300, 750))
+            penetrations.set(1000, interpolate(400, 1300, 1000))
+            penetrations.set(1250, interpolate(400, 1300, 1250))
+            penetrations.set(1500, interpolate(1300, 2000, 1500))
 
             break
         }
@@ -245,12 +260,14 @@ const addData = (fileData: XmlGeneric): void => {
             penetrations.delete(1250)
             break
         }
+
         case "carronade": {
-            penetrations.set(100, interpolate(0, 300, 200))
+            penetrations.set(100, interpolate(0, 300, 100))
             penetrations.set(200, interpolate(0, 300, 200))
-            penetrations.set(400, interpolate(300, 500, 400))
-            penetrations.set(750, interpolate(700, 800, 750))
-            penetrations.set(1000, interpolate(800, 1500, 100))
+            penetrations.set(400, interpolate(300, 750, 400))
+            penetrations.set(500, interpolate(300, 750, 500))
+            penetrations.set(1000, interpolate(750, 1200, 1000))
+            penetrations.set(1250, interpolate(1200, 1500, 1250))
 
             break
         }

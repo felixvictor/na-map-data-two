@@ -9,8 +9,8 @@ export const cannonFamilyList: Record<CannonType, CannonFamily[]> = {
 }
 export const peneDistance: PeneDistance = {
     medium: [100, 200, 300, 400, 500, 750, 1000, 1250, 1500],
-    long: [100, 400, 500, 750, 1000, 1250, 1500],
-    carronade: [100, 200, 300, 400, 500, 750, 1000, 1500],
+    long: [100, 500, 750, 1000, 1250, 1500],
+    carronade: [100, 200, 300, 400, 500, 750, 1000, 1250, 1500],
 }
 
 // Woods
