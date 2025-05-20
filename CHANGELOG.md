@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.40.0 (2025-05-20)
+
+* feat: 20 May 2025 patch ([f3273d3](https://github.com/felixvictor/na-map-data-two/commit/f3273d3))
+* chore(deps): bump ([c1df44d](https://github.com/felixvictor/na-map-data-two/commit/c1df44d))
+
 ## 1.39.0 (2025-05-19)
 
 * build: fix build script ([67fcd22](https://github.com/felixvictor/na-map-data-two/commit/67fcd22))
