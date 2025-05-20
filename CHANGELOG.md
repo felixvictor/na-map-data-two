@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.40.2 (2025-05-20)</small>
+
+* fix: cannon data structure change with 20 May 2025 patch - 2lb cannon ([b6317a9](https://github.com/felixvictor/na-map-data-two/commit/b6317a9))
+
 ## <small>1.40.1 (2025-05-20)</small>
 
 * fix: cannon data structure change with 20 May 2025 patch ([80d9f2d](https://github.com/felixvictor/na-map-data-two/commit/80d9f2d))
