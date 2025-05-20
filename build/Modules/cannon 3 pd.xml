@@ -332,67 +332,25 @@
           <Time>0</Time>
           <Value>1</Value>
           <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.1</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.2</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.3</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
+          <TangentOut>-0.0499999523</TangentOut>
         </Value>
         <Value>
           <Time>0.4</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
+          <Value>0.98</Value>
+          <TangentIn>-0.0499999523</TangentIn>
+          <TangentOut>-0.0888889357</TangentOut>
         </Value>
         <Value>
-          <Time>0.5</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
+          <Time>1.3</Time>
+          <Value>0.9</Value>
+          <TangentIn>-0.0888889357</TangentIn>
+          <TangentOut>-1.28571415</TangentOut>
         </Value>
         <Value>
-          <Time>0.6</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.7</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>0.8</Time>
-          <Value>1</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>-0.857142866</TangentOut>
-        </Value>
-        <Value>
-          <Time>1.5</Time>
-          <Value>0.4</Value>
-          <TangentIn>-0.857142866</TangentIn>
-          <TangentOut>0</TangentOut>
-        </Value>
-        <Value>
-          <Time>1.6</Time>
-          <Value>0.4</Value>
-          <TangentIn>0</TangentIn>
-          <TangentOut>0</TangentOut>
+          <Time>2</Time>
+          <Value>0</Value>
+          <TangentIn>-1.28571415</TangentIn>
+          <TangentOut>-0.9</TangentOut>
         </Value>
       </Value>
     </Pair>

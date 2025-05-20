@@ -344,19 +344,13 @@
           <Time>1</Time>
           <Value>0.95</Value>
           <TangentIn>-0.08000004</TangentIn>
-          <TangentOut>-0.399999976</TangentOut>
-        </Value>
-        <Value>
-          <Time>1.5</Time>
-          <Value>0.75</Value>
-          <TangentIn>-0.399999976</TangentIn>
-          <TangentOut>-0.5</TangentOut>
+          <TangentOut>-0.0999999642</TangentOut>
         </Value>
         <Value>
           <Time>2</Time>
-          <Value>0.5</Value>
-          <TangentIn>-0.5</TangentIn>
-          <TangentOut>-5.96046334E-07</TangentOut>
+          <Value>0.85</Value>
+          <TangentIn>-0.0999999642</TangentIn>
+          <TangentOut>-0.5</TangentOut>
         </Value>
       </Value>
     </Pair>
