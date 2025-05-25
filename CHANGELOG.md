@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.40.3 (2025-05-25)</small>
+
+* fix: port drop items ([30aa563](https://github.com/felixvictor/na-map-data-two/commit/30aa563))
+* chore(deps): bump ([9d3a65b](https://github.com/felixvictor/na-map-data-two/commit/9d3a65b))
+
 ## <small>1.40.2 (2025-05-20)</small>
 
 * fix: cannon data structure change with 20 May 2025 patch - 2lb cannon ([b6317a9](https://github.com/felixvictor/na-map-data-two/commit/b6317a9))
