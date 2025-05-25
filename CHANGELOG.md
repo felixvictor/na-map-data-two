@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.40.5 (2025-05-25)</small>
+
+* fix: module level format ([21a558e](https://github.com/felixvictor/na-map-data-two/commit/21a558e))
+
 ## <small>1.40.4 (2025-05-25)</small>
 
 * refactor: lint ([3ae3cb5](https://github.com/felixvictor/na-map-data-two/commit/3ae3cb5))
