@@ -1,5 +1,3 @@
-import * as console from "node:console"
-
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import { moduleLevel, moduleLevelUniversal } from "../@types/constants.js"
 import type {
