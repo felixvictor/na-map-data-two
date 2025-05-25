@@ -238,9 +238,7 @@ export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
     for (const level of moduleLevel) {
         const s = `${levelDivider}${level}`
         if (moduleConvertEntity.name.endsWith(s)) {
-            moduleConvertEntity.name = moduleConvertEntity.name.replace(s, "")
             moduleConvertEntity.moduleLevel = level
-            console.log("::", moduleConvertEntity.name)
         }
     }
 
