@@ -1,3 +1,5 @@
+import * as console from "node:console"
+
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
 import { moduleLevel, moduleLevelUniversal } from "../@types/constants.js"
 import type {
@@ -6,6 +8,7 @@ import type {
     ModuleEntityFlatHierarchy,
     ModuleEntityProperties,
 } from "../@types/modules.d.ts"
+import { levelDivider } from "../common/api.js"
 import { cCircleWhite, cDashEn, cSpaceNarrowNoBreaking } from "../common/constants.js"
 import { saveJsonAsync } from "../common/file.js"
 import { capitalizeFirstLetter } from "../common/format.js"
@@ -235,10 +238,11 @@ const rateExceptions = new Set([
 
 export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
     for (const level of moduleLevel) {
-        const s = ` - ${level}`
+        const s = `${levelDivider}${level}`
         if (moduleConvertEntity.name.endsWith(s)) {
             moduleConvertEntity.name = moduleConvertEntity.name.replace(s, "")
             moduleConvertEntity.moduleLevel = level
+            console.log("::", moduleConvertEntity.name)
         }
     }
 
