@@ -15,8 +15,8 @@ export interface PortPerServer {
     isCountyCapital: boolean
     portTax: number
     taxIncome: number
-    dropsTrading?: GoodList
-    dropsNonTrading?: GoodList
+    dropsTradeItem?: GoodList
+    dropsResource?: GoodList
 }
 
 export interface PortInventory {

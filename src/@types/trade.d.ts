@@ -15,8 +15,7 @@ export interface Trade {
 export interface TradeItem {
     id: number
     name: string
-    buyPrice: number
-    sellPrice?: number
+    basePrice: number
     distanceFactor?: number
     weight?: number
 }

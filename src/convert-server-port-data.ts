@@ -90,14 +90,14 @@ const setPortFeaturePerServer = (apiPort: APIPort): void => {
     portTaxMap.set(apiPort.Id, portFeaturesPerServer.portTax)
 
     const trades = {
-        dropsTrading: [
+        dropsTradeItem: [
             ...new Set(
                 portShop.ResourcesAdded.filter((good) =>
                     itemNames.has(good.Template) ? itemNames.get(good.Template)?.trading : true,
                 ).map((good) => good.Template),
             ),
         ].sort(simpleNumberSort),
-        dropsNonTrading: [
+        dropsResource: [
             ...new Set(
                 portShop.ResourcesAdded.filter((good) =>
                     itemNames.has(good.Template) ? !itemNames.get(good.Template)?.trading : false,
@@ -194,20 +194,13 @@ const setAndSaveTradeData = async (serverName: string): Promise<void> => {
 
 const setAndSaveDroppedItems = async (serverName: string): Promise<void> => {
     const items = apiItems
-        .filter(
-            (item) =>
-                !item.NotUsed && item.CanBeSoldToShop && item.SortingGroup !== "Resource.Trading" && item.BasePrice > 0,
-        )
+        .filter((item) => !item.NotUsed && item.CanBeSoldToShop && item.BasePrice > 0)
         .map((item) => {
             const tradeItem = {
                 id: item.Id,
                 name: isTradeItem(item) ? cleanItemName(item.Name) : cleanName(item.Name),
-                buyPrice: item.BasePrice,
+                basePrice: item.BasePrice,
             } as TradeItem
-
-            if (item.PortPrices.Consumed.SellPrice.Min > 0) {
-                tradeItem.sellPrice = item.PortPrices.Consumed.SellPrice.Min
-            }
 
             if (item.PortPrices.RangePct) {
                 tradeItem.distanceFactor = item.PortPrices.RangePct
