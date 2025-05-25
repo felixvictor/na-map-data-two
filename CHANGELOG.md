@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.40.4 (2025-05-25)</small>
+
+* refactor: lint ([3ae3cb5](https://github.com/felixvictor/na-map-data-two/commit/3ae3cb5))
+* fix: module level format ([584d0fc](https://github.com/felixvictor/na-map-data-two/commit/584d0fc))
+
 ## <small>1.40.3 (2025-05-25)</small>
 
 * fix: port drop items ([30aa563](https://github.com/felixvictor/na-map-data-two/commit/30aa563))
