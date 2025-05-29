@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>1.40.6 (2025-05-29)</small>
+
+* fix: module conversion ([69723ad](https://github.com/felixvictor/na-map-data-two/commit/69723ad))
+* fix: module conversion -> perks ([223e7c7](https://github.com/felixvictor/na-map-data-two/commit/223e7c7))
+* chore(deps): bump ([930df43](https://github.com/felixvictor/na-map-data-two/commit/930df43))
+
 ## <small>1.40.5 (2025-05-25)</small>
 
 * fix: module level format ([21a558e](https://github.com/felixvictor/na-map-data-two/commit/21a558e))
