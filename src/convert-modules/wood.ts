@@ -21,7 +21,7 @@ export const setWood = (module: ModuleConvertEntity): boolean => {
     const wood = {} as WoodTrimOrFrame
     wood.id = module.id
 
-    wood.properties = module.ApiModifiers
+    wood.properties = module.apiModifiers
         // filter unused modifiers
         .filter((modifier) => {
             const apiModifierName: APIModifierName = `${modifier.Slot} ${modifier.MappingIds.join(",")}`

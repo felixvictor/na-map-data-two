@@ -2,7 +2,7 @@ import type { APIItemGeneric, APIModule } from "../@types/api-item.d.ts"
 import type { ModuleConvertEntity } from "../@types/modules.js"
 import { cleanName } from "../common/api.js"
 import { getApiItems } from "../common/common.js"
-import { levels } from "./common.js"
+import { isPerk, levels } from "./common.js"
 import { saveModules, setModule } from "./module.js"
 import { saveWoods, setWood } from "./wood.js"
 
@@ -27,21 +27,20 @@ export const convertModulesAndWoodData = (): void => {
             id: apiModule.Id,
             name: cleanName(apiModule.Name),
             usageType: apiModule.UsageType,
-            ApiModifiers: apiModule.Modifiers,
+            apiModifiers: apiModule.Modifiers,
             sortingGroup: apiModule.SortingGroup.replace("module:", ""),
             permanentType: apiModule.PermanentType.replaceAll("_", " "),
-            // isStackable: !!apiModule.bCanBeSetWithSameType,
-            // minResourcesAmount: APImodule.MinResourcesAmount,
-            // maxResourcesAmount: APImodule.MaxResourcesAmount,
-            // breakUpItemsAmount: APImodule.BreakUpItemsAmount,
-            // canBeBreakedUp: APImodule.CanBeBreakedUp,
-            // bCanBeBreakedUp: APImodule.bCanBeBreakedUp,
             moduleType: apiModule.ModuleType,
             moduleLevel: levels.get(apiModule.ModuleLevel),
+            sortingOverrideTemplateType: apiModule.SortingOverrideTemplateType,
         } as ModuleConvertEntity
 
         if (apiModule.scoreValue) {
             module.scoreValue = apiModule.scoreValue
+        }
+
+        if (isPerk(module)) {
+            module.pointsNeed = apiModule.BasePrice
         }
 
         if (module.name.startsWith("Bow figure - ")) {

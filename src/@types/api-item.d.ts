@@ -636,7 +636,7 @@ export interface APIModule {
     NonConsumedScale: 1
     PriceTierQuantity: 2
     MaxQuantity: 20
-    SortingOverrideTemplateType: ""
+    SortingOverrideTemplateType: "" | "hidden"
     SortingGroup: string
     SellableInShop: false
     CanBeSoldToShop: true

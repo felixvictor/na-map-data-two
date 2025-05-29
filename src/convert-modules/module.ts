@@ -1,5 +1,5 @@
 import type { ModifiersEntity } from "../@types/api-item.d.ts"
-import { moduleLevel, moduleLevelUniversal } from "../@types/constants.js"
+import { moduleLevel } from "../@types/constants.js"
 import type {
     APIModifierName,
     ModuleConvertEntity,
@@ -12,7 +12,7 @@ import { saveJsonAsync } from "../common/file.js"
 import { capitalizeFirstLetter } from "../common/format.js"
 import { getCommonPaths } from "../common/path.js"
 import { sortBy } from "../common/sort.js"
-import { flipAmountForModule, modifiers, notPercentage } from "./common.js"
+import { flipAmountForModule, isPerk, isShipTrim, modifiers, notPercentage } from "./common.js"
 
 const commonPaths = getCommonPaths()
 
@@ -31,18 +31,13 @@ const getModifierName = (modifier: ModifiersEntity): APIModifierName =>
 const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
     let level1: string
     const { permanentType, sortingGroup } = module
-    const { moduleLevel, moduleType, name: moduleName, usageType } = module
+    const { moduleType, name: moduleName } = module
 
-    if (usageType === "All" && sortingGroup && moduleLevel === moduleLevelUniversal && moduleType === "Hidden") {
+    if (isShipTrim(module)) {
         level1 = "Ship trim"
     } else if (moduleType === "Permanent") {
         level1 = "Permanent"
-    } else if (
-        usageType === "All" &&
-        !sortingGroup &&
-        moduleLevel === moduleLevelUniversal &&
-        moduleType === "Hidden"
-    ) {
+    } else if (isPerk(module)) {
         level1 = "Perk"
     } else if (moduleType === "Regular") {
         level1 = "Ship knowledge"
@@ -101,7 +96,7 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
         parentString: rootName,
     })
 
-    const { ApiModifiers, moduleType: mT, sortingGroup: sG, permanentType: pT, ...data } = module
+    const { apiModifiers, moduleType: mT, sortingGroup: sG, permanentType: pT, ...data } = module
     moduleEntityFlatHierarchy.set(moduleName, {
         name: moduleName,
         hierarchyName: moduleName,
@@ -192,7 +187,7 @@ export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
         }
     }
 
-    moduleConvertEntity.properties = getModuleProperties(moduleConvertEntity.ApiModifiers)
+    moduleConvertEntity.properties = getModuleProperties(moduleConvertEntity.apiModifiers)
     return setModuleTypeHierarchy(moduleConvertEntity)
 }
 

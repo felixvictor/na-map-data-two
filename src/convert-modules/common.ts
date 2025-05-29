@@ -1,5 +1,6 @@
 // noinspection SpellCheckingInspection
-import type { APIModifierName, ModifierName } from "../@types/modules.js"
+import { moduleLevelUniversal } from "../@types/constants.js"
+import type { APIModifierName, ModifierName, ModuleConvertEntity } from "../@types/modules.js"
 
 export const modifiers = new Map<APIModifierName, ModifierName>([
     // Woods
@@ -242,3 +243,15 @@ export const levels = new Map([
     ["Medium", "M"],
     ["LineShips", "L"],
 ])
+
+export const isShipTrim = (module: ModuleConvertEntity) =>
+    module.usageType === "All" &&
+    module.sortingOverrideTemplateType === "hidden" &&
+    module.moduleLevel === moduleLevelUniversal &&
+    module.moduleType === "Hidden"
+
+export const isPerk = (module: ModuleConvertEntity) =>
+    module.usageType === "All" &&
+    module.sortingOverrideTemplateType === "" &&
+    module.moduleLevel === moduleLevelUniversal &&
+    module.moduleType === "Hidden"

@@ -23,11 +23,13 @@ export interface ModuleEntity {
     properties?: ModuleEntityProperties[]
     hasSamePropertiesAsPrevious?: boolean
     scoreValue?: number
+    pointsNeed?: number
 }
 
 export interface ModuleConvertEntity extends ModuleEntity {
-    ApiModifiers: ModifiersEntity[]
+    apiModifiers: ModifiersEntity[]
     moduleType: string
+    sortingOverrideTemplateType: "" | "hidden"
 }
 
 export interface ModuleEntityProperties {
