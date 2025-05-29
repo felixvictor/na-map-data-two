@@ -212,23 +212,6 @@ export const modifiers = new Map<APIModifierName, ModifierName>([
     ["WATER_PUMP REPAIR_MODULE_TIME", ""],
 ])
 
-export const usedModules = new Set([
-    2746, // Bravery 1 perk
-    2747, // Bravery 2 perk
-    2766, // Search perk
-])
-
-export const notUsedExceptionalWoodIds = new Set([
-    2358, // Danzic Fir Frame
-    2363, // Moulmein Teak Frame
-    2367, // Virginia Pine Frame
-    2368, // African Oak Planking
-    2370, // Danzic Fir Planking
-    2372, // Greenheart Planking
-    2375, // Moulmein Teak Planking
-    2379, // Virginia Pine Planking
-])
-
 export const rareWoodTrimFrameIds = new Set([
     2356, // African Oak Frame
     2357, // African Teak Frame
@@ -251,8 +234,6 @@ export const rareWoodTrimFrameIds = new Set([
 export const flipAmountForModule = new Set<ModifierName>(["Leak resistance", "Turn acceleration", "Rudder speed"])
 
 export const notPercentage = new Set<ModifierName>(["Crew with muskets", "Melee attack", "Melee defense", "Morale"])
-
-export const bonusRegex = /(.+\sBonus)\s(\d)/u
 
 export const levels = new Map([
     ["Universal", "U"],

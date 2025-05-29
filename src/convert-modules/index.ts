@@ -2,7 +2,7 @@ import type { APIItemGeneric, APIModule } from "../@types/api-item.d.ts"
 import type { ModuleConvertEntity } from "../@types/modules.js"
 import { cleanName } from "../common/api.js"
 import { getApiItems } from "../common/common.js"
-import { levels, notUsedExceptionalWoodIds, usedModules } from "./common.js"
+import { levels } from "./common.js"
 import { saveModules, setModule } from "./module.js"
 import { saveWoods, setWood } from "./wood.js"
 
@@ -18,9 +18,9 @@ export const convertModulesAndWoodData = (): void => {
     const apiModules = apiItems
         .filter((item) => item.ItemType === "Module")
         .filter((item) => !item.NotUsed)
-        .filter((item) => item.Id <= 2594 || usedModules.has(item.Id))
-        .filter((item) => (item.ModuleType === "Permanent" && !item.NotUsed) || item.ModuleType !== "Permanent")
-        .filter((item) => !notUsedExceptionalWoodIds.has(item.Id)) as APIModule[]
+        .filter(
+            (item) => (item.ModuleType === "Permanent" && !item.NotUsed) || item.ModuleType !== "Permanent",
+        ) as APIModule[]
 
     for (const apiModule of apiModules) {
         const module = {

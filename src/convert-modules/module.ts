@@ -12,7 +12,7 @@ import { saveJsonAsync } from "../common/file.js"
 import { capitalizeFirstLetter } from "../common/format.js"
 import { getCommonPaths } from "../common/path.js"
 import { sortBy } from "../common/sort.js"
-import { bonusRegex, flipAmountForModule, modifiers, notPercentage } from "./common.js"
+import { flipAmountForModule, modifiers, notPercentage } from "./common.js"
 
 const commonPaths = getCommonPaths()
 
@@ -35,7 +35,7 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
 
     if (usageType === "All" && sortingGroup && moduleLevel === moduleLevelUniversal && moduleType === "Hidden") {
         level1 = "Ship trim"
-    } else if (moduleType === "Permanent" && !moduleName.endsWith(" Bonus")) {
+    } else if (moduleType === "Permanent") {
         level1 = "Permanent"
     } else if (
         usageType === "All" &&
@@ -50,19 +50,10 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
         level1 = "Not used"
     }
 
-    if (!isUsed(moduleName, level1, moduleLevel)) {
-        return false
-    }
-
     // Correct sorting group
     let level2 = sortingGroup
-    if (moduleName.endsWith("French Rig Refit") || moduleName === "Bridgetown Frame Refit") {
-        level2 = "Survival"
-    }
-
     if (level1 === "Ship trim") {
-        const result = bonusRegex.exec(moduleName)
-        level2 = result ? result[1] : ""
+        level2 = ""
     } else {
         level2 = sortingGroup ? capitalizeFirstLetter(sortingGroup).replace("_", "/") : ""
     }
@@ -193,57 +184,12 @@ const getModuleProperties = (APImodifiers: ModifiersEntity[]): ModuleEntityPrope
         .sort(sortBy(["modifier"]))
 }
 
-const isUsed = (name: string, typeString: string, moduleLevel: string) => {
-    const nameExceptions = new Set([
-        "Cannon nation module - France",
-        "Coward",
-        "Doctor",
-        "Dreadful",
-        "Expert Surgeon",
-        "Frigate Master",
-        "Gifted",
-        "Light Ship Master",
-        "Lineship Master",
-        "Press Gang",
-        "Signaling",
-        "TEST MODULE SPEED IN OW",
-        "Thrifty",
-    ])
-
-    const nameL = name.toLocaleLowerCase()
-    const typeStringL = typeString.toLocaleLowerCase()
-
-    return !(
-        nameExceptions.has(name) ||
-        (name === "Optimized Rudder" && moduleLevel !== moduleLevelUniversal) ||
-        typeStringL.startsWith("not used") ||
-        nameL.startsWith("test") ||
-        nameL.endsWith("test") ||
-        nameL.endsWith("old") ||
-        nameL.startsWith("not used")
-    )
-}
-
-const rateExceptions = new Set([
-    "Apprentice Carpenters",
-    "Journeyman Carpenters",
-    "Navy Carpenters",
-    "Northern Carpenters",
-    "Northern Master Carpenters",
-    "Navy Mast Bands",
-    "Navy Orlop Refit",
-])
-
 export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
     for (const level of moduleLevel) {
         const s = `${levelDivider}${level}`
         if (moduleConvertEntity.name.endsWith(s)) {
             moduleConvertEntity.moduleLevel = level
         }
-    }
-
-    if (rateExceptions.has(moduleConvertEntity.name)) {
-        moduleConvertEntity.moduleLevel = moduleLevelUniversal
     }
 
     moduleConvertEntity.properties = getModuleProperties(moduleConvertEntity.ApiModifiers)
