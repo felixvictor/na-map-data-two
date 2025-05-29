@@ -47,7 +47,7 @@ const setModuleTypeHierarchy = (module: ModuleConvertEntity) => {
 
     // Correct sorting group
     let level2 = sortingGroup
-    if (level1 === "Ship trim") {
+    if (level1 === "Ship trim" || level1 === "Perk") {
         level2 = ""
     } else {
         level2 = sortingGroup ? capitalizeFirstLetter(sortingGroup).replace("_", "/") : ""
