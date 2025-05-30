@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.40.8 (2025-05-30)</small>
+
+* chore(deps): bump ([3381725](https://github.com/felixvictor/na-map-data-two/commit/3381725))
+
 ## <small>1.40.7 (2025-05-29)</small>
 
 * fix: module conversion -> perks with level2 ([349b272](https://github.com/felixvictor/na-map-data-two/commit/349b272))
