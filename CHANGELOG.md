@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.40.10 (2025-05-30)</small>
+
+* fix: module key 'sortingOverrideTemplateType' removed ([83b0d2c](https://github.com/felixvictor/na-map-data-two/commit/83b0d2c))
+
 ## <small>1.40.9 (2025-05-30)</small>
 
 * fix: module key for perk points needed ([4bab1ef](https://github.com/felixvictor/na-map-data-two/commit/4bab1ef))
