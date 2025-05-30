@@ -40,7 +40,7 @@ export const convertModulesAndWoodData = (): void => {
         }
 
         if (isPerk(module)) {
-            module.pointsNeed = apiModule.BasePrice
+            module.pointsNeeded = apiModule.BasePrice
         }
 
         if (module.name.startsWith("Bow figure - ")) {

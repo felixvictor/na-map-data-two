@@ -23,7 +23,7 @@ export interface ModuleEntity {
     properties?: ModuleEntityProperties[]
     hasSamePropertiesAsPrevious?: boolean
     scoreValue?: number
-    pointsNeed?: number
+    pointsNeeded?: number
 }
 
 export interface ModuleConvertEntity extends ModuleEntity {
