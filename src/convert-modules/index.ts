@@ -60,6 +60,7 @@ export const convertModulesAndWoodData = (): void => {
                     : setModule(module)
 
             if (isModuleAdded) {
+                delete module.sortingOverrideTemplateType
                 addedModules.add(module.name + module.moduleLevel)
             }
         }

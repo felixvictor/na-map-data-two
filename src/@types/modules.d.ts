@@ -29,7 +29,7 @@ export interface ModuleEntity {
 export interface ModuleConvertEntity extends ModuleEntity {
     apiModifiers: ModifiersEntity[]
     moduleType: string
-    sortingOverrideTemplateType: "" | "hidden"
+    sortingOverrideTemplateType?: "" | "hidden"
 }
 
 export interface ModuleEntityProperties {
