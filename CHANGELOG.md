@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.40.9 (2025-05-30)</small>
+
+* fix: module key for perk points needed ([4bab1ef](https://github.com/felixvictor/na-map-data-two/commit/4bab1ef))
+
 ## <small>1.40.8 (2025-05-30)</small>
 
 * chore(deps): bump ([3381725](https://github.com/felixvictor/na-map-data-two/commit/3381725))
