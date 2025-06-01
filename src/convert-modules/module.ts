@@ -117,7 +117,7 @@ const getModuleProperties = (APImodifiers: ModifiersEntity[]): ModuleEntityPrope
     return APImodifiers.filter((modifier) => {
         const apiModifierName = getModifierName(modifier)
         if (!modifiers.has(apiModifierName)) {
-            console.log(`${apiModifierName} modifier not defined`, modifier)
+            console.error(apiModifierName, "modifier not defined:", modifier)
             return true
         }
 
@@ -161,12 +161,12 @@ const getModuleProperties = (APImodifiers: ModifiersEntity[]): ModuleEntityPrope
                         modifier: "Cannon horizontal dispersion",
                         amount,
                         isPercentage,
-                    },
+                    } as ModuleEntityProperties,
                     {
                         modifier: "Cannon vertical dispersion",
                         amount,
                         isPercentage,
-                    },
+                    } as ModuleEntityProperties,
                 ]
             }
 
@@ -174,7 +174,7 @@ const getModuleProperties = (APImodifiers: ModifiersEntity[]): ModuleEntityPrope
                 modifier: modifierName,
                 amount,
                 isPercentage,
-            }
+            } as ModuleEntityProperties
         })
         .sort(sortBy(["modifier"]))
 }
@@ -188,6 +188,22 @@ export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
     }
 
     moduleConvertEntity.properties = getModuleProperties(moduleConvertEntity.apiModifiers)
+
+    // Special case sextant
+    if (moduleConvertEntity.name === "Sextant") {
+        moduleConvertEntity.properties = [
+            {
+                modifier: "Show ship’s position on map",
+                amount: 1,
+                isPercentage: false,
+            },
+        ]
+    }
+
+    if (moduleConvertEntity.properties?.length === 0) {
+        console.error("Module", moduleConvertEntity.name, "has no properties:", moduleConvertEntity.apiModifiers)
+    }
+
     return setModuleTypeHierarchy(moduleConvertEntity)
 }
 
