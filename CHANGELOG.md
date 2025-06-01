@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.40.11 (2025-06-01)</small>
+
+* fix: module properties ([de50eaf](https://github.com/felixvictor/na-map-data-two/commit/de50eaf))
+
 ## <small>1.40.10 (2025-05-30)</small>
 
 * fix: module key 'sortingOverrideTemplateType' removed ([83b0d2c](https://github.com/felixvictor/na-map-data-two/commit/83b0d2c))
