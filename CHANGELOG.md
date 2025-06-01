@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.40.12 (2025-06-01)</small>
+
+* fix: module 'Combat repairs' ([2fe274d](https://github.com/felixvictor/na-map-data-two/commit/2fe274d))
+
 ## <small>1.40.11 (2025-06-01)</small>
 
 * fix: module properties ([de50eaf](https://github.com/felixvictor/na-map-data-two/commit/de50eaf))
