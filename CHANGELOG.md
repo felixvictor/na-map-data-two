@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.40.13 (2025-06-01)</small>
+
+* fix: module 'Expert Sail Seamanship' -> 'Expert Seamanship' ([7ae92af](https://github.com/felixvictor/na-map-data-two/commit/7ae92af))
+
 ## <small>1.40.12 (2025-06-01)</small>
 
 * fix: module 'Combat repairs' ([2fe274d](https://github.com/felixvictor/na-map-data-two/commit/2fe274d))
