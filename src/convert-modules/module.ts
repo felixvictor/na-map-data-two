@@ -200,6 +200,11 @@ export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
         ]
     }
 
+    // Special case 'Expert Sail Seamanship'
+    if (moduleConvertEntity.name === "Expert Sail Seamanship") {
+        moduleConvertEntity.name = "Expert Seamanship"
+    }
+
     // Special case 'combat repairs': sec -> min
     if (moduleConvertEntity.name === "Combat Repairs") {
         moduleConvertEntity.properties = moduleConvertEntity.properties?.map((property) => {
