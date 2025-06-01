@@ -9,7 +9,7 @@ import type {
 import { levelDivider } from "../common/api.js"
 import { cCircleWhite, cDashEn, cSpaceNarrowNoBreaking } from "../common/constants.js"
 import { saveJsonAsync } from "../common/file.js"
-import { capitalizeFirstLetter } from "../common/format.js"
+import { capitalizeFirstLetter, round } from "../common/format.js"
 import { getCommonPaths } from "../common/path.js"
 import { sortBy } from "../common/sort.js"
 import { flipAmountForModule, isPerk, isShipTrim, modifiers, notPercentage } from "./common.js"
@@ -189,7 +189,7 @@ export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
 
     moduleConvertEntity.properties = getModuleProperties(moduleConvertEntity.apiModifiers)
 
-    // Special case sextant
+    // Special case 'sextant'
     if (moduleConvertEntity.name === "Sextant") {
         moduleConvertEntity.properties = [
             {
@@ -198,6 +198,13 @@ export const setModule = (moduleConvertEntity: ModuleConvertEntity) => {
                 isPercentage: false,
             },
         ]
+    }
+
+    // Special case 'combat repairs': sec -> min
+    if (moduleConvertEntity.name === "Combat Repairs") {
+        moduleConvertEntity.properties = moduleConvertEntity.properties?.map((property) => {
+            return { ...property, amount: round(property.amount / 60, 0) }
+        })
     }
 
     if (moduleConvertEntity.properties?.length === 0) {

@@ -88,9 +88,9 @@ export const modifiers = new Map<APIModifierName, ModifierName>([
     ["NONE MUSKETS_PERCENTAGE_OF_CREW", "Crew with muskets"],
     ["NONE PERK_BOARDING_ATTACK_COST_MODIFIER", "Boarding attack cost"],
 
-    ["NONE PERK_REPAIR_REDUCE_TIMER_ARMOR", "Armour repair reduction"],
-    ["NONE PERK_REPAIR_REDUCE_TIMER_SAILS", "Sail repair reduction"],
-    ["NONE PERK_REPAIR_REDUCE_TIMER_CREW", "Crew repair reduction"],
+    ["NONE PERK_REPAIR_REDUCE_TIMER_ARMOR", "Armour repair cooldown (minutes)"],
+    ["NONE PERK_REPAIR_REDUCE_TIMER_SAILS", "Sail repair cooldown (minutes)"],
+    ["NONE PERK_REPAIR_REDUCE_TIMER_CREW", "Crew repair cooldown (minutes)"],
 
     ["NONE DAMAGE_CANNON_DESTROY_PROBABILITY", ""],
     ["NONE PERK_ARSENAL_CASTIRONKNOWLEDGE", ""],
