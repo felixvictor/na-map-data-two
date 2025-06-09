@@ -1,12 +1,10 @@
 // https://jvilk.com/MakeTypes/
-import type { ValuesType } from "utility-types"
 
 /****************************
  * Items
  */
 
 export interface APIItemGeneric {
-    [index: string]: ValuesType<APIItemGeneric>
     __type: string
     Name: string
     Id: number
@@ -392,8 +390,7 @@ export interface APIBuilding {
  * Resource
  */
 export interface APIResource {
-    __type: MegaChaka.Services.Items.ResourceTemplate
-    MegaChaka
+    __type: "MegaChaka.Services.Items.ResourceTemplate, MegaChaka"
     Name: string
     Id: number
     NotUsed: boolean
@@ -528,7 +525,6 @@ export interface APIGenericLootTableItem {
     CanBeSoldToShop: true
     ResetStockOnServerStart: false
     SellPriceCoefficient: 0.5
-    ItemType: "ShipLootTableItem"
     MongoID: string
     EventLootTable: boolean
     isDefault: boolean
@@ -807,6 +803,7 @@ export interface APIShipBlueprint {
     ItemType: string
     MongoID: string
     WoodTypeDescs: WoodTypeDescsEntity[]
+    TrimAmountAsMassPercent: number
     Qualities: QualitiesEntity[]
     LaborPrice: number
     BuildingRequirements: BuildingRequirementsEntity[]
