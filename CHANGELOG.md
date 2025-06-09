@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.41.0 (2025-06-09)
+
+* fix: api item types ([eb63ad4](https://github.com/felixvictor/na-map-data-two/commit/eb63ad4))
+* fix: ship blueprint trim amount ([f1716c9](https://github.com/felixvictor/na-map-data-two/commit/f1716c9))
+* chore(deps): bump ([22a7479](https://github.com/felixvictor/na-map-data-two/commit/22a7479))
+* chore(deps): bump ([017b1c9](https://github.com/felixvictor/na-map-data-two/commit/017b1c9))
+* feat: add find segment for curves ([a7d69f0](https://github.com/felixvictor/na-map-data-two/commit/a7d69f0))
+
 ## <small>1.40.13 (2025-06-01)</small>
 
 * fix: module 'Expert Sail Seamanship' -> 'Expert Seamanship' ([7ae92af](https://github.com/felixvictor/na-map-data-two/commit/7ae92af))
