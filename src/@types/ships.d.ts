@@ -151,7 +151,7 @@ interface ShipMast {
 export interface ShipBlueprint {
     id: number
     name: string
-    wood: Omit<ShipBlueprintResource, id>[]
+    wood: ShipBlueprintWood[]
     resources: ShipBlueprintResource[]
     provisions: number
     price: number
@@ -160,6 +160,10 @@ export interface ShipBlueprint {
     shipyardLevel: number
     craftLevel: number
     craftXP: number
+}
+interface ShipBlueprintWood {
+    name: string
+    amount: number
 }
 interface ShipBlueprintResource {
     id: number
