@@ -395,7 +395,10 @@ const convertShipBlueprints = async (): Promise<void> => {
             return {
                 id: apiBlueprint.Id,
                 name: cleanName(apiBlueprint.Name).replace(" Blueprint", ""),
-                wood: [{ name: "Frame", amount: apiBlueprint.WoodTypeDescs[0].Requirements[0].Amount }],
+                wood: [
+                    { name: "Frame", amount: apiBlueprint.WoodTypeDescs[0].Requirements[0].Amount },
+                    { name: "Trim", amount: Math.round(shipMass * apiBlueprint.TrimAmountAsMassPercent) },
+                ],
                 resources: apiBlueprint.FullRequirements.filter(
                     (requirement) =>
                         !(

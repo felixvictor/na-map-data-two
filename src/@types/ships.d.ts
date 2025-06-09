@@ -151,7 +151,7 @@ interface ShipMast {
 export interface ShipBlueprint {
     id: number
     name: string
-    wood: ShipBlueprintResource[]
+    wood: Omit<ShipBlueprintResource, id>[]
     resources: ShipBlueprintResource[]
     provisions: number
     price: number
