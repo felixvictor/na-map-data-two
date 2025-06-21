@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.42.0 (2025-06-21)
+
+* feat: port ownership data since server start on 10 April 2025 ([b807620](https://github.com/felixvictor/na-map-data-two/commit/b807620))
+* refactor: port ownership ([3055ba7](https://github.com/felixvictor/na-map-data-two/commit/3055ba7))
+* fix: free town nation id ([7c294d5](https://github.com/felixvictor/na-map-data-two/commit/7c294d5))
+* fix: ShipBlueprint type ([5d3b539](https://github.com/felixvictor/na-map-data-two/commit/5d3b539))
+* chore(deps): bump ([df3fde9](https://github.com/felixvictor/na-map-data-two/commit/df3fde9))
+
 ## 1.41.0 (2025-06-09)
 
 * fix: api item types ([eb63ad4](https://github.com/felixvictor/na-map-data-two/commit/eb63ad4))
