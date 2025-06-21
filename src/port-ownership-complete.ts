@@ -6,6 +6,7 @@ import type { ServerId } from "./@types/server.js"
 import { unCompressSync } from "./common/compress.js"
 import { readJson, removeFileASync } from "./common/file.js"
 import { getCommonPaths } from "./common/path.js"
+import { simpleStringSort } from "./common/sort.js"
 import { PortOwnership } from "./port-ownership.js"
 
 const commonPaths = getCommonPaths()
@@ -29,28 +30,12 @@ export class PortOwnershipComplete extends PortOwnership {
         await this.writeResult()
     }
 
-    #sortFileNames(): string[] {
-        return this.#fileNames.sort((a, b) => {
-            const ba = path.basename(a)
-            const bb = path.basename(b)
-            if (ba < bb) {
-                return -1
-            }
-
-            if (ba > bb) {
-                return 1
-            }
-
-            return 0
-        })
-    }
-
     async #getFilenames() {
         const files = await readdir(commonPaths.directoryAPI, { recursive: true, withFileTypes: true })
         this.#fileNames = files
             .filter((file) => file.isFile() && file.name.match(this.fileBaseNameRegex))
-            .map((file) => `${file.parentPath}/${file.name}`)
-        this.#sortFileNames()
+            .map((file) => path.join(file.parentPath, file.name))
+            .sort((a, b) => simpleStringSort(path.basename(a), path.basename(b)))
     }
 
     async #processFiles() {
