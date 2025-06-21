@@ -25,6 +25,7 @@ export const attackerNationShortName: string[] = [...portBattleNationShortName, 
 export const nationShortNameAlternative: string[] = nations.map((nation) => `${nation.short}a`).sort(simpleStringSort)
 export const nationFullName: string[] = nations.sort(sortBy(["sortName"])).map((nation) => nation.name)
 export const nationMap = new Map<number, Nation>(nations.map((nation) => [nation.id, nation]))
+export const idFreeTown = nations.find((nation) => nation.short === "FT")?.id ?? 0
 
 export const findNationById = (nationId: number): Nation | undefined => nationMap.get(nationId)
 export const findNationShortNameById = (nationId: number): NationShortName => nationMap.get(nationId)?.short ?? ""

@@ -9,6 +9,7 @@ import { cleanName } from "./common/api.js"
 import { getApiPortsFromDate } from "./common/common.js"
 import { capitalToCounty } from "./common/constants.js"
 import { readJson } from "./common/file.js"
+import { idFreeTown } from "./common/nation.js"
 import { currentServerStartDate as serverDate } from "./common/time.js"
 import { PortOwnership } from "./port-ownership.js"
 
@@ -52,7 +53,7 @@ export class PortOwnershipIncrement extends PortOwnership {
 
         return new Map<string, OwnershipPort>(
             this.#apiPorts
-                .filter((apiPort) => apiPort.Nation !== 9)
+                .filter((apiPort) => apiPort.Nation !== idFreeTown)
                 .map((apiPort) => {
                     const portName = cleanName(apiPort.Name)
                     return [

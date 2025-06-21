@@ -20,7 +20,7 @@ import { getApiPorts } from "./common/common.js"
 import { compressExtension } from "./common/compress.js"
 import { capitalToCounty } from "./common/constants.js"
 import { saveJsonAsync } from "./common/file.js"
-import { findNationShortNameById, nationShortNamesPerServer } from "./common/nation.js"
+import { findNationShortNameById, idFreeTown, nationShortNamesPerServer } from "./common/nation.js"
 import { getCommonPaths } from "./common/path.js"
 import { sortBy } from "./common/sort.js"
 
@@ -145,7 +145,7 @@ export class PortOwnership {
         }
 
         // Loop all ports excluding free towns
-        for (this.#currentPort of apiPorts.filter((apiPort) => apiPort.Nation !== 9)) {
+        for (this.#currentPort of apiPorts.filter((apiPort) => apiPort.Nation !== idFreeTown)) {
             const currentNation = findNationShortNameById(this.#currentPort.Nation)
             numberPortsPerNation[currentNation] = Number(numberPortsPerNation[currentNation]) + 1
             nationPerPorts.push(this.#currentPort.Nation)
