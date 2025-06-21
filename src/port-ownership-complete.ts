@@ -1,3 +1,4 @@
+import fs from "node:fs"
 import { readdir } from "node:fs/promises"
 import path from "node:path"
 
@@ -13,6 +14,7 @@ const commonPaths = getCommonPaths()
 
 export class PortOwnershipComplete extends PortOwnership {
     #fileNames = [] as string[]
+    #serverStart = Date.parse("2025-04-10")
 
     constructor(serverId: ServerId) {
         super(serverId)
@@ -30,17 +32,35 @@ export class PortOwnershipComplete extends PortOwnership {
         await this.writeResult()
     }
 
+    getDateString(fileName: string) {
+        return fileName.match(this.fileBaseNameRegex)?.[1]
+    }
+
+    isAPIPortFileSinceServerStart(file: fs.Dirent) {
+        if (!file.isFile()) {
+            return false
+        }
+
+        const dateString = this.getDateString(file.name)
+
+        if (dateString === undefined) {
+            return false
+        }
+
+        return Date.parse(dateString) >= this.#serverStart
+    }
+
     async #getFilenames() {
         const files = await readdir(commonPaths.directoryAPI, { recursive: true, withFileTypes: true })
         this.#fileNames = files
-            .filter((file) => file.isFile() && file.name.match(this.fileBaseNameRegex))
+            .filter((file) => this.isAPIPortFileSinceServerStart(file))
             .map((file) => path.join(file.parentPath, file.name))
             .sort((a, b) => simpleStringSort(path.basename(a), path.basename(b)))
     }
 
     async #processFiles() {
         for (const fileName of this.#fileNames) {
-            this.currentDate = (this.fileBaseNameRegex.exec(path.basename(fileName)) ?? [])[1]
+            this.currentDate = this.getDateString(path.basename(fileName)) ?? ""
 
             unCompressSync(fileName)
             const parsedFileName = path.parse(fileName)
