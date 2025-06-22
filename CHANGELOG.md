@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.42.1 (2025-06-22)</small>
+
+* refactor: console import removed ([4fced7c](https://github.com/felixvictor/na-map-data-two/commit/4fced7c))
+* fix: nationShortNamesPerServer ([fb2d130](https://github.com/felixvictor/na-map-data-two/commit/fb2d130))
+
 ## 1.42.0 (2025-06-21)
 
 * feat: port ownership data since server start on 10 April 2025 ([b807620](https://github.com/felixvictor/na-map-data-two/commit/b807620))
