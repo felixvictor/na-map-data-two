@@ -17,7 +17,8 @@ export const nations: Nation[] = [
 ]
 
 export const nationShortNamesPerServer = new Map([
-    ["eu1", nations.filter((nation) => nation.short !== "NT").map((nation) => nation.short)],
+    ["eu2", nations.map((nation) => nation.short)],
+    ["eu3", nations.map((nation) => nation.short)],
 ])
 export const nationShortName: string[] = nations.map((nation) => nation.short).sort(simpleStringSort)
 export const portBattleNationShortName: string[] = [...nationShortName, ""]
