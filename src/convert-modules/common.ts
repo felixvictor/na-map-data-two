@@ -60,7 +60,7 @@ export const modifiers = new Map<APIModifierName, ModifierName>([
     ["NONE BOARDING_DEFENSE_BONUS", "Melee defense"],
     ["NONE CREW_TRANSFER_SPEED", "Crew transfer speed"],
     ["NONE DECK_GUNS_ACCURACY_BONUS", "Boarding cannons accuracy"],
-    ["NONE FIRE_DECREASE_RATE", ""],
+    ["NONE FIRE_DECREASE_RATE", "Fire reduction"],
     ["NONE FIRE_INCREASE_RATE", ""],
     ["NONE FIREZONE_HORIZONTAL_ROTATION_SPEED", "Cannon side traverse"],
     ["NONE FIREZONE_MAX_HORIZONTAL_ANGLE", "Cannon side traverse"],
