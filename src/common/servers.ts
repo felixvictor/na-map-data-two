@@ -1,9 +1,12 @@
 import type { Server } from "../@types/server.js"
+import { useTestServers } from "./constants.js"
 
-export const serverIds = ["eu3", "eu2"]
+export const serverIds = useTestServers ? ["dev"] : ["eu3", "eu2"]
 
 // https://storage.googleapis.com/nacleanopenworldprodshards/config.txt
-export const servers: Server[] = [
-    { id: "eu3", name: "Caribbean", type: "PVP", icon: "free" },
-    { id: "eu2", name: "Peace", type: "PVE", icon: "peace" },
-]
+export const servers: Server[] = useTestServers
+    ? [{ id: "dev", name: "PvP [C]", type: "PVP", icon: "free" }]
+    : [
+          { id: "eu3", name: "Caribbean", type: "PVP", icon: "free" },
+          { id: "eu2", name: "Peace", type: "PVE", icon: "peace" },
+      ]

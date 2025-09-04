@@ -1,3 +1,5 @@
+export const useTestServers = false
+
 export const degreesFullCircle = 360
 export const degreesHalfCircle = 180
 export const degreesQuarterCircle = 90
