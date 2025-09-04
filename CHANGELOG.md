@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.43.0 (2025-09-04)
+
+* feat: module modifier "NONE FIRE_DECREASE_RATE" -> "Fire reduction" ([57cb436](https://github.com/felixvictor/na-map-data-two/commit/57cb436))
+* feat: useTestServers boolean ([4088e72](https://github.com/felixvictor/na-map-data-two/commit/4088e72))
+* chore(deps): bump ([9247b44](https://github.com/felixvictor/na-map-data-two/commit/9247b44))
+
 ## <small>1.42.1 (2025-06-22)</small>
 
 * refactor: console import removed ([4fced7c](https://github.com/felixvictor/na-map-data-two/commit/4fced7c))
